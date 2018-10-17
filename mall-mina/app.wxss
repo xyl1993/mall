@@ -1,9 +1,17 @@
 /**app.wxss**/
-
 page {
   height: 100%;
   background: #f4f4f4;
   box-sizing: border-box;
+  font-family: Helvetica Neue,
+                 Helvetica,
+                 PingFang SC,
+                 Hiragino Sans GB,
+                 Microsoft YaHei,
+                 SimSun,
+                 sans-serif;
+  font-size: 28rpx;
+  color: #666;
 }
 
 .container {
@@ -11,6 +19,7 @@ page {
   flex-direction: column;
   box-sizing: border-box;
   /* background: #f4f4f4; */
+  height: 100%;
 }
 
 .container-noflex {
@@ -24,4 +33,16 @@ page {
   clear: both;
   content: '';
   display: table;
+}
+
+.text_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.left{
+  float: left;
+}
+.right{
+  float: right;
 }

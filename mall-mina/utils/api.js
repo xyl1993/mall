@@ -1,4 +1,4 @@
-import { Config } from "../config";
+import { Config } from "../config/index.js";
 const Fly = require("../lib/wx.umd.min.js"); //wx.js为您下载的源码文件
 const fly = new Fly();
 const allowUrls = new RegExp(Config.allowUrls);//'g'
@@ -31,7 +31,6 @@ function createAuthorizationHeader(url) {
 }
 
 function checkStatus(response) {
-  NProgress.done()
   return {
     data: {
       status: response.status,
@@ -49,6 +48,12 @@ export default {
   },
   get(url, data) {
     return fly.get(Config.api_url + url, data, {
+      headers: createAuthorizationHeader(url)
+    })
+      .then(checkStatus)
+  },
+  put(url, data) {
+    return fly.put(Config.api_url + url, data, {
       headers: createAuthorizationHeader(url)
     })
       .then(checkStatus)

@@ -1,13 +1,15 @@
 /**index.wxss**/
+@import '../../resources/css/shop.wxss';
 .header {
   background: #ff3364;
   width: 100%;
-  padding: 14rpx 20rpx;
+  padding: 17rpx 20rpx;
   box-sizing: border-box;
-  height: 80rpx;
+  height: 90rpx;
   font-size: 24rpx;
   color: #dbdbdb;
 }
+
 .search_div {
   height: 100%;
   width: 100%;
@@ -18,8 +20,46 @@
   align-items: center;
   justify-content: center;
 }
+
 .search_div image {
   width: 40rpx;
   height: 40rpx;
   display: inline-block;
+}
+
+.swiper {
+  width: 100%;
+  height: 400rpx;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.row {
+  background: #fff;
+  position: relative;
+}
+
+.row .col {
+  width: 33.3333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #666;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+  float: left;
+}
+
+.row .col image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.row .col text {
+  padding-top: 15rpx;
 }

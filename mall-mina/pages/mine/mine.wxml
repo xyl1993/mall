@@ -1,0 +1,18 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='top_bac'>
+    <view class="circle">
+      <open-data type="userAvatarUrl" class="userinfo_avatar"></open-data>
+    </view>
+    <view class="userinfo_nickname">
+      <open-data type="userNickName" lang="zh_CN"></open-data>
+    </view>
+  </view>
+  <view class='header_item'>
+    <view class='title'>我的订单</view>
+    <view class='more'>
+      <text>查看全部订单</text>
+      <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+.header {
+  background: #fff;
+  width: 100%;
+  padding: 17rpx 20rpx;
+  box-sizing: border-box;
+  height: 90rpx;
+  font-size: 24rpx;
+  color: #dbdbdb;
+}
+
+.search_div {
+  height: 100%;
+  width: 100%;
+  background: #f5f5f5;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.search_div image {
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block;
+}

@@ -1,7 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/kind/kind"
+    "pages/kind/kind",
+    "pages/mine/mine",
+    "pages/detail/detail"
   ],
   "tabBar": {
     "color": "#818181",
@@ -19,6 +21,12 @@
         "selectedIconPath": "resources/imgs/kind.png",
         "pagePath": "pages/kind/kind",
         "text": "分类"
+      },
+      {
+        "iconPath": "resources/imgs/un_my.png",
+        "selectedIconPath": "resources/imgs/my.png",
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
       }
     ]
   },

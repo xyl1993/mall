@@ -1,0 +1,27 @@
+/* pages/detail/detail.wxss */
+@import '../../resources/css/search.wxss';
+@import '../../resources/css/shop.wxss';
+.container{
+  background: #fff;
+}
+.sort_header {
+  padding: 25rpx;
+  font-size: 24rpx;
+  background: #fff;
+  border-top: 1rpx solid #F5F5F5;
+}
+
+.sort_list {
+  display: flex;
+  align-items: center;
+  width: 25%;
+  float: left;
+}
+.sort_list image{
+  width: 20rpx;
+  height: 20rpx;
+  padding-left: 6rpx;
+}
+.list_content{
+  padding-top: 0 !important;
+}

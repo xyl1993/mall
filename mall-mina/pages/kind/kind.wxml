@@ -1,13 +1,33 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+  <view class="header">
+    <view class="search_div">
+      <image src="../../resources/imgs/search-icon.png" alt=""></image>
+      请输入搜索关键词
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class='content'>
+    <view class='menu_content'>
+      <view class='menu_list active'>
+        <view>
+          暗访健康
+        </view>
+      </view>
+      <view class='menu_list'>
+        <view>
+          暗访健康
+        </view>
+      </view>
+    </view>
+    <view class='product_content'>
+      <view class='shop_list'>
+        <view class='list_content' bindtap="toDetail">
+          <view class='preview_tsl'>
+            <image src="{{testImage}}" />
+          </view>
+          <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
