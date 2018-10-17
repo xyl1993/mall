@@ -1,0 +1,50 @@
+.my-el-card{
+  height: 100%;
+  .el-card-header{
+    background-color: #f5f7fa;
+    border-bottom: 1px solid #e4e7ed;
+    margin: 0;
+    height: 39px;
+    line-height: 37px;
+    padding:0 15px;
+  }
+  .el-card-content{
+    padding: 15px;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 50px;
+  }
+}
+
+.myinline-form{
+  .form-flex{
+    display: flex;
+    flex-direction: row;
+  }
+  .form-column-flex{
+    display: flex;
+    flex-direction: column;
+  }
+  .el-form-item{
+    flex: 1;
+    position: relative;
+    padding-left: 70px;
+  }
+  .el-form-item__label{
+    position: absolute;
+    left: 0;
+  }
+  .el-form-item__content{
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner{
+    width: 100% !important;
+  }
+  .el-input.is-disabled .el-input__inner,.el-textarea.is-disabled .el-textarea__inner{
+    color: #606266 !important;
+  }
+}

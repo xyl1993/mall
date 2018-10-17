@@ -1,0 +1,79 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CompressionWebpackPlugin = require('compression-webpack-plugin');
+const safeParser = require('postcss-safe-parser');
+//css压缩
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+
+var path = require('path');
+var ROOT_PATH = path.resolve(__dirname);
+var utils = require('../build/utils');
+
+const merge = require('webpack-merge');
+const baseWebpackConfig = require('./webpack.base.conf');
+
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
+module.exports = merge(baseWebpackConfig, {
+
+  mode: 'production',
+  // 开启source-map，webpack有多种source-map，在官网文档可以查到//cheap-module-source-map
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          maxInitialRequests: 5,
+          minSize: 0
+        },
+        vendor: { // 将第三方模块提取出来
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          priority: 10, // 优先
+          enforce: true
+        }
+      }
+    }
+  },
+  plugins: [
+    //在 plugins 中添加
+    new MiniCssExtractPlugin({
+      filename: utils.assetsPath("css/[name]_[chunkhash].css")
+    }),
+    //在 plugin 中添加
+    new CompressionWebpackPlugin({ //gzip 压缩
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp(
+        '\\.(js|css)$' //压缩 js 与 css
+      ),
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(ROOT_PATH, '../src/index.html'),
+      filename: 'index.html',
+      favicon: path.resolve(ROOT_PATH, '../src/assets/favicon.ico'),
+      inject: true, // 自动注入
+      minify: {
+        removeComments: true, //去注释
+        collapseWhitespace: true, //压缩空格
+        removeAttributeQuotes: true //去除属性引用
+      }
+    }),
+    /*用于生产环境压缩css的插件*/
+    new OptimizeCSSPlugin({
+      cssProcessorOptions: {
+        parser: safeParser,
+        discardComments: {
+          removeAll: true
+        }
+      }
+    })
+  ]
+})

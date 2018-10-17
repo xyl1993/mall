@@ -1,0 +1,5 @@
+#! /bin/bash -e
+
+$(dirname $0)/prepare
+cd $(dirname $0)/..
+docker-compose up --remove-orphans --abort-on-container-exit

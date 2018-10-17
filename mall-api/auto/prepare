@@ -1,0 +1,5 @@
+#! /bin/bash -e
+
+cd $(dirname $0)/..
+docker volume create --name user-state-api-modules > /dev/null
+docker-compose run --rm dev yarn install

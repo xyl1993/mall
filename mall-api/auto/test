@@ -1,0 +1,5 @@
+#! /bin/bash -e
+
+$(dirname $0)/prepare
+cd $(dirname $0)/..
+docker-compose run --rm dev yarn test

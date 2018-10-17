@@ -1,0 +1,9 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="search_div">
+      <image src="../../resources/imgs/search-icon.png" alt=""></image>
+      请输入搜索关键词
+    </view>
+  </view>
+</view>

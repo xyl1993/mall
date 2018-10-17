@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/kind/kind"
+  ],
+  "tabBar": {
+    "color": "#818181",
+    "selectedColor": "#FF3364",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "iconPath": "resources/imgs/un_home.png",
+        "selectedIconPath": "resources/imgs/home.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "resources/imgs/un_kind.png",
+        "selectedIconPath": "resources/imgs/kind.png",
+        "pagePath": "pages/kind/kind",
+        "text": "分类"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}

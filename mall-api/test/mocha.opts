@@ -1,0 +1,2 @@
+--timeout 25000
+ ./{,!(node_modules)/**}/test/**/*.test.js

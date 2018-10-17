@@ -1,0 +1,50 @@
+@import '../../../assets/common/styles.scss';
+.header {
+    height: 60px;
+    line-height: 60px;
+    background: $color-primary;
+    color:#fff;
+    .userinfo {
+        text-align: right;
+        padding-right: 35px;
+        float: right;
+        .userinfo-inner {
+            cursor: pointer;
+            color:#fff;
+            img {
+                margin: 14px 0px 10px 10px;
+                float: left;
+            }
+        }
+    }
+    .logo {
+        //width:230px;
+        height:60px;
+        font-size: 22px;
+        padding-left:20px;
+        padding-right:20px;
+        border: 1px solid rgba(238,241,146,0.3);
+        img {
+            width: 120px;
+            float: left;
+            margin-top: 12px;
+        }
+        .txt {
+            color:#fff;
+        }
+    }
+    .logo-width{
+        width:217px;
+    }
+    .logo-collapse-width{
+        width:60px
+    }
+    .tools{
+        padding: 0px 20px;
+        width:14px;
+        height: 60px;
+        line-height: 60px;
+        cursor: pointer;
+    }
+}
+    

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dev:
+    image: node:8.12.0
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    command: auto/run-app
+    working_dir: /app
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - pickatale-srv-modules:/app/node_modules
+  database:
+    image: mongo:4.0
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null
+volumes:
+  pickatale-srv-modules:
+    external: true

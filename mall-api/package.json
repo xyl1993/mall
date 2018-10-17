@@ -1,0 +1,88 @@
+{
+  "name": "mall-srv",
+  "version": "1.0.0",
+  "description": "mall API",
+  "main": "index.js",
+  "author": "xyl",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "pm2 start ./src/index.js --name mall-srv",
+    "dev": "nodemon -x cross-env NODE_ENV=development node ./src/index.js",
+    "test": "cross-env NODE_ENV=test mocha",
+    "env_tests": "mocha",
+    "pretty": "prettier --write 'src/**/*.{js,scss,css,md}'",
+    "lint": "eslint \"./**/*.js\""
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "database-cleaner": "^1.2.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0",
+    "moxios": "^0.4.0",
+    "nock": "^10.0.0",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.3",
+    "should": "^13.2.3",
+    "sinon": "^6.3.4",
+    "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "async": "^2.6.1",
+    "await-to-js": "^2.0.1",
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "generate-sms-verification-code": "^1.0.5",
+    "geoip-lite": "^1.3.2",
+    "http-status": "^1.2.0",
+    "husky": "^1.0.0-rc.14",
+    "in-app-purchase": "^1.10.1",
+    "jsonwebtoken": "^8.3.0",
+    "lint-staged": "^7.3.0",
+    "loadsh": "0.0.3",
+    "lodash": "^4.17.11",
+    "log4js": "^3.0.6",
+    "moment": "^2.22.2",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "mysql": "^2.16.0",
+    "node-gyp": "^3.8.0",
+    "node-pre-gyp": "^0.11.0",
+    "node-schedule": "^1.3.0",
+    "nodemailer": "^4.6.8",
+    "path": "^0.12.7",
+    "pm2": "^3.0.3",
+    "qn": "^1.3.0",
+    "recurly-js": "^3.0.0",
+    "request": "^2.88.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,scss,css,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "printWidth": 140,
+    "semi": true
+  }
+}

@@ -1,0 +1,17 @@
+/**index.wxss**/
+.header {
+  background: #ff3364;
+  width: 100%;
+  padding: 20rpx 40rpx;
+}
+.search_div {
+  height: 40rpx;
+  width: 100%;
+  background: #fff;
+  border-radius: 25px;
+}
+.search_div image {
+  width: 15rpx;
+  height: 15rpx;
+  display: inline-block;
+}
