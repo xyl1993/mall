@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const loginSuccess = function(res,user,connection){
   // 签发 Token
   const token = jwt.sign({ userId: user.id }, config.jwtEncryption);
-  res.status(status.OK).json({ ...user, token: token });
+  res.status(status.OK).json({ ...user, token: token,filePath:config.filePath });
 
   let updateLoginTime = `update sys_users set login_time = ? where id=?`;
   let params = [

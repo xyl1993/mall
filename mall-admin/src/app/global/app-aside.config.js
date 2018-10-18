@@ -1,11 +1,13 @@
 export const asideTree = {
   roleFun: [{
-    "name": "首页",
+    "name": "Dashboard",
     "id": "cointer",
-    "alienName": '首页',
-    "iconCls": "el-icon-star-off",
+    "alienName": 'Dashboard',
+    "iconCls": "iconfont icon-dashboard",
     "path": "/cointer",
-    "children": []
+    "children": [
+      {id: '0-1', path: '/analysis-cointer', name: '分析页' }
+    ]
   },{
     "name": "商品管理",
     "id": "shopList",
@@ -13,7 +15,8 @@ export const asideTree = {
     "iconCls": "iconfont icon-shangpin",
     "path": "",
     "children": [
-      {id: '0-1', path: '/shopList', name: '商品列表' }
+      {id: '1-1', path: '/goodsBrand', name: '品牌类型' },
+      {id: '1-2', path: '/shopList', name: '商品列表' }
     ]
   }]
 };

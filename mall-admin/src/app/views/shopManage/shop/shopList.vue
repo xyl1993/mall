@@ -17,19 +17,15 @@
       <el-table :data="dataTable" v-loading="listLoading" height="250" style="width: 100%;margin-top:0;">
         <el-table-column type="index" style="width:35px">
         </el-table-column>
-        <el-table-column prop="title" align="center" width="150" label="标题">
+        <el-table-column prop="title" align="center" label="标题">
         </el-table-column>
-        <el-table-column prop="classification" align="center" width="150" label="分类">
+        <el-table-column prop="brand" align="center" label="品牌">
         </el-table-column>
-        <el-table-column prop="original_price" align="center" label="原价">
+        <el-table-column prop="type" align="center" label="分类">
         </el-table-column>
-        <el-table-column prop="current_price" align="center" width="150" label="现价">
+        <el-table-column prop="read_number" align="center" label="浏览次数">
         </el-table-column>
-        <el-table-column prop="stock" align="center" width="150" label="库存">
-        </el-table-column>
-        <el-table-column prop="read_number" align="center" width="150" label="浏览次数">
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="300">
+        <el-table-column label="操作" align="center" width="300">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -43,8 +39,8 @@
 </template>
 <script>
 import * as service from "./service";
-import { statusValid } from "../../utils/status-valid";
-import { pageSize } from "../../global/base.config";
+import { statusValid } from "../../../utils/status-valid";
+import { pageSize } from "../../../global/base.config";
 
 export default {
   data() {

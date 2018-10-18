@@ -7,7 +7,7 @@ const httpStatus = require('http-status');
  * @param {*} message 
  */
 export const statusValid = (that, status, data) => {
-  that.actionStatus = false;
+  if (that.actionStatus)  that.actionStatus = false;
   if(status === httpStatus.OK){
     return true
   }

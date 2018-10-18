@@ -2,7 +2,7 @@
 //基础状态
 const state = {
   collapsed: false,
-  userInfo: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
+  userInfo: {}
 }
 // 定义所需的 mutations
 const mutations = {

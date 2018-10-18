@@ -6,6 +6,8 @@ import Cointer from './views/cointer/cointer';
  * 工作台目录模块 start
  */
 import ShopManage from './views/shopManage/routes';
+import Dashboard from './views/dashboard/routes';
+
 /**
  * 工作台目录模块 end
  */
@@ -18,11 +20,10 @@ import PagesLayout from './views/pages/routes';
 let routes = [{
     path: '/',
     component: FullLayout,
-    name: '',
-    children: [{
-      path: '/cointer',
-      component: Cointer
-    } ]
+    name: 'dashboard',
+    children: [
+      ...Dashboard
+    ]
   }, {
     path: '/',
     component: FullLayout,

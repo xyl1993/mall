@@ -3,17 +3,28 @@ const { verifyToken } = require('../../../utils/verifyToken');
 const express = require('express');
 const admin = express.Router();
 const web = express.Router();
-const controller = require('./product.controller');
+const productController = require('./product.controller');
+const goodsController = require('./goods.controller');
+
+admin.post('/product',verifyToken, productController.addProduct);   //新增商品
+admin.put('/product/:id',verifyToken, productController.editProduct);   //修改商品
+admin.delete('/product/:id',verifyToken, productController.deleteProduct);   //删除商品
+
+admin.post('/brand',verifyToken, goodsController.addBrand);   //新增品牌
+admin.put('/brand/:id',verifyToken, goodsController.editBrand);   //修改品牌
+admin.delete('/brand/:id',verifyToken, goodsController.deleteBrand);   //删除品牌
+web.get('/brand',goodsController.getBrandList)  //获取商品列表
+
+admin.post('/goods-type',verifyToken, goodsController.addType);   //新增类型
+admin.put('/goods-type/:id',verifyToken, goodsController.editType);   //修改类型
+admin.delete('/goods-type/:id',verifyToken, goodsController.deleteType);   //删除类型
+web.get('/goods-type',goodsController.getTypeList)  //获取类型列表
+
+router.use('/admin', admin); 
 
 
-admin.post('/product',verifyToken, controller.addProduct);   //新增商品
-admin.put('/product/:id',verifyToken, controller.editProduct);   //修改商品
-admin.delete('/product/:id',verifyToken, controller.deleteProduct);   //删除商品
-
-router.use('/admin', admin); //后台接口(需要token验证)
-
-web.get('/product',controller.getProductList)  //获取商品列表
-web.get('/product/:id',verifyToken, controller.getProductDetail);   //后台获取商品详情
-router.use('/', web);  //小程序接口
+web.get('/product',productController.getProductList)  //获取商品列表
+web.get('/product/:id', productController.getProductDetail);   //后台获取商品详情
+router.use('/', web);  
 
 module.exports = router;

@@ -34,7 +34,7 @@ import { statusValid } from "../../../utils/status-valid";
 import { client } from "../../../utils/utils";
 import Cookies from "js-cookie";
 import prompt from "../../../components/prompt/prompt";
-import * as service from './service';
+import * as service from "./service";
 
 export default {
   name: "Login",
@@ -49,15 +49,16 @@ export default {
         password: ""
       },
       rules: {
-        account: [
-          { required: true, message: "请输入账号", trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" }
-        ]
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
       },
       checked: true
     };
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.baseStore.userInfo;
+    }
   },
   components: {
     prompt: prompt
@@ -90,13 +91,14 @@ export default {
             if (statusValid(this, status, data)) {
               localStorage.setItem("token", data.token);
               localStorage.setItem("user", JSON.stringify(data));
+              this.$store.commit("setUserInfo",data);
               //将用户名密码存在cookie中
               //7天
               Cookies.set("mallAccount", loginParams.account, { expires: 7 });
               Cookies.set("mallPassword", loginParams.password, { expires: 7 });
               //往vuex中设置用户对象
               this.$store.commit("setUserInfo", data);
-              this.$router.push({ path: "/shopList" });
+              this.$router.push({ path: "/analysis-cointer" });
             }
           });
         } else {
@@ -108,13 +110,14 @@ export default {
 };
 </script>
 <style lang="scss">
-.icon-yonghuming,.icon-mima{
+.icon-yonghuming,
+.icon-mima {
   font-size: 20px;
 }
 </style>
 
 <style lang="scss" scoped>
-a{
+a {
   text-decoration: none;
 }
 .layout-container {
@@ -161,8 +164,7 @@ a{
   width: 368px;
   margin: 0 auto;
 }
-.login-btn{
-  width:100%;
+.login-btn {
+  width: 100%;
 }
-
 </style>

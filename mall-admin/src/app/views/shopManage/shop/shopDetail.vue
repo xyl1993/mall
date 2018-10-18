@@ -6,18 +6,60 @@
           <el-form-item label="商品标题" prop="title">
             <el-input v-model="form.title" style="max-width:480px;"></el-input>
           </el-form-item>
-          <el-form-item label="原价" prop="original_price">
-            <el-input v-model="form.original_price" type="number" style="width:180px;"></el-input>
+          <el-form-item label="品牌" prop="brand_id">
+            <el-select v-model="form.brand_id" filterable @change="selBrand()" style="width:180px;" placeholder="请选择">
+              <el-option v-for="item in brandList" :key="item.id" :label="item.name" :value="item.id">
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="现价" prop="current_price">
-            <el-input v-model="form.current_price" type="number" style="width:180px;"></el-input>
+          <el-form-item label="分类" prop="type_id">
+            <el-select v-model="form.type_id" filterable  style="width:180px;" placeholder="请选择">
+              <el-option v-for="item in chooseTypeList" :key="item.id" :label="item.name" :value="item.id">
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="库存" prop="stock">
-            <el-input v-model="form.stock" type="number" style="width:180px;"></el-input>
-          </el-form-item>
-          <el-form-item label="分类" prop="classification">
-            <el-input v-model="form.classification" style="width:180px;"></el-input>
-          </el-form-item>
+          <div class="specification-content el-form--inline ">
+            <div class="sp-div">规格</div>
+            <div v-for="(item,index) of form.specifications" :key="index">
+              <el-form-item label="规格" :prop="'specifications.' + index + '.name'" :rules="{
+                required: true, message: '规格不能为空', trigger: 'blur'
+              }">
+                <el-input v-model="item.name" type="text" style="width:180px;"></el-input>
+              </el-form-item>
+              <el-form-item label="原价"
+                :prop="'specifications.' + index + '.original_price'"
+                :rules="{
+                  required: true, message: '原价不能为空', trigger: 'blur'
+                }"
+              >
+                <el-input v-model="item.original_price" type="number" style="width:180px;"></el-input>
+              </el-form-item>
+              <el-form-item label="现价"
+                :prop="'specifications.' + index + '.current_price'"
+                :rules="{
+                  required: false, message: '现价不能为空', trigger: 'blur'
+                }"
+              >
+                <el-input v-model="item.current_price" type="number" style="width:180px;"></el-input>
+              </el-form-item>
+              <el-form-item label="库存"
+                :prop="'specifications.' + index + '.stock'"
+                :rules="{
+                  required: true, message: '库存不能为空', trigger: 'blur'
+                }"
+              >
+                <el-input v-model="item.stock" type="number" style="width:180px;"></el-input>
+              </el-form-item>
+              <el-form-item label=" ">
+                <el-button @click.native.prevent="addRow()" type="text" size="small">
+                  增行
+                </el-button>
+                <el-button v-if="index!==0" class="danger" @click.native.prevent="deleteRow(index, form.specifications)"  type="text" size="small">
+                  删行
+                </el-button>
+              </el-form-item>
+            </div>
+          </div>
           <div class="formModel el-form-item clear" style="position:relative;padding-left:80px;">
             <label class="el-form-item__label" style="width: 80px;position: absolute;left: 0;">商品图片</label>
             <div class="">
@@ -130,8 +172,9 @@
 </template>
 <script>
 import * as service from "./service";
-import { statusValid } from "../../utils/status-valid";
-import { apiConfig } from "../../global/api.config";
+import { getTypeList,getBrandList } from "../brand/brand.service";
+import { statusValid } from "../../../utils/status-valid";
+import { apiConfig } from "../../../global/api.config";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -142,10 +185,34 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 export default {
   data() {
+    var checkName = (rule, value, callback) => {
+      let _this = this;
+      console.log(value);
+      callback();
+      // if (value < 0) {
+      //   callback(new Error("金额不能小于0"));
+      // } else {
+      //   var str = new Number(value);
+      //   this.formModel.money = str.toFixed(2);
+      //   callback();
+      // }
+    };
     return {
-      form: {},
+      form: {
+        specifications:[
+          {
+            name:'均码',
+            original_price:'',
+            current_price:'',
+            stock:''
+          }
+        ]
+      },
       sealImgAction: `${apiConfig.base_api_host}admin/uploadDisk`,
       fileList: [],
+      typeList:[],
+      brandList:[],
+      chooseTypeList:[],
       filePath:'',
       actionStatus:false,
       headers:{},
@@ -195,20 +262,20 @@ export default {
         title: [
           { required: true, message: "请输入标题", trigger: "blur" }
         ],
-        original_price: [
-          { required: true, message: "原价不能为空", trigger: "blur" }
+        brand_id: [
+          { required: true, message: "请输入品牌", trigger: "blur" }
         ],
-        original_price: [
-          { required: true, message: "现价不能为空", trigger: "blur" }
+        type_id: [
+          { required: true, message: "请输入分类", trigger: "blur" }
         ],
-        stock: [
-          { required: true, message: "库存不能为空", trigger: "blur" }
-        ],
-        classification: [
-          { required: true, message: "分类不能为空", trigger: "blur" }
-        ]
+        
       }
     };
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.baseStore.userInfo;
+    }
   },
   components: {
     quillEditor,
@@ -219,11 +286,33 @@ export default {
     let token = localStorage.getItem("token");
     this.productId = this.$route.query.scree;
     this.headers = { "token": token };
-    if(this.productId) {
-      this.getProductDetail();
-    }
+    this.getBrandList();
+    
   },
   methods: {
+    getBrandList(){
+      let _this = this;
+      getBrandList().then(function(res) {
+        const { data, status } = res;
+        if (statusValid(_this, status, data)) {
+          _this.brandList = data;
+          _this.getTypeList();
+        }
+      });
+    },
+    getTypeList(){
+      let _this = this;
+      getTypeList().then(function(res) {
+        const { data, status } = res;
+        if (statusValid(_this, status, data)) {
+          _this.typeList = data;
+          _this.chooseTypeList = Object.assign({},data);
+          if(_this.productId) {
+            _this.getProductDetail();
+          }
+        }
+      });
+    },
     getProductDetail(){
       service.getProductDetail(this.productId).then(res=>{
         let { data, status } = res;
@@ -307,6 +396,24 @@ export default {
     },
     cancel(){
       this.$router.push({ path: "/shopList" });
+    },
+    selBrand(){
+      const _this = this;
+      this.form.type_id = '';
+      this.chooseTypeList = this.typeList.filter((item,index)=>{
+        return item.brand_id === _this.form.brand_id;
+      })
+    },
+    addRow(){
+      this.form.specifications.push({
+        name:'',
+        original_price:'',
+        current_price:'',
+        stock:''
+      })
+    },
+    deleteRow(index,row){
+      row.splice(index,1);
     }
   }
 };
@@ -386,6 +493,9 @@ export default {
 .carousel-img{
   height: 200px;
   width: 100%;
+}
+.danger{
+  color:#F56C6C;
 }
 .shop-header{
   padding: 0 15px;
@@ -503,6 +613,26 @@ export default {
     }
   }
 }
+.el-form-item{
+  margin-bottom: 20px;
+}
+.specification-content{
+  border: 1px solid #ddd;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.sp-div{
+  width: 40px;
+  background: #fff;
+  height: 25px;
+  line-height: 25px;
+  position: absolute;
+  top: -14px;
+  left: 25px;
+  text-align: center;
+  font-weight: 700;
+}
 </style>
 <style lang="scss">
 .phone{
@@ -512,4 +642,9 @@ export default {
     }
   }
 }
+.specification-content{
+  .el-form-item__content{
+    margin-left: 0 !important;
+  }
+} 
 </style>

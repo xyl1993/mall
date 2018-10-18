@@ -13,9 +13,14 @@ exports.getProductList = function (req, res, next) {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
-  const search = req.query.search;
-  let _sql = `select * from product where 1 = 1`;
-  if (search) _sql = _sql + ` and title like '%${search}%'`;
+  const {search,type_id,brand_id} = req.query;
+  let _sql = `select a.*,b.name as type,c.name as brand from product a 
+    left join goods_type b on a.type_id = b.id
+    left join goods_brand c on c.id = a.brand_id 
+    where 1 = 1`;
+  if (search) _sql = _sql + ` and a.title like '%${search}%'`;
+  if (type_id) _sql = _sql + ` and a.type_id = ${type_id}`;
+  if (brand_id) _sql = _sql + ` and a.brand_id = ${brand_id}`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);
@@ -40,18 +45,16 @@ exports.getProductList = function (req, res, next) {
 };
 
 exports.addProduct = function (req, res, next) {
-  const body = req.body;
-  let _sql = `insert into product(title,original_price,current_price,stock,classification,carousel,detail,read_number,create_time,create_id)
-    values(?,?,?,?,?,?,?,?,?,?)`;
+  const {type_id,brand_id,title,cover,carousel,detail,specifications} = req.body;
+  let _sql = `insert into product(type_id,brand_id,title,cover,carousel,detail,create_time,create_id)
+    values(?,?,?,?,?,?,?,?)`;
   const params = [
-    body.title,
-    body.original_price,
-    body.current_price,
-    body.stock,
-    body.classification,
-    body.carousel,
-    body.detail,
-    body.read_number,
+    type_id,
+    brand_id,
+    title,
+    cover,
+    carousel,
+    detail,
     new Date(),
     req.userId
   ]
@@ -63,7 +66,26 @@ exports.addProduct = function (req, res, next) {
         log.error(err);
         return handleError(res, err);
       }
-      res.status(status.OK).json(rows.insertId);
+      //新增规格表
+      let values = [];
+      specifications.map((item,index)=>{
+        values.push([
+          rows.insertId,
+          item.name,
+          item.original_price,
+          item.current_price,
+          item.stock
+        ])
+      })
+      _sql = `insert into product_specifications(product_id,name,original_price,current_price,stock)
+        values ?`;
+      connection.query(_sql,[values],function (err, counts) {
+        if (err) {
+          log.error(err);
+          return handleError(res, err);
+        }
+        res.status(status.OK).json(rows.insertId);
+      });
       connection.release();
     });
   })
