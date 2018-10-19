@@ -1,0 +1,165 @@
+/* pages/productDetail/productDetail.wxss */
+@import '../../resources/css/shop.wxss';
+.container{
+  padding-bottom: 100rpx;
+}
+.swiper {
+  width: 100%;
+  height: 680rpx;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.shop-header {
+  font-size: 24rpx;
+}
+
+.title-content {
+  display: flex;
+  padding-top: 12rpx;
+}
+
+.title-content .title {
+  flex: 1;
+  height: 89rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.title-content .share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #ddd;
+  border-left: 1rpx solid #ddd;
+  padding-left: 24rpx;
+}
+.share image{
+  width: 42rpx;
+  height: 46rpx;
+  padding-bottom: 6rpx;
+}
+.detail-header{
+  background: #fff;
+  padding: 0 30rpx;
+}
+.header-other .price {
+  padding-bottom: 18rpx;
+}
+
+.now {
+  color: #f14d59;
+  font-size: 32rpx;
+  padding-right: 10rpx;
+}
+
+.old {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.seal-content {
+  color: #ccc;
+  padding-bottom: 20rpx;
+}
+
+.seal-content:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.list-content {
+  margin: 30rpx 0;
+}
+
+.list-item {
+  height: 80rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1rpx solid #ddd;
+}
+
+.list-item:last-of-type {
+  border-bottom: none;
+}
+
+.gui {
+  padding-left: 30rpx;
+  flex: 1;
+}
+
+.sp {
+  width: 60rpx;
+  text-align: center;
+  color: #ccc;
+}
+
+.detail-content {
+  padding: 30rpx;
+  background: #fff;
+}
+
+.detail {
+  padding-top: 30rpx;
+}
+
+.shop-footer {
+  position: fixed;
+  bottom: 0;
+  height: 100rpx;
+  display: flex;
+  background: #fff;
+  width: 100%;
+  z-index: 9;
+}
+
+.footer-tag {
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+}
+.shop-car-img{
+  width:52rpx;
+  height:52rpx;
+}
+.footer-btn {
+  color: #fff;
+  text-align: center;
+  line-height: 100rpx;
+  width: 160rpx;
+  height: 100%;
+}
+
+.join {
+  background: #fdb549;
+}
+
+.buy {
+  background: #fe5e24;
+}
+.shop_content_header:last-of-type{
+  border-bottom: none;
+}
+.shop_content_header .title{
+  border: none;
+  padding-left: 0;
+}

@@ -1,14 +1,13 @@
 //懒加载
 const FullLayout = () => import('./containers/full-layout/full-layout');
 const SimpleLayout = () => import('./containers/simple-layout/simple-layout');
-import Cointer from './views/cointer/cointer';
 /**
  * 工作台目录模块 start
  */
 import ShopManage from './views/shopManage/routes';
 import Dashboard from './views/dashboard/routes';
 import HomeSetting from './views/homeSetting/routes';
-
+import OrderManage from './views/OrderManage/routes';
 /**
  * 工作台目录模块 end
  */
@@ -38,6 +37,13 @@ let routes = [{
     name: '商品管理',
     children: [
       ...ShopManage
+    ]
+  },, {
+    path: '/',
+    component: FullLayout,
+    name: '订单管理',
+    children: [
+      ...OrderManage
     ]
   },
   {

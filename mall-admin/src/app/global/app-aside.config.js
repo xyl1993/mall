@@ -21,8 +21,16 @@ export const asideTree = {
     "iconCls": "iconfont icon-shangpin",
     "path": "",
     "children": [
+      {path: '/shopList', name: '商品列表' },
       {path: '/goodsBrand', name: '品牌类型' },
-      {path: '/shopList', name: '商品列表' }
+    ]
+  },{
+    "name": "订单管理",
+    "alienName": '订单管理',
+    "iconCls": "iconfont icon-dingdan",
+    "path": "",
+    "children": [
+      {path: '/orderList', name: '订单列表' },
     ]
   }]
 };

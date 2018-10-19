@@ -29,8 +29,8 @@
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            <el-button v-if="scope.row.recommend === 0" size="mini" type="primary" @click="handleRecommend(scope.$index, scope.row)">推荐商品</el-button>
-            <el-button v-else size="mini" type="warning" @click="handleUnRecommend(scope.$index, scope.row)">取消推荐</el-button>
+            <el-button v-if="scope.row.recommend === 0" size="mini" type="primary" @click="handleRecommend(scope.$index, scope.row,1)">推荐商品</el-button>
+            <el-button v-else size="mini" type="warning" @click="handleRecommend(scope.$index, scope.row,0)">取消推荐</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -69,11 +69,11 @@ export default {
         search: this.keyWord
       };
       service.getProductList(params).then(res => {
-        this.listLoading = false;
         let { data, status } = res;
         if (statusValid(this, status, data)) {
           this.dataTable = data.data;
           this.total = data.totalItems;
+          this.listLoading = false;
         }
       });
     },
@@ -110,6 +110,14 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    handleRecommend(index, row,recommendStatus){
+      service.updateRecommend(row.id,{recommendStatus}).then(res => {
+        let { data, status } = res;
+        if (statusValid(this, status, data)) {
+          row.recommend = recommendStatus;
+        }
+      });
     }
   }
 };

@@ -8,20 +8,16 @@
   </view>
   <view>
     <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-      <block wx:for="{{imgUrls}}">
+      <block wx:for="{{carouselList}}" wx:for-item="item"  >
         <swiper-item>
-          <image src="{{item}}" class="slide-image" />
+          <image src="{{fileIp+item.url}}" class="slide-image" />
         </swiper-item>
       </block>
     </swiper>
   </view>
   <view class='row clear'>
-    <view class='col'>
-      <image src="{{testImage}}" />
-      <text>test1</text>
-    </view>
-    <view class='col'>
-      <image src="{{testImage}}" />
+    <view class='col' wx:for="{{brandList}}" wx:for-item="item" wx:for-index="idx">
+      <image src="{{fileIp+item.cover}}" />
       <text>test1</text>
     </view>
   </view>
@@ -33,31 +29,15 @@
         <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
       </view>
     </view>
-    <view class='shop_list'>
-      <view class='list_content'>
+    <view class='shop_list' wx:for="{{productList}}" wx:for-item="item" wx:for-index="idx">
+      <view class='list_content' bindtap='detail' data-id="item.id" >
         <view class='preview_tsl'>
-          <image src="{{testImage}}" />
+          <image src="{{fileIp+item.cover}}" />
         </view>
-        <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
+        <view class="preview_title text_ellipsis">{{item.title}}</view>
         <view class='between_view clear'>
-          <view class='now_price'>￥9.91</view>
-          <view class='old_price'>￥0.99</view>
-        </view>
-        <view class='between_view clear'>
-          <view class='left'>销量：0</view>
-          <view class='right'>库存：1029万</view>
-        </view>
-      </view>
-    </view>
-    <view class='shop_list'>
-      <view class='list_content'>
-        <view class='preview_tsl'>
-          <image src="{{testImage}}" />
-        </view>
-        <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
-        <view class='between_view clear'>
-          <view class='now_price'>￥9.91</view>
-          <view class='old_price'>￥0.99</view>
+          <view class='now_price'>￥{{item.current_price}}</view>
+          <view class='old_price'>￥{{item.original_price}}</view>
         </view>
         <view class='between_view clear'>
           <view class='left'>销量：0</view>

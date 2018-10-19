@@ -239,7 +239,6 @@ export default {
       service.getTypeList(params).then(function(res) {
         const { data, status } = res;
         if (statusValid(_this, status, data)) {
-          loading.close();
           _this.typeList = data;
         }
       });
@@ -253,6 +252,7 @@ export default {
       getProductList(params).then(function(res) {
         const { data, status } = res;
         if (statusValid(_this, status, data)) {
+          loading.close();
           _this.productList = data.data;
         }
       });

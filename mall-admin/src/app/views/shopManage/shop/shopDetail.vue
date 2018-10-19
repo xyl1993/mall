@@ -197,7 +197,7 @@ import { quillEditor } from "vue-quill-editor";
 
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-
+var loading;
 export default {
   data() {
     var checkName = (rule, value, callback) => {
@@ -302,9 +302,17 @@ export default {
     swiperSlide
   },
   mounted() {
+    
     this.filePath = this.userInfo.filePath;
     let token = localStorage.getItem("token");
     this.productId = this.$route.query.scree;
+    if(this.productId){
+      loading = this.$loading({
+        target:'.content-container',
+        lock: true,
+        background: "rgba(255, 255, 255, 0.74)"
+      });
+    }
     this.headers = { "token": token };
     this.getBrandList();
     
@@ -347,6 +355,7 @@ export default {
               this.imgArray.push(item);
             });
           }
+          loading.close();
         }
       })
     },

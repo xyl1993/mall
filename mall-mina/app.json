@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/kind/kind",
     "pages/mine/mine",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/productDetail/productDetail"
   ],
   "tabBar": {
     "color": "#818181",

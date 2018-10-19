@@ -12,9 +12,14 @@ const getProductList = async (req, res)=> {
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
   const {search,type_id,brand_id} = req.query;
-  let _sql = `select a.*,b.name as type,c.name as brand from product a 
+  let _sql = `select a.*,b.name as type,c.name as brand,d.current_price,d.original_price from product a 
     left join goods_type b on a.type_id = b.id
     left join goods_brand c on c.id = a.brand_id 
+    left join (
+      select a.* from 
+      (select product_id,min(current_price) current_price from product_specifications GROUP BY product_id ) b
+      JOIN product_specifications a ON a.product_id = b.product_id AND a.current_price = b.current_price
+    ) d on d.product_id = a.id
     where 1 = 1`;
   if (search) _sql = _sql + ` and a.title like '%${search}%'`;
   if (type_id) _sql = _sql + ` and a.type_id = ${type_id}`;
@@ -147,10 +152,13 @@ const editProduct = async(req, res, next)=>{
   }
 }
 const updateRecommend = async (req, res, next)=> {
-  const { id } = req.query;
-  const { status } = req.body;
-  let _sql = `update product set status = ? where id= ?`;
-  let params = [status,id];
+  const id = Number(req.params.id);
+  const { recommendStatus } = req.body;
+  let _sql = `update product set recommend = ? where id= ?`;
+  let params = [
+    recommendStatus,
+    id
+  ];
   _sql = mysql.format(_sql, params);
   try {
     await pool.query(_sql);

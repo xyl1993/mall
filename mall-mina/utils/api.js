@@ -32,10 +32,8 @@ function createAuthorizationHeader(url) {
 
 function checkStatus(response) {
   return {
-    data: {
-      status: response.status,
-      data: response.data,
-    }
+    status: response.status,
+    data: response.data,
   }
 }
 

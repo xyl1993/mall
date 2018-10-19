@@ -21,6 +21,7 @@ import * as service from "./carousel.service";
 import { statusValid } from "../../../utils/status-valid";
 import { apiConfig } from "../../../global/api.config";
 import { pageSize } from "../../../global/base.config";
+var loading;
 export default {
   data() {
     return {
@@ -47,6 +48,11 @@ export default {
   },
   methods: {
     getCarouselList() {
+      loading = this.$loading({
+        target:'.content-container',
+        lock: true,
+        background: "rgba(255, 255, 255, 0.74)"
+      });
       const _this = this;
       service.getCarouselList().then(res => {
         const { data, status } = res;
@@ -57,6 +63,7 @@ export default {
               url:this.filePath + item.url
             });
           })
+          loading.close();
         }
       });
     },
