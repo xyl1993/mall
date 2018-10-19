@@ -61,7 +61,22 @@
             </div>
           </div>
           <div class="formModel el-form-item clear" style="position:relative;padding-left:80px;">
-            <label class="el-form-item__label" style="width: 80px;position: absolute;left: 0;">商品图片</label>
+            <label class="el-form-item__label" style="width: 80px;position: absolute;left: 0;">缩略图</label>
+            <div class="">
+              <el-upload 
+                class="avatar-uploader"
+                :headers="headers" 
+                :show-file-list="false"
+                accept="image/*"
+                :action="sealImgAction" 
+                :on-success="handleAvatarSuccess">
+                <img v-if="imgUrl" :src="imgUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
+          </div>
+          <div class="formModel el-form-item clear" style="position:relative;padding-left:80px;">
+            <label class="el-form-item__label" style="width: 80px;position: absolute;left: 0;">轮播图片</label>
             <div class="">
               <el-upload 
                 :headers="headers" 
@@ -74,7 +89,7 @@
                 :on-preview="handlePictureCardPreview" 
                 :on-remove="onSignImgRemove" 
                 :on-success="signUploadSuccess">
-                <i class="el-icon-plus"></i>
+                <i v-if="fileList.length<7" class="el-icon-plus"></i>
               </el-upload>
             </div>
           </div>
@@ -199,6 +214,9 @@ export default {
     };
     return {
       form: {
+        brand_id:'',
+        type_id:'',
+        cover:'',
         specifications:[
           {
             name:'均码',
@@ -210,6 +228,7 @@ export default {
       },
       sealImgAction: `${apiConfig.base_api_host}admin/uploadDisk`,
       fileList: [],
+      imgUrl:'',
       typeList:[],
       brandList:[],
       chooseTypeList:[],
@@ -283,6 +302,7 @@ export default {
     swiperSlide
   },
   mounted() {
+    this.filePath = this.userInfo.filePath;
     let token = localStorage.getItem("token");
     this.productId = this.$route.query.scree;
     this.headers = { "token": token };
@@ -318,8 +338,8 @@ export default {
         let { data, status } = res;
         if (statusValid(this, status, data)) {
           this.form = data;
+          this.imgUrl = data.cover?this.filePath+data.cover:'';
           if(data.carousel){
-            this.filePath = !this.filePath && data.filePath;
             data.carousel.split(',').map((item,index)=>{
               this.fileList.push({
                 url:this.filePath + item
@@ -330,10 +350,10 @@ export default {
         }
       })
     },
-    onExceed() {
+    onExceed(val) {
       this.$notify({
         title: "提示",
-        message: "每项最多上传6张图片",
+        message:`每项最多上传6张图片`,
         type: "warning"
       });
     },
@@ -350,6 +370,10 @@ export default {
     signUploadSuccess(res, list) {
       this.imgArray.push(res);
     },
+    handleAvatarSuccess(res, file){
+      this.imgUrl = URL.createObjectURL(file.raw);
+      this.form.cover = res;
+    },
     onSubmit(){
       let _this = this;
       this.$refs.form.validate(valid => {
@@ -358,19 +382,19 @@ export default {
           if(this.productId){
             //修改
             let params = Object.assign({},this.form);
-              params.carousel = this.imgArray.join();
-              service.editProductDetail(this.productId,params).then(res => {
-                let { data, status } = res;
-                if (statusValid(this, status, data)) {
-                  this.$message({
-                    message: '保存成功',
-                    type: 'success',
-                    onClose:function(){
-                      _this.actionStatus = false;
-                    }
-                  });
-                }
-              });
+            service.editProductDetail(this.productId,params).then(res => {
+              let { data, status } = res;
+              if (statusValid(this, status, data)) {
+                this.$message({
+                  message: '保存成功',
+                  type: 'success',
+                  onClose:function(){
+                    _this.actionStatus = false;
+                     _this.$router.push({ path: "/shopList"});
+                  }
+                });
+              }
+            });
           }else{
             //新增
             let params = Object.assign({},this.form);
@@ -383,7 +407,7 @@ export default {
                   type: 'success',
                   onClose:function(){
                     _this.actionStatus = false;
-                     _this.$router.push({ path: "/shopDetail" ,query: { scree: data }});
+                    _this.$router.push({ path: "/shopList"});
                   }
                 });
               }
@@ -633,6 +657,7 @@ export default {
   text-align: center;
   font-weight: 700;
 }
+
 </style>
 <style lang="scss">
 .phone{
@@ -647,4 +672,5 @@ export default {
     margin-left: 0 !important;
   }
 } 
+
 </style>

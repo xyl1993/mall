@@ -5,34 +5,29 @@ const {
 const log = require('log4js').getLogger("goodsController");
 const async = require("async");
 const mysql = require('mysql');
-const config = require('../../../config/environment');
-const pool = mysql.createPool(config.mysql);
+
+const pool = require('../../../utils/pool')
 /**
  * 新增品牌返回id
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
  */
-exports.addBrand = function (req, res, next) {
-  const {
-    name
-  } = req.body;
+const addBrand = async (req, res, next)=> {
+  const { name } = req.body;
   let _sql = `insert into goods_brand(name) values(?)`;
   const params = [
     name
   ]
   _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json(rows.insertId);
-      connection.release();
-    });
-  })
+  try {
+    const rows = await pool.query(_sql);
+    res.status(status.OK).json(rows.insertId);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
 /**
@@ -41,7 +36,7 @@ exports.addBrand = function (req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-exports.editBrand = function (req, res, next) {
+const editBrand = async (req, res, next)=> {
   const id = req.params.id;
   let _sql = `update goods_brand set name=? where id= ?`;
   const params = [
@@ -50,16 +45,13 @@ exports.editBrand = function (req, res, next) {
   ];
   _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json('操作成功');
-      connection.release();
-    });
-  })
+  try {
+    await pool.query(_sql);
+    res.status(status.OK).json('操作成功');
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 }
 
 /**
@@ -68,67 +60,37 @@ exports.editBrand = function (req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-exports.deleteBrand = function (req, res, next) {
+const deleteBrand = async (req, res, next)=> {
   const id = req.params.id;
-  pool.getConnection(function (err, connection) {
-    var tasks = [function (callback) {
-      // 开启事务
-      connection.beginTransaction(function (err) {
-        callback(err);
-      });
-    }, function (callback) {
-      //商品商品
-      let _sql = `update product set status = 0 where brand_id=${id}`;
-      log.info(_sql);
-      connection.query(_sql, function (err, rows, result) {
-        callback(err);
-      });
-    }, function (callback) {
-      //删除类型
-      let _sql = `update goods_type set status = 0 where brand_id=${id}`;
-      log.info(_sql);
-      connection.query(_sql, function (err, rows, result) {
-        callback(err);
-      });
-    }, function (callback) {
-      //删除品牌
-      let _sql = `update goods_brand set status = 0 where id=${id}`;
-      log.info(_sql);
-      connection.query(_sql, function (err, rows, result) {
-        callback(err);
-      });
-    }, function (callback) {
-      // 提交事务
-      connection.commit(function (err) {
-        callback(err);
-      });
-    }]
-    async.waterfall(tasks, function (err) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json('删除成功');
-      connection.release();
-    });
-  })
+  try {
+    let _sql = `delete from product where brand_id=${id}`;
+    log.info(_sql);
+    await pool.query(_sql);
+    _sql = `delete from goods_type where brand_id=${id}`;
+    log.info(_sql);
+    await pool.query(_sql);
+    _sql = `delete from goods_type where brand_id=${id}`;
+    log.info(_sql);
+    await pool.query(_sql);
+    res.status(status.OK).json('操作成功');
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
 //查询品牌
-exports.getBrandList = function (req, res, next) {
-  let _sql = `select * from goods_brand where status = 1`;
+const getBrandList = async (req, res, next)=> {
+  let _sql = `select * from goods_brand`;
   _sql = _sql + ` order by id desc`;
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json(rows);
-      connection.release();
-    });
-  })
+  try {
+    const rows = await pool.query(_sql);
+    res.status(status.OK).json(rows);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
 
@@ -138,7 +100,7 @@ exports.getBrandList = function (req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-exports.addType = function (req, res, next) {
+const addType = async (req, res, next) =>{
   const {
     brand_id,
     name,
@@ -152,16 +114,13 @@ exports.addType = function (req, res, next) {
   ]
   _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json(rows.insertId);
-      connection.release();
-    });
-  })
+  try {
+    const rows = await pool.query(_sql);
+    res.status(status.OK).json(rows.insertId);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
 
@@ -171,7 +130,7 @@ exports.addType = function (req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-exports.editType = function (req, res, next) {
+const editType = async (req, res, next)=> {
   const id = req.params.id;
   const {
     brand_id,
@@ -187,16 +146,13 @@ exports.editType = function (req, res, next) {
   ];
   _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json('操作成功');
-      connection.release();
-    });
-  })
+  try {
+    await pool.query(_sql);
+    res.status(status.OK).json('操作成功');
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 }
 
 /**
@@ -205,62 +161,51 @@ exports.editType = function (req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-exports.deleteType = function (req, res, next) {
+const deleteType = async (req, res, next)=> {
   const id = req.params.id;
-  pool.getConnection(function (err, connection) {
-    var tasks = [function (callback) {
-      // 开启事务
-      connection.beginTransaction(function (err) {
-        callback(err);
-      });
-    }, function (callback) {
-      //删除商品
-      let _sql = `update product set status = 0 where type_id=${id}`;
-      log.info(_sql);
-      connection.query(_sql, function (err, rows, result) {
-        callback(err);
-      });
-    }, function (callback) {
-      //删除类型
-      let _sql = `update goods_type set status = 0 where id=${id}`;
-      log.info(_sql);
-      connection.query(_sql, function (err, rows, result) {
-        callback(err);
-      });
-    }, function (callback) {
-      // 提交事务
-      connection.commit(function (err) {
-        callback(err);
-      });
-    }]
-    async.waterfall(tasks, function (err) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json('删除成功');
-      connection.release();
-    });
-  })
+  try {
+    let _sql = `delete from product where type_id=${id}`;
+    log.info(_sql);
+    await pool.query(_sql);
+    _sql = `delete from goods_type where id=${id}`;
+    log.info(_sql);
+    await pool.query(_sql);
+    res.status(status.OK).json('操作成功');
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 //查询类型
-exports.getTypeList = function (req, res, next) {
+const getTypeList = async (req, res, next)=> {
   const {
     brand_id
   } = req.query;
-  let _sql = `select * from goods_type where status = 1`;
+  let _sql = `select * from goods_type where 1 = 1`;
   if (brand_id) _sql = _sql + ` and brand_id = ?`;
   _sql = _sql + ` order by id desc`;
   _sql = mysql.format(_sql, [brand_id]);
-  log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json(rows);
-      connection.release();
-    });
-  })
+  log.debug(_sql);
+  try {
+    const rows = await pool.query(_sql);
+    log.debug(_sql);
+    res.status(status.OK).json(rows);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
+
+
+
+module.exports = {
+  addBrand,
+  editBrand,
+  deleteBrand,
+  getBrandList,
+  addType,
+  editType,
+  deleteType,
+  getTypeList,
 };

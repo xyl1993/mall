@@ -25,10 +25,12 @@
         </el-table-column>
         <el-table-column prop="read_number" align="center" label="浏览次数">
         </el-table-column>
-        <el-table-column label="操作" align="center" width="300">
+        <el-table-column label="操作" align="center" width="350">
           <template slot-scope="scope">
             <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button v-if="scope.row.recommend === 0" size="mini" type="primary" @click="handleRecommend(scope.$index, scope.row)">推荐商品</el-button>
+            <el-button v-else size="mini" type="warning" @click="handleUnRecommend(scope.$index, scope.row)">取消推荐</el-button>
           </template>
         </el-table-column>
       </el-table>

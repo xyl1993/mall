@@ -31,6 +31,16 @@ CREATE TABLE `base_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*
+* 轮播图表
+*/
+DROP TABLE IF EXISTS  `carousel`;
+CREATE TABLE `carousel` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `url` varchar(1000) DEFAULT NULL,
+  `sort` int DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*
 * 商品品牌表
@@ -39,7 +49,6 @@ DROP TABLE IF EXISTS  `goods_brand`;
 CREATE TABLE `goods_brand` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(300) DEFAULT NULL,   /*商品名称*/
-  `status` bit DEFAULT 1,    /*0 删除 1有效*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -53,7 +62,6 @@ CREATE TABLE `goods_type` (
   `brand_id`bigint(20) NOT NULL,  
   `cover` varchar(1000) DEFAULT NULL, /*缩略图*/
   `name` varchar(300) DEFAULT NULL,   /*类型名称*/
-  `status` bit DEFAULT 1,    /*0 删除 1有效*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -74,7 +82,7 @@ CREATE TABLE `product` (
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   `create_id` bigint(20) DEFAULT NULL,
-  `status` bit DEFAULT 1,    /*0 删除 1有效*/
+  `recommend` int DEFAULT 1,    /*0 不推荐 1推荐*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -107,7 +115,7 @@ CREATE TABLE `account` (
   `country` varchar(50) DEFAULT NULL,  
   `portrait` varchar(500) DEFAULT NULL,  
   `create_time` datetime DEFAULT NULL,  
-  `status` bit DEFAULT 1,     /*1 关注  0取消关注*/
+  `status` int DEFAULT 1,     /*1 关注  0取消关注*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -126,19 +134,33 @@ CREATE TABLE `account` (
 
 
 /**
+订单编号表
+*/
+DROP TABLE IF EXISTS  `order_number`;
+CREATE TABLE `order_number` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/**
 订单表
 */
 DROP TABLE IF EXISTS  `order`;
 CREATE TABLE `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) DEFAULT NULL,   /*用户*/
+  `order_number` varchar(50) DEFAULT NULL,   /*编号*/
+  `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
   `collect_name` varchar(500) DEFAULT NULL,      /*收货人*/
   `address` varchar(500) DEFAULT NULL,      /*收货地址*/
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
-  `specifications_id` bigint(20) DEFAULT NULL,      /*规格*/
-  `product_id` bigint(20) DEFAULT NULL,      /*商品*/
+  `name` varchar(200) DEFAULT NULL,      /*规格*/
+  `title` varchar(20) DEFAULT NULL,      /*商品名称*/
+  `brand` varchar(200) DEFAULT NULL,      /*品牌*/
+  `type` varchar(20) DEFAULT NULL,      /*类型*/
+  `number` int DEFAULT NULL,    /*数量*/
   `money` double DEFAULT NULL,      /*成交价*/
-  `pay_status` int DEFAULT NULL,      /*支付状态   1待支付  2支付 3退款*/
+  `pay_status` int DEFAULT 1,      /*支付状态   1待支付  2支付 3退款*/
   `collect_status` int DEFAULT NULL,      /*收货状态   1待发货 2待收货 3收货*/
   `logistics_name` varchar(50) DEFAULT NULL,      /*物流名称*/
   `logistics_number` varchar(50) DEFAULT NULL,      /*物流单号*/

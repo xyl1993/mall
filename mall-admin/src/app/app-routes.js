@@ -7,6 +7,7 @@ import Cointer from './views/cointer/cointer';
  */
 import ShopManage from './views/shopManage/routes';
 import Dashboard from './views/dashboard/routes';
+import HomeSetting from './views/homeSetting/routes';
 
 /**
  * 工作台目录模块 end
@@ -23,6 +24,13 @@ let routes = [{
     name: 'dashboard',
     children: [
       ...Dashboard
+    ]
+  }, {
+    path: '/',
+    component: FullLayout,
+    name: '首页设置',
+    children: [
+      ...HomeSetting
     ]
   }, {
     path: '/',

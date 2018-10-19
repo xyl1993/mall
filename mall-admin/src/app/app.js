@@ -10,11 +10,15 @@ import store from './vuex/index';
 import 'quill/dist/quill.core.css'
 import "./jsplug/SimpleTree/css/SimpleTree.css";
 import "nprogress/nprogress.css";
-
+import filters from './filters/index';
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
+for(let key in filters){
+  Vue.filter(key,filters[key]);
+}
 
 const router = new VueRouter({
   routes:routes

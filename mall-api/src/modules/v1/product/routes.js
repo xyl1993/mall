@@ -10,6 +10,8 @@ admin.post('/product',verifyToken, productController.addProduct);   //新增商�
 admin.put('/product/:id',verifyToken, productController.editProduct);   //修改商品
 admin.delete('/product/:id',verifyToken, productController.deleteProduct);   //删除商品
 
+admin.put('/product/:id/updateRecommend',verifyToken, productController.updateRecommend);   //更新推荐状态
+
 admin.post('/brand',verifyToken, goodsController.addBrand);   //新增品牌
 admin.put('/brand/:id',verifyToken, goodsController.editBrand);   //修改品牌
 admin.delete('/brand/:id',verifyToken, goodsController.deleteBrand);   //删除品牌

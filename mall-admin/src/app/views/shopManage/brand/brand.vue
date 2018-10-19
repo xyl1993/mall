@@ -52,8 +52,30 @@
       <div class="goods-content">
         <div class="header">
           <div>商品</div>
+          <el-button @click.native.prevent="editProduct()" type="text" size="small">
+            新增
+          </el-button>
         </div>
-        <div class="goods-content"></div>
+        <div class="goods-content">
+          <ul class="goods-ul clear">
+            <li v-for="(o, index) in productList" :key="index">
+              <div class="card">
+                <el-card :body-style="{ padding: '0px' }">
+                  <div class="img-base" :style="{'background-image':`url(${filePath+o.cover})`}">
+                    <i v-if="o.recommend === 1" class="el-icon-star-on"></i>
+                  </div>
+                  <div class="card-bottom">
+                    <span>{{o.title}}</span>
+                    <div class="bottom clear">
+                      <time class="time">{{o.create_time|dateFilter}}</time>
+                      <el-button type="text" @click.native.prevent="editProduct(o.id)" class="button">修改</el-button>
+                    </div>
+                  </div>
+                </el-card>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <el-dialog title="品牌编辑" width="60%" :visible.sync="brandStatus" v-on:close="formClose">
@@ -109,9 +131,12 @@
 </template>
 <script>
 import * as service from "./brand.service";
+import { getProductList } from "../shop/service";
 import { statusValid } from "../../../utils/status-valid";
 import { apiConfig } from "../../../global/api.config";
 import { pageSize } from "../../../global/base.config";
+const moment = require("moment");
+var loading;
 export default {
   data() {
     return {
@@ -121,6 +146,7 @@ export default {
       shopList: [],
       fileList: [],
       imgArray:[],
+      productList:[],
       brandStatus: false,
       typeStatus: false,
       brandModel: {
@@ -150,11 +176,24 @@ export default {
   },
   components: {},
   mounted() {
+    loading = this.$loading({
+      target:'.content-container',
+      lock: true,
+      background: "rgba(255, 255, 255, 0.74)"
+    });
     this.filePath = this.userInfo.filePath;
     const token = localStorage.getItem("token");
     this.headers = { "token": token };
     this.getBrandList();
     this.getTypeList();
+    this.getProductList();
+  },
+  filters: {
+    data: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
   },
   methods: {
     getBrandList() {
@@ -200,7 +239,21 @@ export default {
       service.getTypeList(params).then(function(res) {
         const { data, status } = res;
         if (statusValid(_this, status, data)) {
+          loading.close();
           _this.typeList = data;
+        }
+      });
+    },
+    getProductList(){
+      const _this = this;
+      let params = {
+        brand_id:this.selBrandId,
+        type_id:this.selTypeId
+      };
+      getProductList(params).then(function(res) {
+        const { data, status } = res;
+        if (statusValid(_this, status, data)) {
+          _this.productList = data.data;
         }
       });
     },
@@ -295,7 +348,12 @@ export default {
       this.getTypeList();
     },
     typeChange(val) {
-      // this.selTypeId = val.id;
+      if(val){
+        this.selTypeId = val.id;
+      }else{
+        this.selTypeId = '';
+      }
+      this.getProductList();
     },
     onExceed() {
       this.$notify({
@@ -321,6 +379,13 @@ export default {
     formClose(){
       this.$refs["typeForm"] && this.$refs["typeForm"].clearValidate();
       this.$refs["brandForm"] && this.$refs["brandForm"].clearValidate();
+    },
+    editProduct(id){
+      if(id){
+        this.$router.push({ path: "/shopDetail" ,query: { scree: id }});
+      }else{
+        this.$router.push({ path: "/shopDetail" });
+      }
     }
   }
 };
@@ -344,6 +409,7 @@ export default {
 }
 .goods-content{
   flex: 1;
+  overflow: auto;
 }
 .danger{
   color:#F56C6C;
@@ -377,5 +443,58 @@ export default {
   flex: 1;
   width: 100%;
   overflow: auto;
+}
+.goods-ul{
+  li{
+    list-style: none;
+    width: 190px;
+    height: auto;
+    float: left;
+  }
+  .card{
+    padding: 15px;
+  }
+  .img-base{
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    background-size: cover;
+    position: relative;
+    img{
+      width: 100%;
+      height: auto;
+      max-height: 100%;
+    }
+  }
+  .card-bottom{
+    padding: 10px 15px 15px 5px;
+    span{
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+  .button {
+    padding: 0;
+    float: right;
+  }
+}
+.el-icon-star-on{
+  color: #F56C6C;
+  position: absolute;
+  font-size: 26px;
+  top: 0;
+  right: 0;
 }
 </style>
