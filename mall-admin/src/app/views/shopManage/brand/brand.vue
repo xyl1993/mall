@@ -83,6 +83,21 @@
         <el-form-item label="名称" label-width="120px" prop="name">
           <el-input style="width:70%;max-width:400px;" v-model="brandModel.name"></el-input>
         </el-form-item>
+        <div class="formModel el-form-item clear" style="position:relative;padding-left:120px;">
+            <label class="el-form-item__label" style="width: 120px;position: absolute;left: 0;">缩略图</label>
+            <div class="">
+              <el-upload 
+                class="avatar-uploader"
+                :headers="headers" 
+                :show-file-list="false"
+                accept="image/*"
+                :action="sealImgAction" 
+                :on-success="handleAvatarSuccess">
+                <img v-if="imgUrl" :src="imgUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
+          </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelBrand()">取 消</el-button>
@@ -104,17 +119,14 @@
             <label class="el-form-item__label" style="width: 120px;position: absolute;left: 0;">缩略图</label>
             <div class="">
               <el-upload 
+                class="avatar-uploader"
                 :headers="headers" 
-                list-type="picture-card" 
-                :limit="1" 
+                :show-file-list="false"
                 accept="image/*"
                 :action="sealImgAction" 
-                :on-exceed="onExceed" 
-                :file-list="fileList" 
-                :on-preview="handlePictureCardPreview" 
-                :on-remove="onSignImgRemove" 
-                :on-success="signUploadSuccess">
-                <i class="el-icon-plus"></i>
+                :on-success="handleTypeSuccess">
+                <img v-if="imgTypeUrl" :src="imgTypeUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
           </div>
@@ -141,11 +153,11 @@ export default {
   data() {
     return {
       filePath:'',
+      imgUrl:'',
+      imgTypeUrl:'',
       brandList: [],
       typeList: [],
       shopList: [],
-      fileList: [],
-      imgArray:[],
       productList:[],
       brandStatus: false,
       typeStatus: false,
@@ -189,11 +201,7 @@ export default {
     this.getProductList();
   },
   filters: {
-    data: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    }
+    
   },
   methods: {
     getBrandList() {
@@ -259,29 +267,23 @@ export default {
     },
     addBrand() {
       this.brandStatus = true;
+      this.imgUrl = '';
       this.brandModel = {};
     },
     editBrand(index,item){
       this.brandModel = item;
+      this.imgUrl = item.cover?this.filePath+item.cover:'';
       this.brandStatus = true;
     },
     addType() {
       this.typeModel = {
         brand_id: this.selBrandId
       };
+      this.imgTypeUrl = '';
       this.typeStatus = true;
     },
     editType(index,item){
-      this.imgArray = [];
-      this.fileList = [];
-      if(item.cover){
-        item.cover.split(',').map((item,index)=>{
-          this.fileList.push({
-            url:this.filePath + item
-          });
-          this.imgArray.push(item);
-        });
-      }
+      this.imgTypeUrl = item.cover?this.filePath+item.cover:'';
       this.typeModel = item;
       this.typeStatus = true;
     },
@@ -319,7 +321,6 @@ export default {
       this.$refs["typeForm"].validate(valid => {
         if (valid) {
           let pdata = _this.typeModel;
-          pdata.cover = this.imgArray.join();
           if (pdata.id) {
             service.updateType(pdata.id, pdata).then(res => {
               const { data, status } = res;
@@ -355,27 +356,6 @@ export default {
       }
       this.getProductList();
     },
-    onExceed() {
-      this.$notify({
-        title: "提示",
-        message: "每项最多上传1张图片",
-        type: "warning"
-      });
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    onSignImgRemove(res, list) {
-      this.imgArray = [];
-      for (let l of list) {
-        this.imgArray.push(l.response.data);
-      }
-      console.log(this.imgArray);
-    },
-    signUploadSuccess(res, list) {
-      this.imgArray.push(res);
-    },
     formClose(){
       this.$refs["typeForm"] && this.$refs["typeForm"].clearValidate();
       this.$refs["brandForm"] && this.$refs["brandForm"].clearValidate();
@@ -386,7 +366,15 @@ export default {
       }else{
         this.$router.push({ path: "/shopDetail" });
       }
-    }
+    },
+    handleAvatarSuccess(res, file){
+      this.imgUrl = URL.createObjectURL(file.raw);
+      this.brandModel.cover = res;
+    },
+    handleTypeSuccess(res, file){
+      this.imgTypeUrl = URL.createObjectURL(file.raw);
+      this.typeModel.cover = res;
+    },
   }
 };
 </script>

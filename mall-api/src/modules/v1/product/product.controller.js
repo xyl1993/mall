@@ -11,8 +11,9 @@ const getProductList = async (req, res)=> {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
-  const {search,type_id,brand_id} = req.query;
-  let _sql = `select a.*,b.name as type,c.name as brand,d.current_price,d.original_price from product a 
+  const {search,type_id,brand_id,recommendStatus} = req.query;
+  let _sql = `select a.id,a.type_id,a.brand_id,a.title,a.cover,a.carousel,a.read_number,a.create_time,a.recommend,
+    b.name as type,c.name as brand,d.current_price,d.original_price from product a 
     left join goods_type b on a.type_id = b.id
     left join goods_brand c on c.id = a.brand_id 
     left join (
@@ -24,6 +25,7 @@ const getProductList = async (req, res)=> {
   if (search) _sql = _sql + ` and a.title like '%${search}%'`;
   if (type_id) _sql = _sql + ` and a.type_id = ${type_id}`;
   if (brand_id) _sql = _sql + ` and a.brand_id = ${brand_id}`;
+  if (recommendStatus) _sql = _sql + ` and a.recommend = ${recommendStatus}`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);

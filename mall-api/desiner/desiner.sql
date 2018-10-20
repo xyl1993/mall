@@ -48,6 +48,7 @@ CREATE TABLE `carousel` (
 DROP TABLE IF EXISTS  `goods_brand`;
 CREATE TABLE `goods_brand` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `cover` varchar(1000) DEFAULT NULL, /*缩略图*/
   `name` varchar(300) DEFAULT NULL,   /*商品名称*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

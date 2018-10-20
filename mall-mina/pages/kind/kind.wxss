@@ -1,6 +1,6 @@
 /**index.wxss**/
 @import '../../resources/css/search.wxss';
-
+@import '../../resources/css/loadMore.wxss';
 .content {
   display: flex;
   flex-direction: row;

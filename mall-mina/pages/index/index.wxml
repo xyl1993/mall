@@ -1,49 +1,56 @@
 <!--index.wxml-->
-<view class="container">
-  <view class="header">
-    <view class="search_div">
-      <image src="../../resources/imgs/search-icon.png" alt=""></image>
-      请输入搜索关键词
-    </view>
-  </view>
-  <view>
-    <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-      <block wx:for="{{carouselList}}" wx:for-item="item"  >
-        <swiper-item>
-          <image src="{{fileIp+item.url}}" class="slide-image" />
-        </swiper-item>
-      </block>
-    </swiper>
-  </view>
-  <view class='row clear'>
-    <view class='col' wx:for="{{brandList}}" wx:for-item="item" wx:for-index="idx">
-      <image src="{{fileIp+item.cover}}" />
-      <text>test1</text>
-    </view>
-  </view>
-  <view class='shop_content'>
-    <view class='shop_content_header clear'>
-      <view class='title'>推荐产品</view>
-      <view class='more'>
-        <text>更多</text>
-        <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+  <view class=''>
+    <view class="header">
+      <view class="search_div">
+        <image src="../../resources/imgs/search-icon.png" alt=""></image>
+        请输入搜索关键词
       </view>
     </view>
-    <view class='shop_list' wx:for="{{productList}}" wx:for-item="item" wx:for-index="idx">
-      <view class='list_content' bindtap='detail' data-id="item.id" >
-        <view class='preview_tsl'>
-          <image src="{{fileIp+item.cover}}" />
+    <view>
+      <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{carouselList}}" wx:for-item="item">
+          <swiper-item>
+            <image src="{{fileIp+item.url}}" class="slide-image" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class='row clear'>
+      <view class='col' data-id='{{item.id}}' bindtap='brandDetail' wx:for="{{brandList}}" wx:for-item="item" wx:for-index="idx">
+        <image src="{{fileIp+item.cover}}" />
+        <text>test1</text>
+      </view>
+    </view>
+    <view class='shop_content'>
+      <view class='shop_content_header clear'>
+        <view class='title'>推荐产品</view>
+        <view class='more' bindtap='toroductList'>
+          <text>更多</text>
+          <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
         </view>
-        <view class="preview_title text_ellipsis">{{item.title}}</view>
-        <view class='between_view clear'>
-          <view class='now_price'>￥{{item.current_price}}</view>
-          <view class='old_price'>￥{{item.original_price}}</view>
-        </view>
-        <view class='between_view clear'>
-          <view class='left'>销量：0</view>
-          <view class='right'>库存：1029万</view>
+      </view>
+      <view class='shop_list' wx:for="{{productList}}" wx:for-item="item" wx:for-index="idx">
+        <view class='list_content' bindtap='detail' data-id="{{item.id}}">
+          <view class='preview_tsl'>
+            <image src="{{fileIp+item.cover}}" />
+          </view>
+          <view class="preview_title text_ellipsis">{{item.title}}</view>
+          <view class='between_view clear'>
+            <view class='now_price'>￥{{item.current_price}}</view>
+            <view class='old_price'>￥{{item.original_price}}</view>
+          </view>
+          <view class='between_view clear'>
+            <view class='left'>销量：0</view>
+            <view class='right'>库存：1029万</view>
+          </view>
         </view>
       </view>
     </view>
+    <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+      <view class="weui-loading"></view>
+      <view class="weui-loadmore__tips">正在加载</view>
+    </view>
+    <view class="weui-loadmore" wx:if="{{noData}}">
+      <view class="weui-loadmore__tips">没有更多商品</view>
+    </view>
   </view>
-</view>

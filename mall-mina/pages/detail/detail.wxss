@@ -1,6 +1,7 @@
 /* pages/detail/detail.wxss */
 @import '../../resources/css/search.wxss';
 @import '../../resources/css/shop.wxss';
+@import '../../resources/css/loadMore.wxss';
 .container{
   background: #fff;
 }
@@ -24,4 +25,8 @@
 }
 .list_content{
   padding-top: 0 !important;
+}
+.shop_content{
+  margin-top: 0;
+  padding: 20rpx;
 }

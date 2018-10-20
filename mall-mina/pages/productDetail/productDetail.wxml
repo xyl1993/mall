@@ -1,6 +1,8 @@
+
+<import src="../../lib/wxParse/wxParse.wxml"/>
 <view class="container">
   <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{imgUrls}}">
+    <block wx:for="{{carousel}}">
       <swiper-item>
         <image src="{{item}}" class="slide-image" />
       </swiper-item>
@@ -17,12 +19,12 @@
       </view>
       <view class='header-other'>
         <view class='price'>
-          <text class="now">￥current_price</text>
-          <text class="old">原价:current_price</text>
+          <text class="now">￥{{productDetail.specifications[0].current_price}}</text>
+          <text class="old">原价:{{productDetail.specifications[0].current_price}}</text>
         </view>
         <view class="seal-content">
           <text class="left">销量：0件</text>
-          <text class="right">库存：stock件</text>
+          <text class="right">库存：{{productDetail.specifications[0].stock}}件</text>
         </view>
       </view>
     </view>
@@ -42,7 +44,9 @@
     </view>
     <view class="detail-content">
       图文详情
-      <view class="detail"></view>
+      <view class="detail">
+        <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+      </view>
     </view>
   </view>
   <view class="shop-footer">

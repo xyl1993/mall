@@ -1,33 +1,31 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="header">
-    <view class="search_div">
-      <image src="../../resources/imgs/search-icon.png" alt=""></image>
-      请输入搜索关键词
-    </view>
-  </view>
-  <view class='content'>
-    <view class='menu_content'>
-      <view class='menu_list active'>
-        <view>
-          暗访健康
+<scroll-view style='height:100%;'>
+  <view class='scroll'>
+    <view class="container">
+      <view class="header">
+        <view class="search_div">
+          <image src="../../resources/imgs/search-icon.png" alt=""></image>
+          请输入搜索关键词
         </view>
       </view>
-      <view class='menu_list'>
-        <view>
-          暗访健康
-        </view>
-      </view>
-    </view>
-    <view class='product_content'>
-      <view class='shop_list'>
-        <view class='list_content' bindtap="toDetail">
-          <view class='preview_tsl'>
-            <image src="{{testImage}}" />
+      <view class='content'>
+        <view class='menu_content'>
+          <view class='menu_list {{item.active?"active":""}}' wx:for="{{brandList}}" data-id="{{item.id}}" wx:for-item="item" bindtap='tabBrand'>
+            <view>
+              {{item.name}}
+            </view>
           </view>
-          <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
+        </view>
+        <view class='product_content'>
+          <view class='shop_list' bindtap="toDetail" wx:for="{{typelist}}" wx:for-item="item" data-id="{{item.id}}">
+            <view class='list_content'>
+              <view class='preview_tsl'>
+                <image src="{{fileIp+item.cover}}" />
+              </view>
+              <view class="preview_title text_ellipsis">{{item.name}}</view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
   </view>
-</view>
+</scroll-view>

@@ -38,7 +38,7 @@ let routes = [{
     children: [
       ...ShopManage
     ]
-  },, {
+  }, {
     path: '/',
     component: FullLayout,
     name: '订单管理',

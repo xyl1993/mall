@@ -1,7 +1,9 @@
 /* pages/productDetail/productDetail.wxss */
+@import "../../lib/wxParse/wxParse.wxss";
 @import '../../resources/css/shop.wxss';
 .container{
   padding-bottom: 100rpx;
+  height: auto;
 }
 .swiper {
   width: 100%;

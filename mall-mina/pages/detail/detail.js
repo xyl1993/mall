@@ -1,66 +1,95 @@
 // pages/detail/detail.js
+import api from '../../utils/api.js';
+import {
+  Config
+} from '../../config/index.js'
+
+const getProductList = function(_this,callback){
+  let params = {
+    current: _this.data.current,
+    pageSize: _this.data.pageSize,
+    type_id: _this.data.type_id
+  };
+  api.get("product", params).then(res => {
+    let {
+      data,
+      status
+    } = res;
+    if (status === 200) {
+      let productList = _this.data.productList;
+      if (_this.data.current == 1) {
+        productList = []
+      }
+      if (data.data.length !== 0) {
+        productList = productList.concat(data.data);
+        _this.setData({
+          productList: productList
+        })
+      } else {
+        _this.setData({
+          noData: true
+        })
+      }
+      if (typeof callback == 'function') callback();
+    }
+  });
+}
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    testImage: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+    current: 1,
+    pageSize: 10,
+    fileIp: Config.file_servier,
+    productList: [],
+    type_id:'',
+    isHideLoadMore:true,
+     stopLoadRefresh:false
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    if (options.type_id) this.setData({ type_id: options.type_id });
+    this.loadData();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  loadData: function (e) {
+    getProductList(this);
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  toDetail:function(e){
+    let id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../productDetail/productDetail?productId=' + id
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
+  //下拉刷新
   onPullDownRefresh: function () {
-
+    const _this = this;
+    if (!this.data.stopLoadRefresh) {
+      wx.showNavigationBarLoading() //在标题栏中显示加载
+      this.setData({ isHideLoadMore: true, current: 1, noData: false, stopLoadRefresh: true });
+      getProductList(this, function () {
+        wx.hideNavigationBarLoading() //完成停止加载
+        wx.stopPullDownRefresh() //停止下拉刷新
+        setTimeout(() => {
+          _this.setData({
+            stopLoadRefresh: false
+          })
+        }, 2500)
+      });
+    }else{
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    }
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
+  //加载更多
   onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    const _this = this;
+    if (!this.data.noData) {
+      console.log('加载更多')
+      let current = ++this.data.current;
+      this.setData({ isHideLoadMore: false, current: current});
+      getProductList(this, function () {
+        _this.setData({
+          isHideLoadMore: true,
+        })
+      });
+    }
   }
 })

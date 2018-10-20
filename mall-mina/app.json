@@ -33,8 +33,9 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarTitleText": "皋城有优惠",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f4f4f4",
+    "navigationBarBackgroundColor": "#FF3364"
   }
 }

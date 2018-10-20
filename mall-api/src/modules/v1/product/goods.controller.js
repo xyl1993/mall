@@ -14,10 +14,11 @@ const pool = require('../../../utils/pool')
  * @param {*} next 
  */
 const addBrand = async (req, res, next)=> {
-  const { name } = req.body;
-  let _sql = `insert into goods_brand(name) values(?)`;
+  const { name,cover } = req.body;
+  let _sql = `insert into goods_brand(name,cover) values(?,?)`;
   const params = [
-    name
+    name,
+    cover
   ]
   _sql = mysql.format(_sql, params);
   log.info(_sql);
@@ -38,9 +39,11 @@ const addBrand = async (req, res, next)=> {
  */
 const editBrand = async (req, res, next)=> {
   const id = req.params.id;
-  let _sql = `update goods_brand set name=? where id= ?`;
+  const{name,cover} = req.body;
+  let _sql = `update goods_brand set name=?,cover=? where id= ?`;
   const params = [
-    req.body.name,
+    name,
+    cover,
     id
   ];
   _sql = mysql.format(_sql, params);

@@ -1,5 +1,5 @@
 <!--pages/detail/detail.wxml-->
-<view class='container'>
+<view>
   <view class="header">
     <view class="search_div">
       <image src="../../resources/imgs/search-icon.png" alt=""></image>
@@ -24,31 +24,17 @@
         <image src='../../resources/imgs/sort.png'></image>
       </view>
     </view>
-    <view class='shop_list'>
+  </view>
+  <view class="shop_content">
+    <view class='shop_list' bindtap="toDetail" wx:for="{{productList}}" wx:for-item="item" data-id="{{item.id}}">
       <view class='list_content'>
         <view class='preview_tsl'>
-          <image src="{{testImage}}" />
+          <image src="{{fileIp+item.cover}}" />
         </view>
-        <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
+        <view class="preview_title text_ellipsis">{{item.title}}</view>
         <view class='between_view clear'>
-          <view class='now_price'>￥9.91</view>
-          <view class='old_price'>￥0.99</view>
-        </view>
-        <view class='between_view clear'>
-          <view class='left'>销量：0</view>
-          <view class='right'>库存：1029万</view>
-        </view>
-      </view>
-    </view>
-    <view class='shop_list'>
-      <view class='list_content'>
-        <view class='preview_tsl'>
-          <image src="{{testImage}}" />
-        </view>
-        <view class="preview_title text_ellipsis">这个我是三个都是固定格式的士大夫士大夫十分</view>
-        <view class='between_view clear'>
-          <view class='now_price'>￥9.91</view>
-          <view class='old_price'>￥0.99</view>
+          <view class='now_price'>￥{{item.current_price}}</view>
+          <view class='old_price'>￥{{item.original_price}}</view>
         </view>
         <view class='between_view clear'>
           <view class='left'>销量：0</view>
@@ -57,4 +43,11 @@
       </view>
     </view>
   </view>
+  <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
+  </view>
+  <view class="weui-loadmore" wx:if="{{noData}}">
+      <view class="weui-loadmore__tips">没有更多商品</view>
+    </view>
 </view>

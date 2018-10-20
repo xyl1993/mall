@@ -1,5 +1,8 @@
 /**index.wxss**/
 @import '../../resources/css/shop.wxss';
+@import '../../resources/css/loadMore.wxss';
+
+
 .header {
   background: #ff3364;
   width: 100%;
@@ -40,6 +43,7 @@
 .row {
   background: #fff;
   position: relative;
+  padding: 20rpx 0;
 }
 
 .row .col {
@@ -54,8 +58,8 @@
 }
 
 .row .col image {
-  width: 120rpx;
-  height: 120rpx;
+  width: 140rpx;
+  height: 140rpx;
   border-radius: 50%;
   overflow: hidden;
 }

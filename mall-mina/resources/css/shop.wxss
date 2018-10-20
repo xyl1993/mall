@@ -59,8 +59,7 @@
 
 .preview_tsl {
   width: 100%;
-  height: 260rpx;
-  border: 1rpx solid #ddd;
+  height: 300rpx;
 }
 
 .preview_tsl image {

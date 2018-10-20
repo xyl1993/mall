@@ -1,72 +1,142 @@
 //index.js
 //获取应用实例
 import api from '../../utils/api.js';
-import { Config } from '../../config/index.js'
+import {
+  Config
+} from '../../config/index.js'
+//获取应用实例
+const app = getApp();
+const getBrandList = function (_this, callback){
+  let params = {
+    current: _this.data.current,
+    pageSize: _this.data.pageSize,
+    recommendStatus: 1
+  };
+  api.get("product", params).then(res => {
+    let {
+      data,
+      status
+    } = res;
+    if (status === 200) {
+      let productList = _this.data.productList;
+      if (_this.data.current == 1) {
+        productList = []
+      }
+      if(data.data.length !== 0){
+        productList = productList.concat(data.data);
+        _this.setData({
+          productList: productList
+        })
+      }else{
+        _this.setData({
+          noData: true
+        })
+      }
+      if (typeof callback == 'function') callback();
+    }
+  });
+}
 Page({
   data: {
-    current:1,
-    pageSize:10,
+    current: 1,
+    pageSize: 10,
     fileIp: Config.file_servier,
     productList: [],
-    carouselList:[],
-    brandList:[],
-    testImage: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+    carouselList: [],
+    brandList: [],
     imgUrls: [
-      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
     ],
     indicatorDots: true,
     autoplay: true,
     circular: true,
     interval: 5000,
-    duration: 1000
+    duration: 1000,
+    isHideLoadMore:true,
+    noData:false
   },
-  onLoad: function () {
+  onLoad: function() {
+    this.loadCarousel();
     this.loadBrand();
     this.loadData();
-    this.loadCarousel();
   },
-  loadCarousel:function(){
+  loadCarousel: function() {
     api.get("carousel").then(res => {
-      let { data, status } = res;
+      let {
+        data,
+        status
+      } = res;
       if (status === 200) {
-        this.setData({ carouselList: data });
+        this.setData({
+          carouselList: data
+        });
       }
     });
   },
-  loadBrand:function(){
+  loadBrand: function() {
     api.get("brand").then(res => {
-      let { data, status } = res;
+      let {
+        data,
+        status
+      } = res;
       if (status === 200) {
-        this.setData({ brandList: data });
-        console.log(data);
+        this.setData({
+          brandList: data
+        });
       }
     });
   },
-  loadData: function (e) {
-    let params = {
-      current: this.data.current,
-      pageSize: this.data.pageSize
-    };
-    api.get("product", params).then(res => {
-      console.log(res);
-      let { data, status } = res;
-      if (status === 200){
-        let productList = this.data.productList;
-        if (data.totalItems == 1) {
-          productList = []
-        }
-        productList = productList.concat(data.data);
-        this.setData({ productList: productList})
-        console.log(this.data.productList);
-      }
-    });
+  loadData: function(e) {
+    getBrandList(this);
   },
-  detail:function(e){
-    let id = (e.currentTarget.dataset.id);
+  detail: function(e) {
+    let id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../productDetail/productDetail?id=' + id
+      url: '../productDetail/productDetail?productId=' + id
     })
+  },
+  brandDetail:function(e){
+    let id = e.currentTarget.dataset.id;
+    app.globalData.globalBrandId = id;
+    wx.switchTab({
+      url: '../kind/kind',
+      success: function (e) {
+        var page = getCurrentPages().pop();
+        if (page == undefined || page == null) return;
+        page.onLoad();
+      } 
+    })
+  },
+  toProductList(){
+    wx.navigateTo({
+      url: '../detail/detail'
+    })
+  },
+  toroductList(){
+    wx.navigateTo({
+      url: '../detail/detail'
+    })
+  },
+  //下拉刷新
+  onPullDownRefresh: function() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.setData({ isHideLoadMore: true, current: 1,noData:false });
+    getBrandList(this,function(){
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    });
+  },
+  //加载更多
+  onReachBottom: function() {
+    const _this = this;
+    if (!this.data.noData){
+      let current = ++this.data.current;
+      this.setData({ isHideLoadMore: false, current: current });
+      getBrandList(this, function () {
+        _this.setData({
+          isHideLoadMore: true,
+        })
+      });
+    }
   }
+
 })
