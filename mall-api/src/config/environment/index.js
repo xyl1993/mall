@@ -3,6 +3,9 @@ const path = require('path');
 require('dotenv').config();
 
 const config = {
+  AppID:'wxe797f4238bafb0f4',
+  AppSecret:'80a7fc258b74bcbd8ae103482524d81c',
+  AppjwtEncryption:'gaochengyouhui',
   // MongoDB connection options
   uploadRoot: path.normalize(__dirname + '/../../../../upload'),
   adminUI: {

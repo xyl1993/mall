@@ -50,6 +50,7 @@ CREATE TABLE `goods_brand` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cover` varchar(1000) DEFAULT NULL, /*缩略图*/
   `name` varchar(300) DEFAULT NULL,   /*商品名称*/
+  `brand_status` int DEFAULT 1,  /* 品牌状态  1正常  -1删除 */
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -63,6 +64,7 @@ CREATE TABLE `goods_type` (
   `brand_id`bigint(20) NOT NULL,  
   `cover` varchar(1000) DEFAULT NULL, /*缩略图*/
   `name` varchar(300) DEFAULT NULL,   /*类型名称*/
+  `type_status` int DEFAULT 1,  /* 品牌状态  1正常  -1删除 */
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -84,6 +86,7 @@ CREATE TABLE `product` (
   `modify_time` datetime DEFAULT NULL,
   `create_id` bigint(20) DEFAULT NULL,
   `recommend` int DEFAULT 1,    /*0 不推荐 1推荐*/
+  `product_status` int DEFAULT 1,  /*商品状态  1正常   -1删除*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -123,10 +126,10 @@ CREATE TABLE `account` (
 /**
 小程序收货地址表
 */
-DROP TABLE IF EXISTS  `account`;
-CREATE TABLE `account` (
+DROP TABLE IF EXISTS  `account_address`;
+CREATE TABLE `account_address` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) DEFAULT NULL,   
+  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
   `collect_name` varchar(500) DEFAULT NULL,      /*收货人*/
   `address` varchar(500) DEFAULT NULL,      /*收货地址*/
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
@@ -149,22 +152,67 @@ CREATE TABLE `order_number` (
 DROP TABLE IF EXISTS  `order`;
 CREATE TABLE `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) DEFAULT NULL,   /*用户*/
+  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
   `order_number` varchar(50) DEFAULT NULL,   /*编号*/
-  `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
-  `collect_name` varchar(500) DEFAULT NULL,      /*收货人*/
-  `address` varchar(500) DEFAULT NULL,      /*收货地址*/
+  `pay_price` double DEFAULT NULL,   /*实际支付价格*/
+  `should_price` double DEFAULT NULL,   /*应该支付价格*/
+  `collect_name` varchar(30) DEFAULT NULL,      /*收货人*/
+  `address` varchar(200) DEFAULT NULL,      /*收货地址*/
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
-  `name` varchar(200) DEFAULT NULL,      /*规格*/
-  `title` varchar(20) DEFAULT NULL,      /*商品名称*/
-  `brand` varchar(200) DEFAULT NULL,      /*品牌*/
-  `type` varchar(20) DEFAULT NULL,      /*类型*/
-  `number` int DEFAULT NULL,    /*数量*/
-  `money` double DEFAULT NULL,      /*成交价*/
   `pay_status` int DEFAULT 1,      /*支付状态   1待支付  2支付 3退款*/
+  `pay_time` datetime DEFAULT NULL,     /*支付时间*/
   `collect_status` int DEFAULT NULL,      /*收货状态   1待发货 2待收货 3收货*/
+  `ship_time` datetime DEFAULT NULL,      /*发货时间*/
+  `receipt_time` datetime DEFAULT NULL,      /*收获时间*/
   `logistics_name` varchar(50) DEFAULT NULL,      /*物流名称*/
   `logistics_number` varchar(50) DEFAULT NULL,      /*物流单号*/
+  `order_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用*/
   `create_time` datetime DEFAULT NULL,  
+  `update_time` datetime DEFAULT NULL,  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/**
+购物车表
+*/ 
+DROP TABLE IF EXISTS  `goods_shopcar`;
+CREATE TABLE `goods_shopcar` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
+  `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
+  `number` int DEFAULT NULL,    /*数量*/
+  `shopcar_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用 2已经加入订单*/
+  `update_time` datetime DEFAULT NULL,  
+  `create_time` datetime DEFAULT NULL,  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/**
+订单商品表
+*/ 
+DROP TABLE IF EXISTS  `order_goods`;
+CREATE TABLE `order_goods` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_id` bigint(20) DEFAULT NULL,   /*订单id*/
+  `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
+  `number` int DEFAULT NULL,    /*数量*/
+  `price` double DEFAULT NULL,    /*数量*/
+  `order_goods_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用*/
+  `update_time` datetime DEFAULT NULL,  
+  `create_time` datetime DEFAULT NULL,  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*模板form_id*/
+drop table if exists tpl_config;
+CREATE TABLE `tpl_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT, /*id*/
+  `openid` varchar(32)  NOT NULL, /*用户openid*/
+  `type` varchar(2), /*01表单提交   02支付场景*/
+  `form_id` varchar(300),/*表单提交场景下，为 submit 事件带上的 formId；支付场景下，为本次支付的 prepay_id*/
+  `create_time` datetime, /*创建时间*/
+  `invalid_time` datetime, /*过期时间*/
+  `used` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -66,13 +66,13 @@ const editBrand = async (req, res, next)=> {
 const deleteBrand = async (req, res, next)=> {
   const id = req.params.id;
   try {
-    let _sql = `delete from product where brand_id=${id}`;
+    let _sql = `update product set product_status = -1 where brand_id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
-    _sql = `delete from goods_type where brand_id=${id}`;
+    _sql = `update goods_type set type_status = -1 where brand_id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
-    _sql = `delete from goods_type where brand_id=${id}`;
+    _sql = `update goods_type set brand_status = -1 where brand_id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
     res.status(status.OK).json('操作成功');
@@ -84,7 +84,7 @@ const deleteBrand = async (req, res, next)=> {
 
 //查询品牌
 const getBrandList = async (req, res, next)=> {
-  let _sql = `select * from goods_brand`;
+  let _sql = `select * from goods_brand where brand_status = 1`;
   _sql = _sql + ` order by id desc`;
   log.info(_sql);
   try {
@@ -167,10 +167,10 @@ const editType = async (req, res, next)=> {
 const deleteType = async (req, res, next)=> {
   const id = req.params.id;
   try {
-    let _sql = `delete from product where type_id=${id}`;
+    let _sql = `update product set product_status = -1 where type_id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
-    _sql = `delete from goods_type where id=${id}`;
+    _sql = `update goods_type set type_status = -1 where id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
     res.status(status.OK).json('操作成功');
@@ -184,7 +184,7 @@ const getTypeList = async (req, res, next)=> {
   const {
     brand_id
   } = req.query;
-  let _sql = `select * from goods_type where 1 = 1`;
+  let _sql = `select * from goods_type where type_status = 1`;
   if (brand_id) _sql = _sql + ` and brand_id = ?`;
   _sql = _sql + ` order by id desc`;
   _sql = mysql.format(_sql, [brand_id]);

@@ -58,6 +58,8 @@ Page({
     this.loadCarousel();
     this.loadBrand();
     this.loadData();
+
+    
   },
   loadCarousel: function() {
     api.get("carousel").then(res => {

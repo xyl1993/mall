@@ -2,17 +2,23 @@ const status = require('http-status');
 const {
   handleError
 } = require('../../../utils/handleUtilFun');
-const log = require('log4js').getLogger("goodsController");
+const log = require('log4js').getLogger("orderController");
 const mysql = require('mysql');
 
 const pool = require('../../../utils/pool')
 
+/**
+ * 后台获取所有订单
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const getOrderList = async (req, res, next)=> {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
   const {startTime,endTime} = req.query;
-  let _sql = `select * from order a left join sys_users b on a.account_id = b.id where 1 = 1`;
+  let _sql = `select * from order a left join account b on a.account_id = b.id where 1 = 1`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);
@@ -28,6 +34,12 @@ const getOrderList = async (req, res, next)=> {
   }
 };
 
+/**
+ * 小程序用 生成订单
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const insertOrder = async (req, res, next)=> {
   const {account_id,collect_name,address,phone,name,brand,type,number,money} = req.body;
   try {

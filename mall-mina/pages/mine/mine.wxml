@@ -3,12 +3,14 @@
   <view class='top_bac'>
     <view class="circle">
       <open-data type="userAvatarUrl" class="userinfo_avatar"></open-data>
+      
     </view>
     <view class="userinfo_nickname">
       <open-data type="userNickName" lang="zh_CN"></open-data>
     </view>
   </view>
   <view class='header_item'>
+  <button open-type="getUserInfo">授权登录</button>
     <view class='title'>我的订单</view>
     <view class='more'>
       <text>查看全部订单</text>

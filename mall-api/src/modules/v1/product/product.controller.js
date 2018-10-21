@@ -21,7 +21,7 @@ const getProductList = async (req, res)=> {
       (select product_id,min(current_price) current_price from product_specifications GROUP BY product_id ) b
       JOIN product_specifications a ON a.product_id = b.product_id AND a.current_price = b.current_price
     ) d on d.product_id = a.id
-    where 1 = 1`;
+    where product_status = 1`;
   if (search) _sql = _sql + ` and a.title like '%${search}%'`;
   if (type_id) _sql = _sql + ` and a.type_id = ${type_id}`;
   if (brand_id) _sql = _sql + ` and a.brand_id = ${brand_id}`;
@@ -93,7 +93,7 @@ const deleteProduct = async (req, res)=> {
   
   const productId = req.params.id;
   
-  let _sql = `delete from product where id =${productId}`;
+  let _sql = `update product set product_status = -1 where id =${productId}`;
   log.info(_sql);
   try{
     await pool.query(_sql);
