@@ -9,6 +9,7 @@ const goodsController = require('./goods.controller');
 admin.post('/product',verifyToken, productController.addProduct);   //新增商品
 admin.put('/product/:id',verifyToken, productController.editProduct);   //修改商品
 admin.delete('/product/:id',verifyToken, productController.deleteProduct);   //删除商品
+admin.delete('/specifications/:id',verifyToken, productController.deleteSpecifications);   //删除规格
 
 admin.put('/product/:id/updateRecommend',verifyToken, productController.updateRecommend);   //更新推荐状态
 

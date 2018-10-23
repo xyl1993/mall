@@ -19,8 +19,6 @@ export default {
   },
   mounted() {
     let currentRoute = this.$router.currentRoute;
-    console.log(currentRoute);
-    console.log(noAppToken.test(currentRoute.fullPath));
     if (!noAppToken.test(currentRoute.path) && !localStorage.getItem("token")) {
       this.$router.push({ path: "/login" });
     }

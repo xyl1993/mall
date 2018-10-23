@@ -9,7 +9,6 @@ const controller = require('./order.controller');
 web.get('/order',controller.getOrderList);
 web.post('/order',controller.insertOrder);
 
-
 router.use('/admin', admin); 
 
 router.use('/', web); 

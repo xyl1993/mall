@@ -41,6 +41,7 @@ const getProductList = async (req, res)=> {
   }
 };
 
+//新增
 const specificationsSql = (insertId,specifications)=>{
   //新增规格表
   let values = [];
@@ -58,6 +59,13 @@ const specificationsSql = (insertId,specifications)=>{
   _sql = mysql.format(_sql, [values]);
   log.info(_sql);
   return _sql;
+}
+//修改
+const editSpecificationsSql = async(updateData)=>{
+  let _update = `update product_specifications set name=?,original_price=?,current_price=?,stock=? where id = ?`;
+  _update = mysql.format(_update, updateData);
+  log.info(_update);
+  await pool.query(_update);
 }
 
 const addProduct = async (req, res)=> {
@@ -143,16 +151,59 @@ const editProduct = async(req, res, next)=>{
     //修改主表
     await pool.query(_sql);
     //修改规格表
-    _sql = `delete from product_specifications where product_id = ${productId}`;
-    await pool.query(_sql);
-    _sql = specificationsSql(productId,specifications);
-    await pool.query(_sql);
+    let updateData = [];
+    let insertData = [];
+    specifications.map((item,index)=>{
+      if(item.id){
+        updateData=[
+          item.name,
+          item.original_price,
+          item.current_price,
+          item.stock,
+          item.id
+        ];
+        editSpecificationsSql(updateData);
+        updateData = [];
+      }else{
+        insertData.push([
+          productId,
+          item.name,
+          item.original_price,
+          item.current_price,
+          item.stock
+        ])
+      }
+    })
+    if(insertData.length>0){
+      _sql = `insert into product_specifications(product_id,name,original_price,current_price,stock)
+      values ?`;
+      _sql = mysql.format(_sql, [insertData]);
+      log.info(_sql);
+      await pool.query(_sql);
+    }
     res.status(status.OK).json('操作成功');
   } catch(err){
     log.error(err);
     return handleError(res, err);
   }
 }
+
+const deleteSpecifications = async (req, res, next)=> {
+  const id = Number(req.params.id);
+  let _sql = `delete from product_specifications where id= ?`;
+  let params = [
+    id
+  ];
+  _sql = mysql.format(_sql, params);
+  try {
+    await pool.query(_sql);
+    res.status(status.OK).json('操作成功');
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
 const updateRecommend = async (req, res, next)=> {
   const id = Number(req.params.id);
   const { recommendStatus } = req.body;
@@ -176,5 +227,6 @@ module.exports = {
   deleteProduct,
   getProductDetail,
   editProduct,
-  updateRecommend
+  updateRecommend,
+  deleteSpecifications
 };

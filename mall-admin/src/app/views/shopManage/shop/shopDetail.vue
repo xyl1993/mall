@@ -54,7 +54,7 @@
                 <el-button @click.native.prevent="addRow()" type="text" size="small">
                   增行
                 </el-button>
-                <el-button v-if="index!==0" class="danger" @click.native.prevent="deleteRow(index, form.specifications)"  type="text" size="small">
+                <el-button v-if="index!==0" class="danger" @click.native.prevent="deleteRow(index, form.specifications,item)"  type="text" size="small">
                   删行
                 </el-button>
               </el-form-item>
@@ -97,8 +97,20 @@
 
           </el-form-item>
           <div class="quill-main">
-            <quill-editor v-model="form.detail" ref="myQuillEditor" :options="editorOption">
-            </quill-editor>
+            <el-upload
+              class="quill-uploader"
+              :action="sealImgAction" 
+              :headers="headers"
+              :show-file-list="false"
+              :on-success="quillUloadSuccess"
+              :on-error="quilUploadError"
+              :before-upload="quillBeforeUpload">
+            </el-upload>
+            <!--富文本编辑器组件-->
+            <el-row v-loading="uillUpdateImg">
+              <quill-editor v-model="form.detail" ref="myQuillEditor" :options="editorOption">
+              </quill-editor>
+            </el-row>
           </div>
           <el-form-item>
             <el-button type="primary" :disabled="actionStatus" @click="onSubmit">立即创建</el-button>
@@ -237,26 +249,38 @@ export default {
       headers:{},
       dialogVisible:false,
       imgArray:[],
+      uillUpdateImg:false,
       dialogImageUrl:'',
       productId:'',
       editorOption: {
         modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'indent': '-1' }, { 'indent': '+1' }],
-            [{ 'direction': 'rtl' }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'font': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            ['clean'],
-            ['link', 'image', 'video']
-          ],
+          toolbar: {
+            container:[
+              ['bold', 'italic', 'underline', 'strike'],
+              ['blockquote', 'code-block'],
+              [{ 'header': 1 }, { 'header': 2 }],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'script': 'sub' }, { 'script': 'super' }],
+              [{ 'indent': '-1' }, { 'indent': '+1' }],
+              [{ 'direction': 'rtl' }],
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              [{ 'font': [] }],
+              [{ 'color': [] }, { 'background': [] }],
+              [{ 'align': [] }],
+              ['clean'],
+              ['link', 'image', 'video'],
+            ],
+            handlers: {
+              'image': function (value) {
+                if (value) {
+                  document.querySelector('.quill-uploader input').click()
+                } else {
+                  this.quill.format('image', false);
+                }
+              }
+            }
+          },
           syntax: {
             highlight: text => hljs.highlightAuto(text).value
           }
@@ -445,8 +469,43 @@ export default {
         stock:''
       })
     },
-    deleteRow(index,row){
+    deleteRow(index,row,item){
+      if(this.productId && item.id){
+        //修改状态下 删除规格调用接口
+        service.deleteSpecifications(item.id).then(res => {
+          let { data, status } = res;
+          if (statusValid(this, status, data)) {
+          }
+        });
+      }
       row.splice(index,1);
+    },
+
+
+    //富文本上传图片
+    quillUloadSuccess(res, file){
+      // res为图片服务器返回的数据
+      // 获取富文本组件实例
+      let quill = this.$refs.myQuillEditor.quill
+      // 如果上传成功
+      // 获取光标所在位置
+      let length = quill.getSelection().index;
+      // 插入图片  res.info为服务器返回的图片地址
+      quill.insertEmbed(length, 'image', this.filePath+res);
+      // 调整光标到最后
+      quill.setSelection(length + 1)
+      
+      // loading动画消失
+      this.quillUpdateImg = false
+    },
+    quilUploadError(){
+      // loading动画消失
+      this.quillUpdateImg = false
+      this.$message.error('图片插入失败')
+    },
+    quillBeforeUpload(){
+      // 显示loading动画
+      this.quillUpdateImg = true
     }
   }
 };

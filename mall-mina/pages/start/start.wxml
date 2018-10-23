@@ -1,4 +1,4 @@
 <!--pages/start/start.wxml-->
-<view>
-  这里是动画页
+<view class='cointer'>
+ <image class='start-png' src='../../resources/imgs/hello.png'></image>
 </view>

@@ -179,6 +179,8 @@ const deleteType = async (req, res, next)=> {
     return handleError(res, err);
   }
 };
+
+
 //查询类型
 const getTypeList = async (req, res, next)=> {
   const {

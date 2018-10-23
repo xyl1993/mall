@@ -1,1 +1,10 @@
 /* pages/start/start.wxss */
+.cointer{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.start-png{
+  width: 100%;
+  height: 100%;
+}

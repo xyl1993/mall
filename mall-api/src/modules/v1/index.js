@@ -5,11 +5,12 @@ const product = require('./product/routes');
 const common = require('./common/routes');
 const homeSetting = require('./homeSetting/routes');
 const order = require('./order/routes');
-
+const shopping = require('./shopping/routes');
 
 router.use(auth);
 router.use(product);
 router.use(common);
 router.use(homeSetting);
 router.use(order);
+router.use(shopping);
 module.exports = router;

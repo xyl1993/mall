@@ -1,53 +1,56 @@
-
-<import src="../../lib/wxParse/wxParse.wxml"/>
-<view class="container">
-  <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{carousel}}">
-      <swiper-item>
-        <image src="{{item}}" class="slide-image" />
-      </swiper-item>
-    </block>
-  </swiper>
-  <view class='shop-header'>
-    <view class='detail-header'>
-      <view class='title-content'>
-        <view class='title'>title</view>
-        <view class='share'>
-          <image src='../../resources/imgs/share.png'></image>
-          分享
+<import src="../../lib/wxParse/wxParse.wxml" />
+<view class='container'>
+  <view class='scroll-view'>
+    <scroll-view class="scroll-view" scroll-y style="height: 100%;">
+      <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{carousel}}">
+          <swiper-item>
+            <image src="{{item}}" class="slide-image" />
+          </swiper-item>
+        </block>
+      </swiper>
+      <view class='shop-header'>
+        <view class='detail-header'>
+          <view class='title-content'>
+            <view class='title'>title</view>
+            <view class='share'>
+              <image src='../../resources/imgs/share.png'></image>
+              分享
+            </view>
+          </view>
+          <view class='header-other'>
+            <view class='price'>
+              <text class="now">￥{{productDetail.specifications[0].current_price}}</text>
+              <text class="old">原价:{{productDetail.specifications[0].current_price}}</text>
+            </view>
+            <view class="seal-content">
+              <text class="left">销量：0件</text>
+              <text class="right">库存：{{productDetail.specifications[0].stock}}件</text>
+            </view>
+          </view>
+        </view>
+        <view class="list-content">
+          <view class='shop_content_header clear'>
+            <view class='title'>规格分类</view>
+            <view class='more'>
+              <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+            </view>
+          </view>
+          <view class='shop_content_header clear'>
+            <view class='title'>宝贝评价</view>
+            <view class='more'>
+              <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+            </view>
+          </view>
+        </view>
+        <view class="detail-content">
+          图文详情
+          <view class="detail">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+          </view>
         </view>
       </view>
-      <view class='header-other'>
-        <view class='price'>
-          <text class="now">￥{{productDetail.specifications[0].current_price}}</text>
-          <text class="old">原价:{{productDetail.specifications[0].current_price}}</text>
-        </view>
-        <view class="seal-content">
-          <text class="left">销量：0件</text>
-          <text class="right">库存：{{productDetail.specifications[0].stock}}件</text>
-        </view>
-      </view>
-    </view>
-    <view class="list-content">
-      <view class='shop_content_header clear'>
-        <view class='title'>规格分类</view>
-        <view class='more'>
-          <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
-        </view>
-      </view>
-      <view class='shop_content_header clear'>
-        <view class='title'>宝贝评价</view>
-        <view class='more'>
-          <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
-        </view>
-      </view>
-    </view>
-    <view class="detail-content">
-      图文详情
-      <view class="detail">
-        <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
-      </view>
-    </view>
+    </scroll-view>
   </view>
   <view class="shop-footer">
     <view class="footer-tag">
@@ -55,6 +58,7 @@
       购物车
     </view>
     <view class="footer-tag">
+      <button open-type="contact" class='contact-btn'></button>
       <image class='shop-car-img' src='../../resources/imgs/helperor.png'></image>
       客服
     </view>
@@ -62,11 +66,38 @@
       <image class='shop-car-img' src='../../resources/imgs/un_start.png'></image>
       收藏
     </view>
-    <view class="footer-btn join">
+    <view class="footer-btn join" bindtap='joinCar'>
       加入购物车
     </view>
     <view class="footer-btn buy">
       立即购买
+    </view>
+  </view>
+  <view class='buy-dialog' wx-if="{{dialogStatus}}">
+    <view class='modal'></view>
+    <view class='buy-con'>
+      <image class='cover' src='{{fileIp+productDetail.cover}}'></image>
+      <view class='buy-center'>
+        <view class='price-dyn'>
+          <view class='price'>￥{{buyCar.current_price}}</view>
+          <view class='stock'>库存{{buyCar.stock}}</view>
+          <image class='close' bindtap='closeDialog' src='../../resources/imgs/close.png'></image>
+        </view>
+        <view class='specifications-list clear'>
+          <view class="specifications-item {{item.active?'active':''}}" wx:for="{{specifications}}" wx:for-item="item" data-id="{{item.id}}" data-name="item.name" bindtap='choose'>
+            {{item.name}}
+          </view>
+        </view>
+        <view class='num-view clear'>
+          <view class='tit'>购买数量</view>
+          <view class='num-add-dyn'>
+            <view class='min-btn' bindtap='reduce'>-</view>
+            <input class='number-input' disabled='' type='number' value='{{buyCar.number}}'></input>
+            <view class='min-btn' bindtap='add'>+</view>
+          </view>
+        </view>
+        <a class='sure' bindtap='joinCarSure'>确定</a>
+      </view>
     </view>
   </view>
 </view>

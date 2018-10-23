@@ -12,3 +12,5 @@ export const editProductDetail = (id,data) => { return api.put(`admin/product/${
 
 export const updateRecommend = (id,data) => { return api.put(`admin/product/${id}/updateRecommend`,data).then(res => res.data); };
 
+export const deleteSpecifications = (id) => { return api.delete(`admin/specifications/${id}`).then(res => res.data); };
+

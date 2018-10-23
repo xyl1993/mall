@@ -1,9 +1,16 @@
 /* pages/productDetail/productDetail.wxss */
 @import "../../lib/wxParse/wxParse.wxss";
 @import '../../resources/css/shop.wxss';
-.container{
-  padding-bottom: 100rpx;
-  height: auto;
+
+.container {
+  overflow: auto;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.scroll-view{
+  flex: 1;
+  width: 100%;
 }
 .swiper {
   width: 100%;
@@ -41,15 +48,18 @@
   border-left: 1rpx solid #ddd;
   padding-left: 24rpx;
 }
-.share image{
+
+.share image {
   width: 42rpx;
   height: 46rpx;
   padding-bottom: 6rpx;
 }
-.detail-header{
+
+.detail-header {
   background: #fff;
   padding: 0 30rpx;
 }
+
 .header-other .price {
   padding-bottom: 18rpx;
 }
@@ -122,13 +132,11 @@
 }
 
 .shop-footer {
-  position: fixed;
-  bottom: 0;
   height: 100rpx;
-  display: flex;
   background: #fff;
   width: 100%;
-  z-index: 9;
+  display: flex;
+  flex-direction: row;
 }
 
 .footer-tag {
@@ -138,11 +146,24 @@
   font-size: 24rpx;
   display: flex;
   align-items: center;
+  position: relative;
 }
-.shop-car-img{
-  width:52rpx;
-  height:52rpx;
+
+.contact-btn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 99;
 }
+
+.shop-car-img {
+  width: 52rpx;
+  height: 52rpx;
+}
+
 .footer-btn {
   color: #fff;
   text-align: center;
@@ -158,10 +179,153 @@
 .buy {
   background: #fe5e24;
 }
-.shop_content_header:last-of-type{
+
+.shop_content_header:last-of-type {
   border-bottom: none;
 }
-.shop_content_header .title{
+
+.shop_content_header .title {
   border: none;
   padding-left: 0;
 }
+
+/*添加购物车*/
+
+.buy-dialog {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.buy-con {
+  position: absolute;
+  width: 100%;
+  height: 574rpx;
+  background: #fff;
+  bottom: 0;
+  z-index: 9;
+  overflow: visible !important;
+}
+
+.buy-center {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.num-view {
+  height: 90rpx;
+  width: 100%;
+  position: absolute;
+  bottom: 100rpx;
+  border-bottom: 1rpx solid #ddd;
+  border-top: 1rpx solid #ddd;
+}
+
+.num-view .tit {
+  height: 90rpx;
+  line-height: 90rpx;
+  float: left;
+  padding-left: 20rpx;
+}
+
+.num-add-dyn {
+  float: right;
+  width: 200rpx;
+  height: 90rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 20rpx;
+}
+
+.number-input {
+  flex: 1;
+  height: 60rpx;
+  text-align: center;
+}
+
+.min-btn {
+  width: 60rpx;
+  height: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+  border: 1rpx solid #ddd;
+  font-weight: 30rpx;
+}
+
+.sure {
+  position: absolute;
+  line-height: 80rpx;
+  width: 100%;
+  background: #fd3130;
+  color: #fff;
+  bottom: 0;
+  text-align: center;
+}
+
+.cover {
+  width: 140rpx;
+  height: 140rpx;
+  position: absolute;
+  left: 20rpx;
+  top: -30rpx;
+  z-index: 23;
+}
+
+.price-dyn {
+  padding-left: 170rpx;
+  position: relative;
+  /* height: 100%; */
+  padding-top: 12rpx;
+}
+
+.price-dyn .price {
+  color: #f14d59;
+  font-size: 32rpx;
+}
+
+.price-dyn .stock{
+  font-size: 26rpx;
+}
+.close{
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 20rpx;
+}
+
+.specifications-list{
+  margin-top: 50rpx;
+  height: 222rpx;
+  overflow: auto;
+}
+.specifications-item{
+  padding: 6rpx 12rpx;
+  border-radius: 5rpx;
+  margin-bottom: 10rpx;
+  font-size: 22rpx;
+  margin-left: 20rpx;
+  background: #e4e7ed;
+  float: left;
+  margin-right: 18rpx;
+}
+.specifications-item.active{
+  border: 1px solid #fe5e24;
+  background: #fff;
+  color: #fe5e24;
+}
+/*添加购物车  end*/

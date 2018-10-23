@@ -181,6 +181,7 @@ CREATE TABLE `goods_shopcar` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `openid` varchar(32)  DEFAULT NULL,   /*用户*/
   `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
+  `specifications_id` bigint(20) DEFAULT NULL,   /*规格id*/
   `number` int DEFAULT NULL,    /*数量*/
   `shopcar_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用 2已经加入订单*/
   `update_time` datetime DEFAULT NULL,  
@@ -196,8 +197,9 @@ CREATE TABLE `order_goods` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_id` bigint(20) DEFAULT NULL,   /*订单id*/
   `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
+  `specifications_name` varchar(100) DEFAULT NULL,   /*规格名称   防止规格表删除查不到数据*/
   `number` int DEFAULT NULL,    /*数量*/
-  `price` double DEFAULT NULL,    /*数量*/
+  `price` double DEFAULT NULL,    /*价格*/
   `order_goods_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用*/
   `update_time` datetime DEFAULT NULL,  
   `create_time` datetime DEFAULT NULL,  

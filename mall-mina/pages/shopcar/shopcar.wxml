@@ -1,0 +1,45 @@
+<view class='cointer'>
+  <view class='header'>
+    <view class='radio-all'>
+      <radio checked="{{allChecked}}" />
+      <view>全选</view>
+    </view>
+    <view class='editBtn' bindtap='editHandle' wx-if="{{!editStatus}}">
+      编辑
+    </view>
+    <view class='editBtn' wx-if="{{editStatus}}" bindtap='cancelHandle'>
+      取消
+    </view>
+  </view>
+  <view class='center'>
+    <scroll-view class='scroll-view' scroll-y style='height:100%;'>
+      <view class='view-list' wx:for="{{carList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+        <view class='list-cointer'>
+          <view class='list-main'>
+            <radio checked="{{allChecked}}" />
+            <view class='img-cointer'>
+              <image src='{{fileIp+item.cover}}'></image>
+            </view>
+            <view class='product-view'>
+              <view class='title'>{{item.title}}</view>
+              <view class='price-view'>
+                <text class='price'>￥{{item.current_price}}</text>
+                <text>X {{item.number}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class='delete-view' wx-if="{{editStatus}}" data-id="{{item.id}}" bindtap='deleteProduct'>
+          删除
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class='bottom'>
+    <view class='bottom-left'>
+      <view class='sum'>合计 ￥0.00</view>
+      <view class='other'>不含运费</view>
+    </view>
+    <view class='sure-brn'>结算 (0)</view>
+  </view>
+</view>
