@@ -1,0 +1,24 @@
+<view>
+  <view class='address-list'>
+    <view class='address-item' wx:for="{{addressList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+      <view class='icon'>
+        <view>{{item.icontext}}</view>
+      </view>
+      <view class='account-detail'>
+        <view>
+          <text class='name'>{{item.collect_name}}</text>
+          <text class='phone'>{{item.phone}}</text>
+        </view>
+        <view class='address'>
+          {{item.address}}
+        </view>
+      </view>
+      <view class='edit'>
+        <view data-id="{{item.id}}" bindtap='edit'>
+          编辑
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='add-btn' bindtap='add'>+</view>
+</view>

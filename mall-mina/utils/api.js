@@ -37,6 +37,12 @@ export default {
       })
       .then(checkStatus)
   },
+  delete(url, data) {
+    return fly.delete(Config.api_url + url, data, {
+      headers: createAuthorizationHeader(url)
+    })
+      .then(checkStatus)
+  },
   put(url, data) {
     return fly.put(Config.api_url + url, data, {
         headers: createAuthorizationHeader(url)

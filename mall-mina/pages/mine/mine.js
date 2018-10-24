@@ -4,18 +4,19 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
-  },
-  //事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    authStatus:false
   },
   onLoad: function () {
+    wx.getSetting({
+      success(settingRes) {
+        if (settingRes.authSetting['scope.userInfo']){
+          //已经授权
+          this.setData({ authStatus:true});
+        }
+      }
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -44,11 +45,21 @@ Page({
     }
   },
   getUserInfo: function (e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  handleFun(e){
+    let type = e.currentTarget.dataset.type;
+    switch (type){
+      case 'address':
+        wx.navigateTo({
+          url: '../address/address'
+        })
+        break;
+      default: break;
+    }
   }
 })

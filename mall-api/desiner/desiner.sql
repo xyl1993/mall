@@ -129,10 +129,11 @@ CREATE TABLE `account` (
 DROP TABLE IF EXISTS  `account_address`;
 CREATE TABLE `account_address` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
+  `account_id` bigint(20)  DEFAULT NULL,   /*用户*/
   `collect_name` varchar(500) DEFAULT NULL,      /*收货人*/
   `address` varchar(500) DEFAULT NULL,      /*收货地址*/
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
+  `default_status` tinyint DEFAULT 0,      /*是否是默认地址 默认0*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -152,7 +153,7 @@ CREATE TABLE `order_number` (
 DROP TABLE IF EXISTS  `order`;
 CREATE TABLE `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
+  `account_id` bigint(20)  DEFAULT NULL,   /*用户*/
   `order_number` varchar(50) DEFAULT NULL,   /*编号*/
   `pay_price` double DEFAULT NULL,   /*实际支付价格*/
   `should_price` double DEFAULT NULL,   /*应该支付价格*/
@@ -179,7 +180,7 @@ CREATE TABLE `order` (
 DROP TABLE IF EXISTS  `goods_shopcar`;
 CREATE TABLE `goods_shopcar` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(32)  DEFAULT NULL,   /*用户*/
+  `account_id` bigint(20)  DEFAULT NULL,   /*用户*/
   `product_id` bigint(20) DEFAULT NULL,   /*商品id*/
   `specifications_id` bigint(20) DEFAULT NULL,   /*规格id*/
   `number` int DEFAULT NULL,    /*数量*/

@@ -12,6 +12,7 @@ exports.appVerifyToken = function (req, res, next) {
       if (jwtErr) return handleError(res);
       req.openid = decoded.openid;
       req.session_key = decoded.session_key;
+      req.account_id = decoded.account_id
       next();
     });
   } else {

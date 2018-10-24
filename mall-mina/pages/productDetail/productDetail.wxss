@@ -322,9 +322,11 @@
   background: #e4e7ed;
   float: left;
   margin-right: 18rpx;
+   border: 1px solid #e4e7ed;
 }
 .specifications-item.active{
   border: 1px solid #fe5e24;
+  border-radius: 5rpx;
   background: #fff;
   color: #fe5e24;
 }

@@ -1,0 +1,79 @@
+.address-item {
+  display: flex;
+  flex-direction: rpw;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1rpx solid #ddd;
+}
+.address-item:last-of-type{
+  border-bottom: none;
+}
+.icon {
+  width: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon view {
+  width: 70rpx;
+  height: 70rpx;
+  background: #f4f4f4;
+  text-align: center;
+  line-height: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.edit {
+  width:80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit view {
+  height: 30rpx;
+  width: 100%;
+  text-align: center;
+  border-left: 1px solid #ddd;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.account-detail {
+  padding: 26rpx 16rpx;
+  flex: 1;
+}
+
+.name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.phone {
+  color: #666;
+  padding-left: 20rpx;
+  font-size: 24rpx;
+}
+
+.address {
+  font-size: 28rpx;
+  color: #333;
+  padding-top: 12rpx;
+}
+
+.add-btn {
+  width: 90rpx;
+  height: 90rpx;
+  background: #FE8DAE;
+  text-align: center;
+  line-height: 90rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
+  bottom: 40rpx;
+  right: 20rpx;
+  color: #fff;
+  font-size: 30rpx;
+}

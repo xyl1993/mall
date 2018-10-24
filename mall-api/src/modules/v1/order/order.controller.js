@@ -41,54 +41,21 @@ const getOrderList = async (req, res, next)=> {
  * @param {*} next 
  */
 const insertOrder = async (req, res, next)=> {
-  const {account_id,collect_name,address,phone,name,brand,type,number,money} = req.body;
+  const { account_id } = req;
+  const {allPrice,collect_name,address,phone} = req.body;
   try {
     let _sql = `insert into order_number`;
     const orderNumber = await pool.query(_sql).insertId;
-    _sql = `insert into order(account_id,order_number,collect_name,
-      address,phone,name,title,brand,type,number,money,create_time)
-      values(?,?,?,?,?,?,?,?,?,?,?,?)`;
+    _sql = `insert into order(account_id,order_number,should_price,
+      collect_name,address,phone,create_time)
+      values(?,?,?,?,?,?,?)`;
     const params = [
       account_id,
       orderNumber,
+      allPrice,
       collect_name,
       address,
       phone,
-      name,
-      brand,
-      type,
-      number,
-      money,
-      new Date()
-    ]
-    _sql = mysql.format(_sql, params);
-    log.info(_sql);
-    const rows = await pool.query(_sql);
-    res.status(status.OK).json(rows.insertId);
-  } catch(err) {
-    log.error(err);
-    return handleError(res, err);
-  }
-};
-const Order = async (req, res, next)=> {
-  const {account_id,collect_name,address,phone,name,brand,type,number,money} = req.body;
-  try {
-    let _sql = `insert into order_number`;
-    const orderNumber = await pool.query(_sql).insertId;
-    _sql = `insert into order(account_id,order_number,collect_name,
-      address,phone,name,title,brand,type,number,money,create_time)
-      values(?,?,?,?,?,?,?,?,?,?,?,?)`;
-    const params = [
-      account_id,
-      orderNumber,
-      collect_name,
-      address,
-      phone,
-      name,
-      brand,
-      type,
-      number,
-      money,
       new Date()
     ]
     _sql = mysql.format(_sql, params);

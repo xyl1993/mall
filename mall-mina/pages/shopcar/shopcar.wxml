@@ -1,7 +1,8 @@
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <view class='cointer'>
   <view class='header'>
     <view class='radio-all'>
-      <radio checked="{{allChecked}}" />
+      <radio checked="{{allChecked}}" bindtap='checkedAll' />
       <view>全选</view>
     </view>
     <view class='editBtn' bindtap='editHandle' wx-if="{{!editStatus}}">
@@ -11,35 +12,38 @@
       取消
     </view>
   </view>
-  <view class='center'>
-    <scroll-view class='scroll-view' scroll-y style='height:100%;'>
-      <view class='view-list' wx:for="{{carList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
-        <view class='list-cointer'>
-          <view class='list-main'>
-            <radio checked="{{allChecked}}" />
-            <view class='img-cointer'>
-              <image src='{{fileIp+item.cover}}'></image>
-            </view>
-            <view class='product-view'>
-              <view class='title'>{{item.title}}</view>
-              <view class='price-view'>
-                <text class='price'>￥{{item.current_price}}</text>
-                <text>X {{item.number}}</text>
-              </view>
+  <view class='center' scroll-y style='height:100%;'>
+    <view class='view-list' wx:for="{{carList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+      <view class='list-cointer'>
+        <view class='list-main'>
+          <radio checked="{{item.checked}}" data-item="{{item}}" data-index="{{idx}}" bindtap='chooseItem' />
+          <view class='img-cointer'>
+            <image src='{{fileIp+item.cover}}'></image>
+          </view>
+          <view class='product-view'>
+            <view class='title'>{{item.title}}</view>
+            <view class='price-view'>
+              <text class='price'>￥{{item.current_price}}</text>
+              <text wx-if="{{!editStatus}}">X {{item.number}}</text>
             </view>
           </view>
         </view>
-        <view class='delete-view' wx-if="{{editStatus}}" data-id="{{item.id}}" bindtap='deleteProduct'>
-          删除
-        </view>
       </view>
-    </scroll-view>
+      <view class='num-add-dyn' wx-if="{{editStatus}}">
+        <view class='min-btn' data-item="{{item}}" data-index="{{idx}}" bindtap='reduce'>-</view>
+        <input class='number-input' disabled='' type='number' value='{{item.number}}'></input>
+        <view class='min-btn' data-item="{{item}}" data-index="{{idx}}" bindtap='add'>+</view>
+      </view>
+      <view class='delete-view' wx-if="{{editStatus}}" data-id="{{item.id}}" data-index="{{index}}" bindtap='deleteProduct'>
+        删除
+      </view>
+    </view>
   </view>
   <view class='bottom'>
     <view class='bottom-left'>
-      <view class='sum'>合计 ￥0.00</view>
+      <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
       <view class='other'>不含运费</view>
     </view>
-    <view class='sure-brn'>结算 (0)</view>
+    <view class='sure-brn'>结算 ({{allNum}})</view>
   </view>
 </view>

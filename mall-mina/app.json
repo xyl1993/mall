@@ -6,7 +6,9 @@
     "pages/mine/mine",
     "pages/detail/detail",
     "pages/productDetail/productDetail",
-    "pages/shopcar/shopcar"
+    "pages/shopcar/shopcar",
+    "pages/address/address",
+    "pages/addressDetail/addressDetail"
   ],
   "tabBar": {
     "color": "#818181",
@@ -39,6 +41,11 @@
       }
     ]
   },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarTitleText": "皋城有优惠",

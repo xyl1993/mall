@@ -1,0 +1,49 @@
+/* pages/addressDetail/addressDetail.wxss */
+.input-dyn{
+  border-bottom: 1rpx solid #ddd;
+  padding: 16rpx 20rpx;
+  background: #fff;
+  font-size: 28rpx;
+}
+.input-dyn:last-of-type{
+  border-bottom: none;
+}
+.input-dyn input{
+  height: 50rpx;
+}
+.input-dyn input,.input-dyn textarea{
+  border: none;
+}
+textarea{
+  min-height: 300rpx;
+}
+.input-list{
+  margin-bottom: 30rpx;
+  background: #fff;
+}
+.flex-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+
+}
+.delete-text{
+  color: #ff3364;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+.wx-switch-input{width:42px !important;height:20px !important;}
+.wx-switch-input::before{width:41px !important;height: 20px !important;}
+.wx-switch-input::after{width: 18px !important;height: 18px !important;}
+
+.sure-btn{
+  width: 100%;
+  background-color: #ff3364;
+  border:none;
+  color: #fff;
+}
+.btn-view{
+  padding: 0 20rpx;
+}

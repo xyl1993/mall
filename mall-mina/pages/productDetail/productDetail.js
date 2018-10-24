@@ -109,5 +109,15 @@ Page({
         this.setData({ dialogStatus:false})
       }
     });
+  },
+  goShopcar(){
+    wx.switchTab({
+      url: '../shopcar/shopcar',
+      success: function (e) {
+        // var page = getCurrentPages().pop();
+        // if (page == undefined || page == null) return;
+        // page.onLoad();
+      }
+    })
   }
 })

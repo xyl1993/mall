@@ -3,18 +3,32 @@
   <view class='top_bac'>
     <view class="circle">
       <open-data type="userAvatarUrl" class="userinfo_avatar"></open-data>
-      
     </view>
     <view class="userinfo_nickname">
-      <open-data type="userNickName" lang="zh_CN"></open-data>
+      <open-data type="userNickName" lang="zh_CN" hidden="{{!authStatus}}"></open-data>
+      <button class='auth-btn' open-type="getUserInfo" hidden="{{authStatus}}">授权登录</button>
     </view>
   </view>
-  <view class='header_item'>
-  <button open-type="getUserInfo">授权登录</button>
-    <view class='title'>我的订单</view>
-    <view class='more'>
-      <text>查看全部订单</text>
-      <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+  <view class='content clear'>
+    <view class='header_item clear'>
+      <view class='title'>我的订单</view>
+      <view class='more'>
+        <text>查看全部订单</text>
+        <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+      </view>
+    </view>
+  </view>
+  <view class='content clear'>
+    <view class='header_item clear'>
+      <view class='title'>常用工具</view>
+    </view>
+    <view class='util-item' data-type='address' bindtap='handleFun'>
+      <image src='../../resources/imgs/address.png'></image>
+      <view class='text'>收货地址</view>
+    </view>
+    <view class='util-item'>
+      <image src='../../resources/imgs/shoper.png'></image>
+      <view class='text'>我的收藏</view>
     </view>
   </view>
 </view>

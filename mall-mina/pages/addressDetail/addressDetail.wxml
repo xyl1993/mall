@@ -1,0 +1,29 @@
+<!--pages/addressDetail/addressDetail.wxml-->
+<form  bindsubmit="formSubmit">
+  <view class='input-list'>
+    <view class='input-dyn'>
+      <input type='text' placeholder='收货人' value='{{formData.collect_name}}' name="collect_name"></input>
+    </view>
+    <view class='input-dyn'>
+      <input type='number' value='{{formData.phone}}' placeholder='联系电话' name="phone"></input>
+    </view>
+    <view class='input-dyn'>
+      <textarea placeholder='收货地址' value='{{formData.address}}' auto-height name="address"></textarea>
+    </view>
+  </view>
+  <view class='input-list'>
+    <view class='flex-item'>
+      <view>设为默认地址</view>
+      <switch checked="{{default_status}}" bindchange="switchTab"/>
+    </view>
+  </view>
+  <view class='input-list'>
+    <view class='flex-item'>
+      <view class='delete-text' bindtap='handleDelete'>删除收货地址</view>
+    </view>
+  </view>
+  <view class='btn-view'>
+    <button class='sure-btn' size="mini" loading="{{loading}}" form-type='submit'
+		> 保存 </button>
+  </view>
+</form>
