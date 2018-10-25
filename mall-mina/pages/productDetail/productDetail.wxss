@@ -123,6 +123,7 @@
 }
 
 .detail-content {
+  margin-top: 30rpx;
   padding: 30rpx;
   background: #fff;
 }

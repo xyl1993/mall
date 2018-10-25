@@ -1,0 +1,12 @@
+<!--pages/collection/collection.wxml-->
+<view class='collection-list'>
+  <view class='collection-item' wx:for="{{collectionList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" bindtap='toDetail' data-product_id="{{item.product_id}}"> 
+    <view class='item-content'>
+      <image src='{{fileIp+item.cover}}'></image>
+      <view class='product-detail'>
+        <view class='title'>{{item.title}}</view>
+        <view class='price'>￥{{item.current_price}}</view>
+      </view>
+    </view>
+  </view>
+</view>

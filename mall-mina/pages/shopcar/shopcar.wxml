@@ -44,6 +44,6 @@
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
       <view class='other'>不含运费</view>
     </view>
-    <view class='sure-brn'>结算 ({{allNum}})</view>
+    <view class='sure-brn' bindtap='replay'>结算 ({{allNum}})</view>
   </view>
 </view>

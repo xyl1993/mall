@@ -13,7 +13,7 @@ Page({
   onShow: function () {
     this.getAddressList();
   },
-  getAddressList(){
+  getAddressList: function(){
     api.get(`program/user/address`).then(res => {
       const { data, status } = res;
       if (status === 200) {

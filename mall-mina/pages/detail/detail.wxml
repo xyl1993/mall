@@ -2,26 +2,32 @@
 <view>
   <view class="header">
     <view class="search_div">
-      <image src="../../resources/imgs/search-icon.png" alt=""></image>
-      请输入搜索关键词
+      <input confirm-type="search" placeholder='输入搜索关键词' bindconfirm="searchList">
+      </input>
     </view>
   </view>
   <view class='content'>
     <view class='sort_header clear'>
-      <view class='sort_list'>
+      <view class='sort_list'  bindtap='sortFunc' data-type="1">
         <view>综合</view>
       </view>
-      <view class='sort_list'>
+      <view class='sort_list' bindtap='sortFunc' data-type="2">
         <view>价格</view>
-        <image src='../../resources/imgs/sort.png'></image>
+        <image src='../../resources/imgs/sort_up.png' wx:if="{{sortType.type===2&&sortType.value===1}}"></image>
+        <image src='../../resources/imgs/sort_down.png' wx:if="{{sortType.type===2&&sortType.value===2}}"></image>
+        <image src='../../resources/imgs/sort.png' wx:if="{{sortType.type!==2}}"></image>
       </view>
-      <view class='sort_list'>
+      <view class='sort_list'  bindtap='sortFunc'  data-type="3">
         <view>销量</view>
-        <image src='../../resources/imgs/sort.png'></image>
+        <image src='../../resources/imgs/sort_up.png' wx:if="{{sortType.type===3&&sortType.value===1}}"></image>
+        <image src='../../resources/imgs/sort_down.png'wx:if="{{sortType.type===3&&sortType.value===2}}"></image>
+        <image src='../../resources/imgs/sort.png'  wx:if="{{sortType.type!==3}}"></image>
       </view>
-      <view class='sort_list'>
+      <view class='sort_list'  bindtap='sortFunc'  data-type="4">
         <view>日期</view>
-        <image src='../../resources/imgs/sort.png'></image>
+        <image src='../../resources/imgs/sort_up.png' wx:if="{{sortType.type===4&&sortType.value===1}}"></image>
+        <image src='../../resources/imgs/sort_down.png' wx:if="{{sortType.type===4&&sortType.value===2}}"></image>
+        <image src='../../resources/imgs/sort.png'  wx:if="{{sortType.type!==4}}"></image>
       </view>
     </view>
   </view>

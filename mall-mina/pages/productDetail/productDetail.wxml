@@ -29,7 +29,7 @@
             </view>
           </view>
         </view>
-        <view class="list-content">
+        <!-- <view class="list-content">
           <view class='shop_content_header clear'>
             <view class='title'>规格分类</view>
             <view class='more'>
@@ -42,7 +42,7 @@
               <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
             </view>
           </view>
-        </view>
+        </view> -->
         <view class="detail-content">
           图文详情
           <view class="detail">
@@ -63,7 +63,8 @@
       客服
     </view>
     <view class="footer-tag">
-      <image class='shop-car-img' src='../../resources/imgs/un_start.png'></image>
+      <image class='shop-car-img' bindtap='collection' src='../../resources/imgs/un_start.png' wx-if="{{!isCollection}}"></image>
+      <image class='shop-car-img' bindtap='cancelCollection' src='../../resources/imgs/start.png'wx-if="{{isCollection}}"></image>
       收藏
     </view>
     <view class="footer-btn join" bindtap='joinCar'>

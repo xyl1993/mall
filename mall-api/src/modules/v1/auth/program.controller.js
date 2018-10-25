@@ -124,11 +124,11 @@ const updateAccountAddress = async(req, res)=> {
       _sql = mysql.format(_sql,params);
       await pool.query(_sql);
     }
-    _sql = `update account_address set collect_name=?,address=?,phone=? where id = ?`;
+    _sql = `update account_address set collect_name=?,address=?,phone=?,default_status=? where id = ?`;
     params = [
       collect_name,
       address,
-      phone,
+      phone,default_status,
       id
     ];
     _sql = mysql.format(_sql,params);
@@ -159,7 +159,11 @@ const deleteAccountAddress = async(req, res)=> {
 const getAccountAddressList = async(req, res)=> {
   try{
     const { account_id } = req;
+    const { address_status } = req.params;
     let _sql = `select * from account_address where account_id = ?`;
+    if(address_status){
+      _sql = _sql + ` and default_status = ${address_status}`
+    }
     let params = [
       account_id,
     ];

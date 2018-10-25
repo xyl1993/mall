@@ -75,5 +75,5 @@
   bottom: 40rpx;
   right: 20rpx;
   color: #fff;
-  font-size: 30rpx;
+  font-size: 40rpx;
 }

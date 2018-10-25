@@ -8,7 +8,9 @@
     "pages/productDetail/productDetail",
     "pages/shopcar/shopcar",
     "pages/address/address",
-    "pages/addressDetail/addressDetail"
+    "pages/addressDetail/addressDetail",
+    "pages/collection/collection",
+    "pages/order/order"
   ],
   "tabBar": {
     "color": "#818181",

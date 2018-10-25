@@ -11,7 +11,7 @@ const getProductList = async (req, res)=> {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
-  const {search,type_id,brand_id,recommendStatus} = req.query;
+  const {search,type_id,brand_id,recommendStatus,sort_type,sort_des} = req.query;
   let _sql = `select a.id,a.type_id,a.brand_id,a.title,a.cover,a.carousel,a.read_number,a.create_time,a.recommend,
     b.name as type,c.name as brand,d.current_price,d.original_price from product a 
     left join goods_type b on a.type_id = b.id
@@ -27,7 +27,34 @@ const getProductList = async (req, res)=> {
   if (brand_id) _sql = _sql + ` and a.brand_id = ${brand_id}`;
   if (recommendStatus) _sql = _sql + ` and a.recommend = ${recommendStatus}`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
-  _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
+  if(sort_type === 1){
+    //综合
+    _sql = _sql + ` order by recommend desc,seal_num desc,create_time desc`;
+  }else if(sort_type === 2){
+    //价格
+    if(sort_des === 1){
+      _sql = _sql + ` order by current_price asc`;
+    }else{
+      _sql = _sql + ` order by current_price desc`;
+    }
+  }else if(sort_type === 3){
+    //销量
+    if(sort_des === 1){
+      _sql = _sql + ` order by seal_num asc`;
+    }else{
+      _sql = _sql + ` order by seal_num desc`;
+    }
+  }else if(sort_type === 4){
+    //日期
+    if(sort_des === 1){
+      _sql = _sql + ` order by create_time asc`;
+    }else{
+      _sql = _sql + ` order by create_time desc`;
+    }
+  }else{
+    _sql = _sql + ` order by create_time desc`;
+  }
+  _sql = _sql + ` limit ${start}, ${pageSize}`;
   log.info(_sql);
   try {
     const rows = await pool.query(_sql);

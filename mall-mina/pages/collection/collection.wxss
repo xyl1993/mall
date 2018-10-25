@@ -1,0 +1,36 @@
+/* pages/collection/collection.wxss */
+.collection-item{
+  padding: 20rpx;
+  background: #fff;
+  width: 100%；
+}
+.item-content{
+  height: 138rpx;
+  width: 100%;
+  display: flex;
+}
+.item-content image{
+  width: 176rpx;
+  height: 100%;
+}
+.product-detail{
+  height: 138rpx;
+  flex: 1;
+  padding-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.price{
+  color: #ff3364;
+  font-size: 28rpx;
+}
+.title{
+  font-size: 28rpx;
+}
+.collection-item{
+  border-bottom: 1rpx solid #ddd;
+}
+.collection-item:last-of-type{
+  border-bottom: none;
+}

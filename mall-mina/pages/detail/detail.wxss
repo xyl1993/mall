@@ -2,6 +2,12 @@
 @import '../../resources/css/search.wxss';
 @import '../../resources/css/shop.wxss';
 @import '../../resources/css/loadMore.wxss';
+.search_div input{
+  width: 100%;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
 .container{
   background: #fff;
 }

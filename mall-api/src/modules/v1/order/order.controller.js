@@ -42,7 +42,8 @@ const getOrderList = async (req, res, next)=> {
  */
 const insertOrder = async (req, res, next)=> {
   const { account_id } = req;
-  const {allPrice,collect_name,address,phone} = req.body;
+  const {allPrice,collect_name,address,phone,productList} = req.body;
+  // const {specifications_name,number,price} = productList;
   try {
     let _sql = `insert into order_number`;
     const orderNumber = await pool.query(_sql).insertId;
@@ -60,8 +61,26 @@ const insertOrder = async (req, res, next)=> {
     ]
     _sql = mysql.format(_sql, params);
     log.info(_sql);
-    const rows = await pool.query(_sql);
-    res.status(status.OK).json(rows.insertId);
+    const orderId = await pool.query(_sql).insertId;   //订单id
+
+    //批量新增商品订单表
+    let values = [];
+    let date = new Date();
+    productList.map((item,index)=>{
+      values.push([
+        orderId,
+        item.product_id,
+        item.specifications_name,
+        item.number,
+        item.price,
+        date
+      ])
+    })
+    _sql = `insert into order_goods (order_id,product_id,specifications_name,number,price,create_time) values ?`;
+    _sql = mysql.format(_sql, [values]);
+    await pool.query(_sql);
+
+    res.status(status.OK).json(orderId);
   } catch(err) {
     log.error(err);
     return handleError(res, err);

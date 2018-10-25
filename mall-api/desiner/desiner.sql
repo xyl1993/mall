@@ -82,11 +82,25 @@ CREATE TABLE `product` (
   `carousel` text DEFAULT NULL,  /*轮播图*/
   `detail` longtext DEFAULT NULL,  /*图文详情*/
   `read_number` int DEFAULT 0,  /*阅读次数*/
+  `seal_num` int DEFAULT 0,  /*销量*/
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   `create_id` bigint(20) DEFAULT NULL,
   `recommend` int DEFAULT 1,    /*0 不推荐 1推荐*/
   `product_status` int DEFAULT 1,  /*商品状态  1正常   -1删除*/
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/**
+我的收藏
+*/
+DROP TABLE IF EXISTS  `collections`;
+CREATE TABLE `collections` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) NOT NULL,   /*用户id*/
+  `product_id` varchar(300) DEFAULT NULL,   /*商品id*/
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

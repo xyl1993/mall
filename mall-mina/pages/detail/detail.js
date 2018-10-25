@@ -8,7 +8,10 @@ const getProductList = function(_this,callback){
   let params = {
     current: _this.data.current,
     pageSize: _this.data.pageSize,
-    type_id: _this.data.type_id
+    type_id: _this.data.type_id,
+    search: _this.data.search,
+    sort_type: _this.data.sortType.type,
+    sort_des: _this.data.sortType.value,
   };
   api.get("product", params).then(res => {
     let {
@@ -40,9 +43,14 @@ Page({
     pageSize: 10,
     fileIp: Config.file_servier,
     productList: [],
+    sortType:{
+      type:1,      //1综合 2价格  3销量  4日期
+      value:1     //1正序   2倒叙
+    },
     type_id:'',
     isHideLoadMore:true,
-     stopLoadRefresh:false
+    stopLoadRefresh:false,
+    search:''
   },
 
   onLoad: function (options) {
@@ -91,5 +99,25 @@ Page({
         })
       });
     }
+  },
+  searchList:function(e){
+    this.setData({ search: e.detail.value, current: 1});
+    getProductList(this);
+  },
+  sortFunc:function(e){
+    let type = Number(e.currentTarget.dataset.type);
+    let sortType = this.data.sortType
+    if (sortType.type!==type){
+      sortType.type = type;
+      sortType.value = 1;
+    }else{
+      if (sortType.value === 1) {
+        sortType.value = 2
+      } else if (sortType.value === 2){
+        sortType.value = 1;
+      }
+    }
+    this.setData({ sortType: sortType });
+    getProductList(this);
   }
 })

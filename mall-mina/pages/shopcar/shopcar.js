@@ -143,4 +143,23 @@ Page({
       }
     });
   },
+  replay:function(){
+    let item = this.data.carList;
+    let chooseId = '';
+    let allPrice = this.data.allPrice;
+    item.map((item, index) => {
+      if (item.checked) {
+        if (!chooseId){
+          chooseId = chooseId + item.id;
+        }else{
+          chooseId = chooseId + '-' + item.id;
+        }
+      }
+    });
+    if (chooseId){
+      wx.navigateTo({
+        url: `../order/order?chooseId=${chooseId}`
+      })
+    }
+  }
 })

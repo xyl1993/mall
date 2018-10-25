@@ -108,16 +108,6 @@ Page({
       } 
     })
   },
-  toProductList(){
-    wx.navigateTo({
-      url: '../detail/detail'
-    })
-  },
-  toroductList(){
-    wx.navigateTo({
-      url: '../detail/detail'
-    })
-  },
   //下拉刷新
   onPullDownRefresh: function() {
     wx.showNavigationBarLoading() //在标题栏中显示加载
@@ -139,6 +129,10 @@ Page({
         })
       });
     }
+  },
+  search:function(){
+    wx.navigateTo({
+      url: '../detail/detail'
+    })
   }
-
 })

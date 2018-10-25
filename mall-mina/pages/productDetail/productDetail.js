@@ -1,11 +1,14 @@
 import api from '../../utils/api.js';
 import { Config } from '../../config/index.js';
+import { ButtonClicked } from '../../utils/esUtils.js'
 var WxParse = require('../../lib/wxParse/wxParse.js');
 
 Page({
 
   data: {
     productId:'',
+    buttonClicked: false,
+    isCollection:false,
     buyCar:{
       product_id:'',
       specifications_id:''
@@ -27,9 +30,9 @@ Page({
   onLoad: function (options) {
     if (options.productId) this.setData({ productId: options.productId });
     this.getProductDetail(options.productId);
+    this.getCollectionStatus();
   },
   getProductDetail: function (productId) {
-    
     api.get(`product/${productId}`).then(res => {
       const { data, status } = res;
       const { fileIp } = this.data;
@@ -45,8 +48,39 @@ Page({
         }
         this.setData({ productDetail: data, specifications: data.specifications });
         var that = this;
-        console.log(data.detail);
         WxParse.wxParse('article', 'html', data.detail, that, 15);
+      }
+    });
+  },
+  getCollectionStatus(){
+    let productId = this.data.productId;
+    api.get(`program/product/${productId}/collection`).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        this.setData({ isCollection: data.length > 0});
+      }
+    });
+  },
+  collection(e){
+    ButtonClicked(this, e);
+    let product_id = this.data.productId;
+    let params = {
+      product_id: product_id
+    }
+    api.post(`program/collection`, params).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        this.setData({ isCollection:true });
+      }
+    });
+  },
+  cancelCollection(e){
+    ButtonClicked(this, e);
+    let product_id = this.data.productId;
+    api.delete(`program/product/${product_id}/collection`).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        this.setData({ isCollection: false });
       }
     });
   },
@@ -96,7 +130,8 @@ Page({
     })
     this.setData({ specifications: specifications, buyCar: buyCar})
   },
-  joinCarSure(){
+  joinCarSure(e){
+    ButtonClicked(this, e);
     const params = this.data.buyCar;
     api.post("program/shopcar",params).then(res => {
       let { data, status } = res;

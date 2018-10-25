@@ -1,0 +1,44 @@
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
+<view>
+  <view class='cointer'>
+    <view class='address' wx:if="{{address.length>0}}">
+      <view class='collect_name clear'>
+        <view>收货人: address[0].collect_name</view>
+        <view>address[0].phone</view>
+      </view>
+      <view>
+        收货地址: address[0].address
+      </view>
+    </view>
+    <view class='address' wx:else>
+      <view class='ad-address'>
+        
+      </view>
+    </view>
+    <view class='product-list'>
+      <view class='view-list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+        <view class='list-cointer'>
+          <view class='list-main'>
+            <view class='img-cointer'>
+              <image src='{{fileIp+item.cover}}'></image>
+            </view>
+            <view class='product-view'>
+              <view class='title'>{{item.title}}</view>
+              <view class='price-view'>
+                <text class='price'>￥{{item.current_price}}</text>
+                <text>X {{item.number}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='bottom'>
+    <view class='bottom-left'>
+      <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
+      <view class='other'>不含运费</view>
+    </view>
+    <view class='sure-brn' bindtap='replay'>确认</view>
+  </view>
+</view>

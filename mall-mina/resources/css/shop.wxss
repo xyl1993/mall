@@ -70,6 +70,7 @@
 .preview_title {
   padding-top: 20rpx;
   font-size: 25rpx;
+  height: 50rpx;
   color: #666;
 }
 
