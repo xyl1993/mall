@@ -4,7 +4,7 @@
       <view class='icon'>
         <view>{{item.icontext}}</view>
       </view>
-      <view class='account-detail'>
+      <view class='account-detail' data-item="{{item}}" bindtap='setAddress'>
         <view>
           <text class='name'>{{item.collect_name}}</text>
           <text class='phone'>{{item.phone}}</text>

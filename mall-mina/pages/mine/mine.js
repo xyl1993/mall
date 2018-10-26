@@ -46,7 +46,10 @@ Page({
     }
   },
   onGotUserInfo(e){
-    this.setData({ authStatus:true});
+    if (e.detail.userInfo){
+      this.setData({ authStatus: true });
+    }
+    
   },
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
@@ -73,6 +76,22 @@ Page({
         default: break;
       }
     }else{
+      wx.showToast({
+        title: '请先授权登陆',
+        icon: 'none',
+        duration: 1000
+      })
+    }
+  },
+  handleOrderFun(e) {
+    let authStatus = this.data.authStatus;
+    if (authStatus) {
+      let type = e.currentTarget.dataset.type;
+      console.log(type);
+      wx.navigateTo({
+        url: '../allorder/allorder?type=' + type
+      })
+    } else {
       wx.showToast({
         title: '请先授权登陆',
         icon: 'none',

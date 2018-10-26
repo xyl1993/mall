@@ -29,6 +29,7 @@ const getBrandList = function (_this, callback){
         })
       }else{
         _this.setData({
+          productList: productList,
           noData: true
         })
       }
@@ -131,6 +132,11 @@ Page({
     }
   },
   search:function(){
+    wx.navigateTo({
+      url: '../detail/detail'
+    })
+  },
+  toroductList:function(){
     wx.navigateTo({
       url: '../detail/detail'
     })

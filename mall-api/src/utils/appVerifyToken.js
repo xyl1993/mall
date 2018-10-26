@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const status = require('http-status');
 const config = require('../config/environment');
 function handleError(res) {
-  return res.status(status.FORBIDDEN).json('授权失败');
+  return res.status(status.FORBIDDEN).json('403');
 }
 
 exports.appVerifyToken = function (req, res, next) {

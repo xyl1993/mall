@@ -17,12 +17,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    productList:[],
-    address:[],
+    productList: [],
+    address: [],
     allPrice: 0.00,
     buttonClicked: false,
     fileIp: Config.file_servier,
-    chooseId:''
+    chooseId: ''
   },
 
   onLoad: function (options) {
@@ -47,17 +47,17 @@ Page({
   },
 
   getShopcarList: function () {
-    api.get("program/shopcar", { chooseId: this.data.chooseId}).then(res => {
+    api.get("program/shopcar", { chooseId: this.data.chooseId }).then(res => {
       let { data, status } = res;
       if (status === 200) {
         let allPrice = sumPrice(data);
-        this.setData({ productList: data, allPrice: allPrice})
+        this.setData({ productList: data, allPrice: allPrice })
       }
     });
   },
 
-  getAddress:function(){
-    api.get(`program/user/address`, { address_status:1}).then(res => {
+  getAddress: function () {
+    api.get(`program/user/address`, { address_status: 1 }).then(res => {
       const { data, status } = res;
       if (status === 200) {
         this.setData({ address: data });
@@ -65,7 +65,7 @@ Page({
     });
   },
 
-  replay:function(e){
+  replay: function (e) {
     ButtonClicked(this, e);
     wx.showLoading({
       title: '正在提交',
@@ -74,21 +74,21 @@ Page({
     let productList = this.data.productList;
     let allPrice = this.data.allPrice;
     let chooseId = this.data.chooseId;
-    let params = { allPrice, chooseId, productList, ...this.data.address[0]};
+    let params = { allPrice, chooseId, productList, ...this.data.address[0] };
     api.post(`program/order`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
-        
+
       }
     });
   },
 
-  addAddress:function(){
+  addAddress: function () {
     wx.navigateTo({
       url: '../address/address?type=order'
     })
   },
-  tabAddress:function(){
+  tabAddress: function () {
     wx.navigateTo({
       url: '../address/address?type=order'
     })

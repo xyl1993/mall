@@ -10,7 +10,9 @@
     "pages/address/address",
     "pages/addressDetail/addressDetail",
     "pages/collection/collection",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/allorder/allorder",
+    "pages/orderRecordDetail/orderRecordDetail"
   ],
   "tabBar": {
     "color": "#818181",

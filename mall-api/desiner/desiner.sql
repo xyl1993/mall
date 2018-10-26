@@ -164,8 +164,8 @@ CREATE TABLE `order_number` (
 /**
 订单表
 */
-DROP TABLE IF EXISTS  `order`;
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS  `account_order`;
+CREATE TABLE `account_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20)  DEFAULT NULL,   /*用户*/
   `order_number` varchar(50) DEFAULT NULL,   /*编号*/

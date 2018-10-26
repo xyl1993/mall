@@ -4,7 +4,14 @@ import { ButtonClicked } from '../../utils/esUtils.js'
 Page({
 
   data: {
-    addressList:[]
+    addressList:[],
+    type:''
+  },
+
+  onLoad: function (options) {
+    if (options.type) {
+      this.setData({ type: options.type });
+    };
   },
 
   /**
@@ -34,5 +41,24 @@ Page({
     wx.navigateTo({
       url: `../addressDetail/addressDetail?addressId=${id}`
     })
+  },
+  setAddress:function(e){
+    let type = this.data.type;
+    let item = e.currentTarget.dataset.item;
+    item.default_status = 1;
+    if (type){
+      wx.showLoading({
+        title: '请求中',
+        mask: true
+      });
+      api.put(`program/user/address/${item.id}`, item).then(res => {
+        const { data, status } = res;
+        if (status === 200) {
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+      });
+    }
   }
 })

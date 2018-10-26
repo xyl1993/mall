@@ -13,7 +13,8 @@
         <view class='detail-header'>
           <view class='title-content'>
             <view class='title'>title</view>
-            <view class='share'>
+            <view class='share' >
+              <button open-type="share"></button>
               <image src='../../resources/imgs/share.png'></image>
               分享
             </view>
@@ -70,7 +71,7 @@
     <view class="footer-btn join" bindtap='joinCar'>
       加入购物车
     </view>
-    <view class="footer-btn buy">
+    <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
       立即购买
     </view>
   </view>

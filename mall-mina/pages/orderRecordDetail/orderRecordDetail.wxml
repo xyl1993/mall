@@ -1,18 +1,13 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <view class='mainer'>
   <view class='cointer'>
-    <view class='address' wx:if="{{address.length>0}}" bindtap='tabAddress'>
+    <view class='address'>
       <view class='collect_name clear'>
         <view>收货人: {{address[0].collect_name}}</view>
         <view>{{address[0].phone}}</view>
       </view>
       <view>
         收货地址: {{address[0].address}}
-      </view>
-    </view>
-    <view class='address' wx:else bindtap='addAddress'>
-      <view class='ad-address'>
-        新增收货地址
       </view>
     </view>
     <view class='product-list'>
@@ -39,6 +34,5 @@
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
       <view class='other'>不含运费</view>
     </view>
-    <view class='sure-brn' bindtap='replay'>确认</view>
   </view>
 </view>

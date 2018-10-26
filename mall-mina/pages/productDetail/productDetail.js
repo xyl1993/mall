@@ -25,9 +25,24 @@ Page({
     autoplay: true,
     circular: true,
     interval: 5000,
-    duration: 1000
+    duration: 1000,
+    shouldBuy:false,
   },
   onLoad: function (options) {
+
+    let sessionid = wx.getStorageSync('sessionid')
+    if (!sessionid) {
+      wx.login({
+        success: res => {
+          api.get(`program/user/auth/` + res.code).then(res => {
+            let { data, status } = res;
+            if (status === 200) {
+              wx.setStorageSync('sessionid', data.sessionid) //把登录后获取的openId等信息保存本地
+            }
+          });
+        }
+      })
+    }
     if (options.productId) this.setData({ productId: options.productId });
     this.getProductDetail(options.productId);
     this.getCollectionStatus();
@@ -101,7 +116,9 @@ Page({
   closeDialog(){
     this.setData({ dialogStatus :false})
   },
-  joinCar(){
+  joinCar(e){
+    let type = e.currentTarget.dataset.type;
+    this.setData({ shouldBuy: type?true:false})
     let productDetail = this.data.productDetail;
     let specifications = this.data.specifications;
     let id = productDetail.specifications[0].id;//规格id
@@ -136,12 +153,18 @@ Page({
     api.post("program/shopcar",params).then(res => {
       let { data, status } = res;
       if (status === 200) {
-        wx.showToast({
-          title: '加入成功',
-          icon: 'success',
-          duration: 2000
-        })
-        this.setData({ dialogStatus:false})
+        if(this.data.shouldBuy){
+          wx.switchTab({
+            url: '/pages/shopcar/shopcar'
+          })
+        }else{
+          wx.showToast({
+            title: '加入成功',
+            icon: 'success',
+            duration: 2000
+          })
+          this.setData({ dialogStatus: false })
+        }
       }
     });
   },
@@ -154,5 +177,22 @@ Page({
         // page.onLoad();
       }
     })
+  },
+  //分享按钮函数
+  onShareAppMessage: function (ops) {
+    if (ops.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(ops.target)
+    }
+    return {
+      title: Config.share_name,
+      path: 'pages/productDetail/productDetail?productId=' + this.data.productId,
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   }
 })

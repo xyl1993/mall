@@ -13,52 +13,54 @@ Page({
    * 页面的初始数据
    */
   data: {
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.getSetting({
-      success(settingRes) {
-        wx.login({
-          success: res => {
-            api.get(`program/user/auth/` + res.code).then(res => {
-              let { data, status } = res;
-              if (status === 200) {
-                wx.setStorageSync('sessionid', data.sessionid) //把登录后获取的openId等信息保存本地
-                if (settingRes.authSetting['scope.userInfo']) {
-                  // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-                  wx.getUserInfo({
-                    success: res => {
-                      const param = {
-                        encryptedData: res.encryptedData,
-                        iv: res.iv
-                      };
-                      api.put(`program/user/auth`, param).then(res => {
-                        let { data, status } = res;
-                        wx.switchTab({
-                          url: '../index/index',
-                        })
-                      });
-                    }
-                  })
-                } else {
-                  wx.switchTab({
-                    url: '../index/index',
-                  })
+    let sessionid = wx.getStorageSync('sessionid')
+    if (!sessionid){
+      wx.getSetting({
+        success(settingRes) {
+          wx.login({
+            success: res => {
+              api.get(`program/user/auth/` + res.code).then(res => {
+                let { data, status } = res;
+                if (status === 200) {
+                  wx.setStorageSync('sessionid', data.sessionid) //把登录后获取的openId等信息保存本地
+                  if (settingRes.authSetting['scope.userInfo']) {
+                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+                    wx.getUserInfo({
+                      success: res => {
+                        const param = {
+                          encryptedData: res.encryptedData,
+                          iv: res.iv
+                        };
+                        api.put(`program/user/auth`, param).then(res => {
+                          let { data, status } = res;
+                          wx.switchTab({
+                            url: '../index/index',
+                          })
+                        });
+                      }
+                    })
+                  } else {
+                    wx.switchTab({
+                      url: '../index/index',
+                    })
+                  }
                 }
-              }
-            });
-          }
-        })
-        
-      }
-    })
-
-
-   
+              });
+            }
+          })
+        }
+      })
+    }else{
+      wx.switchTab({
+        url: '../index/index',
+      })
+    }
   },
 
   /**

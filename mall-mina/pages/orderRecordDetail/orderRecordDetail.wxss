@@ -2,6 +2,9 @@
 .mainer{
   padding-bottom: 100rpx;
 }
+.cointer{
+  margin-bottom: 30rpx;
+}
 .address{
   padding: 28rpx 25rpx;
   color: #333;

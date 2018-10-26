@@ -11,6 +11,9 @@ web.get('/order',controller.getOrderList);
 
 program.post('/order',appVerifyToken,controller.insertOrder);
 
+program.get('/order',appVerifyToken,controller.getProgramOrderList);
+
+
 router.use('/admin', admin); 
 router.use('/program', program); 
 router.use('/', web); 

@@ -159,7 +159,7 @@ const deleteAccountAddress = async(req, res)=> {
 const getAccountAddressList = async(req, res)=> {
   try{
     const { account_id } = req;
-    const { address_status } = req.params;
+    const { address_status } = req.query;
     let _sql = `select * from account_address where account_id = ?`;
     if(address_status){
       _sql = _sql + ` and default_status = ${address_status}`

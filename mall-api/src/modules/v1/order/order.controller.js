@@ -18,7 +18,7 @@ const getOrderList = async (req, res, next)=> {
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
   const {startTime,endTime} = req.query;
-  let _sql = `select * from order a left join account b on a.account_id = b.id where 1 = 1`;
+  let _sql = `select * from account_order a left join account b on a.account_id = b.id where 1 = 1`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);
@@ -42,52 +42,113 @@ const getOrderList = async (req, res, next)=> {
  */
 const insertOrder = async (req, res, next)=> {
   const { account_id } = req;
-  const {allPrice,collect_name,address,phone,productList} = req.body;
+  const {allPrice,collect_name,address,phone,productList,chooseId} = req.body;
   // const {specifications_name,number,price} = productList;
   try {
-    let _sql = `insert into order_number`;
-    const orderNumber = await pool.query(_sql).insertId;
-    _sql = `insert into order(account_id,order_number,should_price,
-      collect_name,address,phone,create_time)
-      values(?,?,?,?,?,?,?)`;
+    const orderNumberRows = Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,8-1));
+    console.log(orderNumberRows);
+    _sql = `insert into account_order(account_id,order_number,should_price,
+      collect_name,address,phone,create_time,pay_status)
+      values(?,?,?,?,?,?,?,?)`;
     const params = [
       account_id,
-      orderNumber,
+      new Date().getTime()+''+orderNumberRows,
       allPrice,
       collect_name,
       address,
       phone,
-      new Date()
+      new Date(),
+      1
     ]
     _sql = mysql.format(_sql, params);
     log.info(_sql);
-    const orderId = await pool.query(_sql).insertId;   //订单id
-
+    const orderRows = await pool.query(_sql);   //订单id
+    console.log(orderRows);
     //批量新增商品订单表
     let values = [];
     let date = new Date();
     productList.map((item,index)=>{
       values.push([
-        orderId,
-        item.product_id,
+        orderRows.insertId,
+        item.id,
         item.specifications_name,
         item.number,
         item.price,
         date
-      ])
+      ]);
     })
     _sql = `insert into order_goods (order_id,product_id,specifications_name,number,price,create_time) values ?`;
     _sql = mysql.format(_sql, [values]);
+    log.info(_sql);
     await pool.query(_sql);
-
-    res.status(status.OK).json(orderId);
+   
+    //更新购物车状态
+    _sql = `update goods_shopcar set shopcar_status = 2 where id in (${chooseId.replace(/-/g,',')})`;
+    log.info(_sql);
+    await pool.query(_sql);
+    res.status(status.OK).json(orderRows.insertId);
   } catch(err) {
     log.error(err);
     return handleError(res, err);
   }
 };
 
+/**
+ * 小程序获取所有订单
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const getProgramOrderList = async (req, res, next)=> {
+  const pageSize = ~~req.query.pageSize || 10;
+  const current = req.query.current || 1;
+  const start = (current - 1) * pageSize;
+  const {type} = req.query;
+  const {account_id} = req;
+  let _sql = `SELECT
+                *
+              FROM
+                (
+                  SELECT
+                    a.*, GROUP_CONCAT(c.cover) AS cover,
+                    count(order_number) AS count
+                  FROM
+                    account_order a
+                  LEFT JOIN order_goods b ON a.id = b.order_id
+                  LEFT JOIN product c ON c.id = b.product_id
+                  GROUP BY
+                    a.order_number
+                ) a 
+              where account_id = ${account_id}`;
+  if(type ==1){
+    //带付款
+    _sql = _sql + ` and pay_status = 1`
+  }else if(type ==2){
+    //待发货
+    _sql = _sql + ` and collect_status = 1`
+  }
+  else if(type ==3){
+    //待收货
+    _sql = _sql + ` and collect_status = 2`
+  }
+  const _countSql = `select count(*) as count from (${_sql}) a`;
+  _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
+  log.info(_sql);
+  try {
+    const rows = await pool.query(_sql);
+    const counts = await pool.query(_countSql);
+    res.status(status.OK).json({ data:rows,
+      totalItems: counts[0].count
+    });
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
+
 module.exports = {
   getOrderList,
-  insertOrder
+  insertOrder,
+  getProgramOrderList
 };

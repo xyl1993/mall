@@ -48,8 +48,8 @@ Page({
         api.put(`program/user/address/${addressId}`, formData).then(res => {
           const { data, status } = res;
           if (status === 200) {
-            wx.redirectTo({
-              url: '../address/address'
+            wx.navigateBack({
+              delta: 1
             })
           }
         });
@@ -57,8 +57,8 @@ Page({
         api.post(`program/user/address`, formData).then(res => {
           const { data, status } = res;
           if (status === 200) {
-            wx.redirectTo({
-              url: '../address/address'
+            wx.navigateBack({
+              delta: 1
             })
           }
         });

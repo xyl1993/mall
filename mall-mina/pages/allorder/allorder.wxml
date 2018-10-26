@@ -1,0 +1,46 @@
+<!--pages/allorder/allorder.wxml-->
+<view class='main'>
+  <view class='header'>
+    <view class='header-list'>
+      <view class='header-item {{type==0?"active":""}}' data-type="0" bindtap='choseType'>
+        全部
+      </view>
+      <view class='header-item {{type==1?"active":""}}' data-type="1" bindtap='choseType'>
+        待付款
+      </view>
+      <view class='header-item {{type==2?"active":""}}' data-type="2" bindtap='choseType'>
+        待发货
+      </view>
+      <view class='header-item {{type==3?"active":""}}' data-type="3" bindtap='choseType'>
+        待收货
+      </view>
+    </view>
+  </view>
+  <view class='cointer'>
+    <view class='order-list' data-id = "{{item.id}}" bindtap='toOrderDetail' wx:for="{{orderList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+      <view class='view-list'>
+        <view class='list-cointer'>
+          <view class='order-title'>订单编号: {{item.order_number}}</view>
+          <view class='list-main' >
+            <image class='img-cointer' wx:for="{{item.cover}}" wx:key="i" wx:for-item="img" wx:for-index="i" src='{{fileIp+img}}'></image>
+          </view>
+        </view>
+      </view>
+      <view class='price-list'>
+        共计 {{item.count}} 件商品 合计：￥{{item.should_price}}
+      </view>
+      <!-- <view class='option-list' wx-if="{{type == 1 || type == 3}}">
+        <view class='btn error' wx-if="{{type == 1}}">立即付款</view>
+        <view class='btn default' wx-if="{{type == 1}}">删除订单</view>
+        <view class='btn error' wx-if="{{type == 3}}">确认收货</view>
+      </view> -->
+    </view>
+  </view>
+  <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
+  </view>
+  <view class="weui-loadmore" wx:if="{{noData}}">
+    <view class="weui-loadmore__tips">没有更多记录</view>
+  </view>
+</view>
