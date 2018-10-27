@@ -297,7 +297,7 @@ export default {
         slidesPerView: 'auto',
         freeMode: true,
         scrollbar: {
-          el: '.swiper-scrollbar'
+          el: '.swiper-scrollbar',
         },
         mousewheel: true
       },
@@ -326,7 +326,6 @@ export default {
     swiperSlide
   },
   mounted() {
-    
     this.filePath = this.userInfo.filePath;
     let token = localStorage.getItem("token");
     this.productId = this.$route.query.scree;
@@ -338,7 +337,8 @@ export default {
       });
     }
     this.headers = { "token": token };
-    this.getBrandList();
+    let _this = this;
+    _this.getBrandList();
     
   },
   methods: {
@@ -420,6 +420,7 @@ export default {
               if (statusValid(this, status, data)) {
                 this.$message({
                   message: '保存成功',
+                  duration:1000,
                   type: 'success',
                   onClose:function(){
                     _this.actionStatus = false;
@@ -529,7 +530,6 @@ export default {
   border-radius: 55px;
   box-shadow: 0px 0px 0px 2px #aaa;
   width: 320px;
-  height: 568px;
   padding: 105px 25px;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;

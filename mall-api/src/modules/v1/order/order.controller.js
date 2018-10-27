@@ -18,9 +18,9 @@ const getOrderList = async (req, res, next)=> {
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
   const {startTime,endTime} = req.query;
-  let _sql = `select * from account_order a left join account b on a.account_id = b.id where 1 = 1`;
+  let _sql = `select a.*,b.nikename,b.city,b.provice,b.country,b.portrait from account_order a left join account b on a.account_id = b.id where 1 = 1`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
-  _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
+  _sql = _sql + ` order by a.create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);
   try {
     const rows = await pool.query(_sql);
@@ -70,10 +70,10 @@ const insertOrder = async (req, res, next)=> {
     productList.map((item,index)=>{
       values.push([
         orderRows.insertId,
-        item.id,
-        item.specifications_name,
+        item.product_id,
+        item.name,
         item.number,
-        item.price,
+        item.current_price,
         date
       ]);
     })
@@ -146,9 +146,54 @@ const getProgramOrderList = async (req, res, next)=> {
   }
 };
 
+getOrderDetail =  async (req, res, next)=> {
+  const {order_number} = req.params;  
+  try {
+    let sql =  `SELECT
+                  a.*, 
+                  d.nikename,
+                  d.city,
+                  d.provice,
+                  d.country,
+                  d.portrait
+                FROM
+                  account_order a
+                LEFT JOIN account d ON d.id = a.account_id
+                WHERE
+                order_number = ?`;
+    let params = [order_number];
+    sql = mysql.format(sql,params);
+    const rows = await pool.query(sql);
+    let orderObj = rows[0];
+    let productIdArr = [];
+ 
+    sql = `select 
+      a.specifications_name,
+      a.number,
+      a.price,
+      a.order_goods_status,
+      a.product_id,
+      b.title,
+      b.cover,
+      c.name as brand_name,
+      d.name as type_name
+      from order_goods a left join product b on a.product_id = b.id 
+      left join goods_brand c on c.id = b.brand_id
+      left join goods_type d on d.id = b.type_id
+      where a.order_id = ${orderObj.id}`;
+    const p_rows = await pool.query(sql);
+    log.info(sql);
+    orderObj.productInfo = p_rows;
+    res.status(status.OK).json(orderObj);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
 
 module.exports = {
   getOrderList,
   insertOrder,
-  getProgramOrderList
+  getProgramOrderList,
+  getOrderDetail
 };

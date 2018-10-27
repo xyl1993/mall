@@ -7,12 +7,12 @@ const web = express.Router();
 const program = express.Router();
 const controller = require('./order.controller');
 
-web.get('/order',controller.getOrderList);
-
 program.post('/order',appVerifyToken,controller.insertOrder);
 
 program.get('/order',appVerifyToken,controller.getProgramOrderList);
 
+admin.get('/order',verifyToken,controller.getOrderList);
+admin.get('/order/:order_number',verifyToken,controller.getOrderDetail);
 
 router.use('/admin', admin); 
 router.use('/program', program); 

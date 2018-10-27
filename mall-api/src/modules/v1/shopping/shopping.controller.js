@@ -33,7 +33,7 @@ const getShopcarList = async (req, res, next)=> {
     const { chooseId } = req.query;
     let params = [req.account_id];
     
-    let sql = `select a.id,a.number,a.create_time,b.title,b.cover,c.current_price,c.name
+    let sql = `select a.id,a.number,a.create_time,b.id as product_id,b.title,b.cover,c.current_price,c.name
     from goods_shopcar a 
     left join product b on a.product_id = b.id
     left join product_specifications c on a.specifications_id = c.id
