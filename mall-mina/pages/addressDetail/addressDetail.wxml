@@ -23,7 +23,7 @@
     </view>
   </view>
   <view class='btn-view'>
-    <button class='sure-btn' size="mini" loading="{{loading}}" form-type='submit'
-		> 保存 </button>
+    <button class='sure-btn' loading="{{loading}}" form-type='submit'
+		>保存</button>
   </view>
 </form>

@@ -52,8 +52,7 @@
       <image src='../../resources/imgs/helperor2.png'></image>
       <view class='text'>联系客服</view>
     </view>
-    <view class='util-item' wx:if="{{isAdmin === 1}}">
-      <button open-type="contact" class='contact-btn'></button>
+    <view class='util-item' wx:if="{{isAdmin === 1}}" data-type='2' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/fh.png'></image>
       <view class='text'>去发货</view>
     </view>

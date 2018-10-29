@@ -64,6 +64,21 @@ Page({
   onGotUserInfo(e){
     if (e.detail.userInfo){
       this.setData({ authStatus: true });
+      // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+      wx.getUserInfo({
+        success: res => {
+          const param = {
+            encryptedData: res.encryptedData,
+            iv: res.iv
+          };
+          api.put(`program/user/auth`, param).then(res => {
+            let { data, status } = res;
+            wx.switchTab({
+              url: '../index/index',
+            })
+          });
+        }
+      })
     }
   },
   getUserInfo: function (e) {

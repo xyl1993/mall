@@ -14,8 +14,12 @@ const getProgramUserList = async (req, res, next)=> {
     const pageSize = ~~req.query.pageSize || 10;
     const current = req.query.current || 1;
     const start = (current - 1) * pageSize;
+    const { nikename } = req.query;
     let sql = `select * from account where 1 = 1`;
     const _countSql = `select count(*) as count from (${sql}) a`;
+    if(nikename){
+      sql = sql + ` and nikename like '%${nikename}%'`
+    }
     sql = sql + ` order by create_time desc limit ${start}, ${pageSize}`;
     const rows = await pool.query(sql);
     const counts = await pool.query(_countSql);

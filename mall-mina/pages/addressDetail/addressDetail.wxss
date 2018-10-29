@@ -43,7 +43,9 @@ textarea{
   background-color: #ff3364;
   border:none;
   color: #fff;
-  padding: 25rpx 0;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 30rpx;
 }
 .btn-view{
   padding: 0 20rpx;

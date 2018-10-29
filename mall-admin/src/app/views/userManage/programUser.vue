@@ -1,17 +1,13 @@
 <template>
   <div class="cointer-box">
     <div class="toolbar el-col el-col-24">
-      <el-form :inline="true" class="demo-form-inline basetable-search-form">
-        <div class="el-col-6">
-          <el-form-item label="支付状态" class="el-col-6">
-            
-          </el-form-item>
-        </div>
-        <div class="el-col-6" style="margin-top:10px;">
-          <el-form-item>
-            <el-button type="primary" size="small" @click.native.prevent="search">查询</el-button>
-          </el-form-item>
-        </div>
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item>
+          <el-input v-model="nikename" @keyup.enter.native="search" placeholder="请输入昵称"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="small" @click.native.prevent="search">查询</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="my-table">
@@ -66,6 +62,7 @@ export default {
       pageSize: pageSize,
       formStatus: false,
       current: 1,
+      nikename:'',
       dataTable: [],
     };
   },
@@ -80,7 +77,8 @@ export default {
       this.listLoading = true;
       let params = {
         current: this.current,
-        pageSize: pageSize
+        pageSize: pageSize,
+        nikename:this.nikename
       };
       service.getProgramUserList(params).then(res => {
         let { data, status } = res;

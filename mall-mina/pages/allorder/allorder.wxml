@@ -32,7 +32,7 @@
       <view class='option-list' wx-if="{{isAdmin == 1 && (item.collect_status === 1)}}">
         <view class='btn error'  data-order_number = "{{item.order_number}}" bindtap='deliverGoods' wx-if="{{item.collect_status === 1}}">点击发货</view>
       </view>
-      <view class='option-list' wx-if="{{isAdmin == 0 && (item.collect_status === 1 || item.collect_status === 3)}}">
+      <view class='option-list' wx-if="{{isAdmin == 0 && (item.collect_status === 3)}}">
         <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 3}}">确认收货</view>
       </view>
     </view>
