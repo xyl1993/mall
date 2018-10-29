@@ -98,7 +98,7 @@ export default {
               Cookies.set("mallPassword", loginParams.password, { expires: 7 });
               //往vuex中设置用户对象
               this.$store.commit("setUserInfo", data);
-              this.$router.push({ path: "/analysis-cointer" });
+              this.$router.push({ path: "/orderList" });
             }
           });
         } else {
