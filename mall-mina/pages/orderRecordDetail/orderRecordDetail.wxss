@@ -1,4 +1,5 @@
 /* pages/order/order.wxss */
+@import '../addressDetail/addressDetail.wxss';
 .mainer{
   padding-bottom: 100rpx;
 }
@@ -106,9 +107,26 @@
 .sum {
   font-size: 30rpx;
   color: #333;
+  text-align: right;
 }
 
 .other {
   font-size: 24rpx;
+  text-align: right;
   color: #dbdbdb;
+}
+
+
+.input-list{
+  margin-top: 30rpx;
+}
+.input-dyn{
+  display: flex;
+  align-items: center;
+}
+.input-dyn input{
+  flex: 1;
+}
+.input-dyn label{
+  width: 140rpx;
 }

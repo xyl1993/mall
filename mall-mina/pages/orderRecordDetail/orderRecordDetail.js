@@ -17,80 +17,74 @@ Page({
    * 页面的初始数据
    */
   data: {
-    productList: [],
-    address: [],
-    allPrice: 0.00,
-    buttonClicked: false,
     fileIp: Config.file_servier,
-    chooseId: ''
+    buttonClicked: false,
+    orderInfo:{
+      should_price:''
+    },
+    status:'',
+    loading:false,
+    formData:{}
   },
 
   onLoad: function (options) {
-    if (options.chooseId) {
-      this.setData({ chooseId: options.chooseId });
-      this.getShopcarList();
+    if (options.order_number) {
+      this.setData({ order_number: options.order_number });
+      this.getOrderDetail(options.order_number);
     };
+    if (options.status){
+      this.setData({ status: options.status });
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    this.getAddress();
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  getShopcarList: function () {
-    api.get("program/shopcar", { chooseId: this.data.chooseId }).then(res => {
-      let { data, status } = res;
-      if (status === 200) {
-        let allPrice = sumPrice(data);
-        this.setData({ productList: data, allPrice: allPrice })
-      }
-    });
-  },
-
-  getAddress: function () {
-    api.get(`program/user/address`, { address_status: 1 }).then(res => {
+  getOrderDetail: function (order_number){
+    api.get(`order/${order_number}`).then(res => {
       const { data, status } = res;
       if (status === 200) {
-        this.setData({ address: data });
+        this.setData({ orderInfo: data})
       }
     });
   },
-
-  replay: function (e) {
+  formSubmit: function (e) {
     ButtonClicked(this, e);
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
-    });
-    let productList = this.data.productList;
-    let allPrice = this.data.allPrice;
-    let chooseId = this.data.chooseId;
-    let params = { allPrice, chooseId, productList, ...this.data.address[0] };
-    api.post(`program/order`, params).then(res => {
-      const { data, status } = res;
-      if (status === 200) {
+    let subForm = e.detail.value;
+    let formData = this.data.formData;
+    let order_number = this.data.order_number;
+    formData.logistics_name = subForm.logistics_name;
+    formData.logistics_number = subForm.logistics_number;
 
-      }
-    });
+    if (validate(this, formData)) {
+      wx.showLoading({
+        title: '请求中',
+        mask: true
+      });
+      api.put(`program/order/deliver/${order_number}`, formData).then(res => {
+        const { data, status } = res;
+        if (status === 200) {
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+      });
+    }
   },
+})
 
-  addAddress: function () {
-    wx.navigateTo({
-      url: '../address/address?type=order'
-    })
-  },
-  tabAddress: function () {
-    wx.navigateTo({
-      url: '../address/address?type=order'
+function validate(_this, formData) {
+  let showToast = text => {
+    wx.showToast({
+      title: text,
+      icon: 'none',
+      duration: 1000
     })
   }
-})
+  if (!formData.logistics_name) {
+    showToast('请输入物流名称');
+    return false;
+  }
+  if (!formData.logistics_number) {
+    showToast('请输入物流单号');
+    return false;
+  }
+  return true;
+}

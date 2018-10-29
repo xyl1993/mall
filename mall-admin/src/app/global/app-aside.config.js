@@ -1,11 +1,11 @@
 export const asideTree = {
   roleFun: [{
-    "name": "Dashboard",
-    "alienName": 'Dashboard',
-    "iconCls": "iconfont icon-dashboard",
+    "name": "订单管理",
+    "alienName": '订单管理',
+    "iconCls": "iconfont icon-dingdan",
     "path": "",
     "children": [
-      {path: '/analysis-cointer', name: '分析页' }
+      {path: '/orderList', name: '订单列表' },
     ]
   },{
     "name": "首页设置",
@@ -25,12 +25,12 @@ export const asideTree = {
       {path: '/goodsBrand', name: '品牌类型' },
     ]
   },{
-    "name": "订单管理",
-    "alienName": '订单管理',
-    "iconCls": "iconfont icon-dingdan",
+    "name": "用户管理",
+    "alienName": '用户管理',
+    "iconCls": "iconfont icon-yonghu",
     "path": "",
     "children": [
-      {path: '/orderList', name: '订单列表' },
+      {path: '/programUser', name: '小程序用户' },
     ]
   }]
 };

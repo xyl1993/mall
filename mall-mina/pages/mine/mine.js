@@ -1,10 +1,11 @@
-//index.js
-//获取应用实例
+
+import api from '../../utils/api.js';
 const app = getApp()
 
 Page({
   data: {
     userInfo: {},
+    isAdmin:0,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     authStatus:false
   },
@@ -44,12 +45,26 @@ Page({
         }
       })
     }
+    this.getUserRole();
+  },
+  getUserRole:function(){
+    api.get("program/user").then(res => {
+      let {
+        data,
+        status
+      } = res;
+      if (status === 200) {
+        console.log(data);
+        this.setData({
+          isAdmin: data.is_admin
+        });
+      }
+    });
   },
   onGotUserInfo(e){
     if (e.detail.userInfo){
       this.setData({ authStatus: true });
     }
-    
   },
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo

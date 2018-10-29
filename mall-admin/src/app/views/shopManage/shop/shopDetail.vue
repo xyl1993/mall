@@ -121,7 +121,7 @@
       <el-col :span="8">
         <div class="phone">
           <div class="phone-cointer">
-            <swiper :options="phoneSwiperOption">
+            <swiper :options="phoneSwiperOption" ref="mySwiper">
               <swiper-slide class="text">
                 <swiper :options="swiperOption">
                   <swiper-slide v-for="(slide, index) in fileList" :key="index">

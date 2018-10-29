@@ -19,15 +19,15 @@
                       </el-col>
                       <el-col :span="12">
                         <div class="list-index-term">创建时间</div>
-                        <div class="list-index-detail">{{orderInfo.create_time}}</div>
+                        <div class="list-index-detail">{{orderInfo.create_time | dateTimeFilter}}</div>
                       </el-col>
                       <el-col :span="12">
                         <div class="list-index-term">付款状态</div>
-                        <div class="list-index-detail">{{orderInfo.pay_status}}</div>
+                        <div class="list-index-detail">{{orderInfo.pay_status | payStatusFilter}}</div>
                       </el-col>
                       <el-col :span="12">
                         <div class="list-index-term">发货状态</div>
-                        <div class="list-index-detail">{{orderInfo.collect_status}}</div>
+                        <div class="list-index-detail">{{orderInfo.collect_status | collectStatusFilter}}</div>
                       </el-col>
                     </el-row>
                   </div>
@@ -125,7 +125,22 @@ export default {
     this.orderNumber = this.$route.query.scree;
     this.getOrderDetail();
   },
-  filters: {},
+  filters: {
+    payStatusFilter: function(value) {
+      return {
+        1:'待支付',
+        2:'已支付',
+        3:'已退款',
+      }[value]||''
+    },
+    collectStatusFilter: function(value) {
+      return {
+        1:'待发货',
+        2:'待收货',
+        3:'已收货',
+      }[value]||'未发货'
+    },
+  },
   methods: {
     getOrderDetail() {
       service.getOrderDetail(this.orderNumber).then(res => {

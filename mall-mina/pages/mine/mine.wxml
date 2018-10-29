@@ -17,10 +17,10 @@
         <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
       </view>
     </view>
-    <view class='util-item' data-type='1' bindtap='handleOrderFun'>
+    <!-- <view class='util-item' data-type='1' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/dfk.png' style='width:60rpx;height:60rpx;'></image>
       <view class='text'>待付款</view>
-    </view>
+    </view> -->
     <view class='util-item' data-type='2' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/dfh.png' style='width:60rpx;height:60rpx;'></image>
       <view class='text'>待发货</view>
@@ -51,6 +51,11 @@
       <button open-type="contact" class='contact-btn'></button>
       <image src='../../resources/imgs/helperor2.png'></image>
       <view class='text'>联系客服</view>
+    </view>
+    <view class='util-item' wx:if="{{isAdmin === 1}}">
+      <button open-type="contact" class='contact-btn'></button>
+      <image src='../../resources/imgs/fh.png'></image>
+      <view class='text'>去发货</view>
     </view>
   </view>
 </view>

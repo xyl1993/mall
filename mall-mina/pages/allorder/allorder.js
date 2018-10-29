@@ -48,6 +48,7 @@ Page({
    */
   data: {
     current: 1,
+    isAdmin:0,
     pageSize: 10,
     fileIp: Config.file_servier,
     type:0,
@@ -63,6 +64,56 @@ Page({
     console.log(options.type);
     if (options.type) this.setData({ type: options.type });
     getProgramOrderList(this);
+    this.getUserRole();
+  },
+  getUserRole: function () {
+    api.get("program/user").then(res => {
+      let {
+        data,
+        status
+      } = res;
+      if (status === 200) {
+        console.log(data);
+        this.setData({
+          isAdmin: data.is_admin
+        });
+      }
+    });
+  },
+  //删除订单
+  deleteOrder:function(e){
+    let order_number = e.currentTarget.dataset.order_number;
+    api.delete("program/order/${order_number}").then(res => {
+      let {
+        data,
+        status
+      } = res;
+      if (status === 200) {
+        this.setData({ isHideLoadMore: true, current: 1, noData: false });
+        getProgramOrderList(this);
+      }
+    });
+  },
+  //收货
+  collectGoods:function(e){
+    let order_number = e.currentTarget.dataset.order_number;
+    api.put("program/collect/${order_number}").then(res => {
+      let {
+        data,
+        status
+      } = res;
+      if (status === 200) {
+        this.setData({ isHideLoadMore: true, current: 1, noData: false });
+        getProgramOrderList(this);
+      }
+    });
+  },
+  //发货
+  deliverGoods: function (e) {
+    let order_number = e.currentTarget.dataset.order_number;
+    wx.navigateTo({
+      url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&status=deliver` 
+    })
   },
   choseType:function(e){
     let _this = this;
@@ -104,4 +155,10 @@ Page({
       });
     }
   },
+  toOrderDetail:function(e){
+    let order_number = e.currentTarget.dataset.order_number;
+    wx.navigateTo({
+      url: '../orderRecordDetail/orderRecordDetail?order_number=' + order_number
+    })
+  }
 })

@@ -6,6 +6,7 @@ const common = require('./common/routes');
 const homeSetting = require('./homeSetting/routes');
 const order = require('./order/routes');
 const shopping = require('./shopping/routes');
+const user = require('./user/routes');
 
 router.use(auth);
 router.use(product);
@@ -13,4 +14,5 @@ router.use(common);
 router.use(homeSetting);
 router.use(order);
 router.use(shopping);
+router.use(user);
 module.exports = router;

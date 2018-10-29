@@ -248,6 +248,22 @@ const updateRecommend = async (req, res, next)=> {
     return handleError(res, err);
   }
 };
+
+const updatereadNumber = async (req, res, next)=> {
+  const id = Number(req.params.id);
+  let _sql = `update product set read_number = read_number + 1 where id= ?`;
+  let params = [
+    id
+  ];
+  _sql = mysql.format(_sql, params);
+  try {
+    await pool.query(_sql);
+    res.status(status.OK).json(id);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
 module.exports = {
   getProductList,
   addProduct,
@@ -255,5 +271,6 @@ module.exports = {
   getProductDetail,
   editProduct,
   updateRecommend,
-  deleteSpecifications
+  deleteSpecifications,
+  updatereadNumber
 };

@@ -8,6 +8,7 @@ import ShopManage from './views/shopManage/routes';
 import Dashboard from './views/dashboard/routes';
 import HomeSetting from './views/homeSetting/routes';
 import OrderManage from './views/OrderManage/routes';
+import userManage from './views/userManage/routes';
 /**
  * 工作台目录模块 end
  */
@@ -20,9 +21,10 @@ import PagesLayout from './views/pages/routes';
 let routes = [{
     path: '/',
     component: FullLayout,
-    name: 'dashboard',
+    name: '订单管理',
+    redirect:'/orderList',
     children: [
-      ...Dashboard
+      ...OrderManage
     ]
   }, {
     path: '/',
@@ -41,9 +43,9 @@ let routes = [{
   }, {
     path: '/',
     component: FullLayout,
-    name: '订单管理',
+    name: '用户管理',
     children: [
-      ...OrderManage
+      ...userManage
     ]
   },
   {

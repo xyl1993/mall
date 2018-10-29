@@ -1,6 +1,12 @@
 var filters = {
   toFix: function(value) {
-    return value.toFixed(2);
+    console.log(value)
+    if (value){
+      return Number(value).toFixed(2);
+    }else{
+      return ''
+    }
+   
   },
 }
 module.exports = {

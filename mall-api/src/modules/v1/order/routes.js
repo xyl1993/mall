@@ -11,8 +11,14 @@ program.post('/order',appVerifyToken,controller.insertOrder);
 
 program.get('/order',appVerifyToken,controller.getProgramOrderList);
 
+program.put('/order/collect/:order_number',appVerifyToken,controller.collectGoods);
+program.put('/order/deliver/:order_number',appVerifyToken,controller.deliverGoods);
+program.delete('/order/:order_number',appVerifyToken,controller.deleteOrder);
+
+
+
 admin.get('/order',verifyToken,controller.getOrderList);
-admin.get('/order/:order_number',verifyToken,controller.getOrderDetail);
+web.get('/order/:order_number',controller.getOrderDetail);
 
 router.use('/admin', admin); 
 router.use('/program', program); 

@@ -134,6 +134,7 @@ CREATE TABLE `account` (
   `portrait` varchar(500) DEFAULT NULL,  
   `create_time` datetime DEFAULT NULL,  
   `status` int DEFAULT 1,     /*1 关注  0取消关注*/
+  `is_admin` int DEFAULT 0,     /*1是管理员 拥有发货权限*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -176,7 +177,7 @@ CREATE TABLE `account_order` (
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
   `pay_status` int DEFAULT 1,      /*支付状态   1待支付  2支付 3退款*/
   `pay_time` datetime DEFAULT NULL,     /*支付时间*/
-  `collect_status` int DEFAULT NULL,      /*收货状态   1待发货 2待收货 3收货*/
+  `collect_status` int DEFAULT 1,      /*收货状态   1待发货 2待收货 3收货*/
   `ship_time` datetime DEFAULT NULL,      /*发货时间*/
   `receipt_time` datetime DEFAULT NULL,      /*收获时间*/
   `logistics_name` varchar(50) DEFAULT NULL,      /*物流名称*/

@@ -6,5 +6,5 @@ import api from '../../utils/api.js';
  */
 export const getOrderList = (data) => { return api.get(`admin/order`,data).then(res => res.data); };
 
-export const getOrderDetail = (data) => { return api.get(`admin/order/${data}`).then(res => res.data); };
+export const getOrderDetail = (data) => { return api.get(`order/${data}`).then(res => res.data); };
 

@@ -46,6 +46,11 @@ Page({
     if (options.productId) this.setData({ productId: options.productId });
     this.getProductDetail(options.productId);
     this.getCollectionStatus();
+    this.updatereadNumber(options.productId);
+  },
+  updatereadNumber: function (productId){
+    api.put(`product/${productId}/read_number`).then(res => {
+    });
   },
   getProductDetail: function (productId) {
     api.get(`product/${productId}`).then(res => {

@@ -5,9 +5,9 @@
       <view class='header-item {{type==0?"active":""}}' data-type="0" bindtap='choseType'>
         全部
       </view>
-      <view class='header-item {{type==1?"active":""}}' data-type="1" bindtap='choseType'>
+      <!-- <view class='header-item {{type==1?"active":""}}' data-type="1" bindtap='choseType'>
         待付款
-      </view>
+      </view> -->
       <view class='header-item {{type==2?"active":""}}' data-type="2" bindtap='choseType'>
         待发货
       </view>
@@ -17,8 +17,8 @@
     </view>
   </view>
   <view class='cointer'>
-    <view class='order-list' data-id = "{{item.id}}" bindtap='toOrderDetail' wx:for="{{orderList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
-      <view class='view-list'>
+    <view class='order-list' wx:for="{{orderList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+      <view class='view-list' data-order_number = "{{item.order_number}}" bindtap='toOrderDetail'>
         <view class='list-cointer'>
           <view class='order-title'>订单编号: {{item.order_number}}</view>
           <view class='list-main' >
@@ -29,11 +29,12 @@
       <view class='price-list'>
         共计 {{item.count}} 件商品 合计：￥{{item.should_price}}
       </view>
-      <!-- <view class='option-list' wx-if="{{type == 1 || type == 3}}">
-        <view class='btn error' wx-if="{{type == 1}}">立即付款</view>
-        <view class='btn default' wx-if="{{type == 1}}">删除订单</view>
-        <view class='btn error' wx-if="{{type == 3}}">确认收货</view>
-      </view> -->
+      <view class='option-list' wx-if="{{isAdmin == 1 && (item.collect_status === 1)}}">
+        <view class='btn error'  data-order_number = "{{item.order_number}}" bindtap='deliverGoods' wx-if="{{item.collect_status === 1}}">点击发货</view>
+      </view>
+      <view class='option-list' wx-if="{{isAdmin == 0 && (item.collect_status === 1 || item.collect_status === 3)}}">
+        <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 3}}">确认收货</view>
+      </view>
     </view>
   </view>
   <view class="weui-loadmore" hidden="{{isHideLoadMore}}">

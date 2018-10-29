@@ -25,7 +25,7 @@ web.get('/goods-type',goodsController.getTypeList)  //获取类型列表
 
 router.use('/admin', admin); 
 
-
+web.put('/product/:id/read_number',productController.updatereadNumber);   //更新浏览次数
 web.get('/product',productController.getProductList)  //获取商品列表
 web.get('/product/:id', productController.getProductDetail);   //后台获取商品详情
 router.use('/', web);  

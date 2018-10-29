@@ -17,8 +17,23 @@ const getOrderList = async (req, res, next)=> {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
-  const {startTime,endTime} = req.query;
+  const {start_time,end_time,collect_status,pay_status,order_number} = req.query;
   let _sql = `select a.*,b.nikename,b.city,b.provice,b.country,b.portrait from account_order a left join account b on a.account_id = b.id where 1 = 1`;
+  if(start_time){
+    _sql = _sql+` and a.create_time >= '${start_time}'`
+  }
+  if(end_time){
+    _sql = _sql+` and a.create_time <= '${end_time} 23:59:59'`
+  }
+  if(collect_status){
+    _sql = _sql+` and a.collect_status = '${collect_status}'`
+  }
+  if(pay_status){
+    _sql = _sql+` and a.pay_status = '${pay_status}'`
+  }
+  if(order_number){
+    _sql = _sql+` and a.order_number = '${order_number}'`
+  }
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by a.create_time desc limit ${start}, ${pageSize}`;
   log.info(_sql);
@@ -46,7 +61,6 @@ const insertOrder = async (req, res, next)=> {
   // const {specifications_name,number,price} = productList;
   try {
     const orderNumberRows = Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,8-1));
-    console.log(orderNumberRows);
     _sql = `insert into account_order(account_id,order_number,should_price,
       collect_name,address,phone,create_time,pay_status)
       values(?,?,?,?,?,?,?,?)`;
@@ -105,6 +119,10 @@ const getProgramOrderList = async (req, res, next)=> {
   const start = (current - 1) * pageSize;
   const {type} = req.query;
   const {account_id} = req;
+  //获取用户角色
+  let userSql = `select is_admin from account where id = ${account_id}`;
+  let isAdmin = await pool.query(userSql);
+
   let _sql = `SELECT
                 *
               FROM
@@ -119,7 +137,10 @@ const getProgramOrderList = async (req, res, next)=> {
                   GROUP BY
                     a.order_number
                 ) a 
-              where account_id = ${account_id}`;
+              where order_status = 1`;
+  if(isAdmin === 0){
+    _sql = _sql + ` and account_id = ${account_id}`;
+  }
   if(type ==1){
     //带付款
     _sql = _sql + ` and pay_status = 1`
@@ -190,10 +211,63 @@ getOrderDetail =  async (req, res, next)=> {
     return handleError(res, err);
   }
 };
+//确认收货
+collectGoods =  async (req, res, next)=> {
+  const {order_number} = req.params;  
+  try {
+    let sql =  `update account_order set collect_status = 3,receipt_time=? where order_number = ?`;
+    let params = [new Date(),order_number];
+    sql = mysql.format(sql,params);
+    await pool.query(sql);
+    res.status(status.OK).json(order_number);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+//删除订单
+deleteOrder =  async (req, res, next)=> {
+  const {order_number} = req.params;  
+  try {
+    let sql =  `update account_order set order_status = 0 where order_number = ?`;
+    let params = [order_number];
+    sql = mysql.format(sql,params);
+    await pool.query(sql);
+    res.status(status.OK).json(order_number);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+//发货
+deliverGoods =  async (req, res, next)=> {
+  const {order_number} = req.params;  
+  const {logistics_name,logistics_number} = req.body;  
+  try {
+    let sql =  `update account_order set
+      collect_status = 2,
+      pay_status = 2,
+      logistics_name=?,
+      logistics_number=? ,
+      ship_time=?
+      where order_number = ?`;
+    let params = [logistics_name,logistics_number,new Date(),order_number];
+    sql = mysql.format(sql,params);
+    log.info(sql);
+    await pool.query(sql);
+    res.status(status.OK).json(order_number);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
 
 module.exports = {
   getOrderList,
   insertOrder,
   getProgramOrderList,
-  getOrderDetail
+  getOrderDetail,
+  collectGoods,
+  deleteOrder,
+  deliverGoods
 };
