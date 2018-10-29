@@ -43,6 +43,7 @@ textarea{
   background-color: #ff3364;
   border:none;
   color: #fff;
+  padding: 25rpx 0;
 }
 .btn-view{
   padding: 0 20rpx;

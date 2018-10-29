@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column prop="portrait" align="center" label="头像">
           <template slot-scope="scope">
-            <img class="portrait" :src="scope.row.portrait" alt="">
+            <img v-if="scope.row.portrait" class="portrait" :src="scope.row.portrait" alt="">
           </template>
         </el-table-column>
         <el-table-column prop="country" align="center" label="国家">

@@ -39,6 +39,10 @@
       </view>
     </view>
   </view>
+  <view class='no-data' wx:if="{{carList.length===0}}">
+    <image class='no-data-png' src='../../resources/imgs/nodata.png'></image>
+    <view>暂无数据</view>
+  </view>
   <view class='bottom'>
     <view class='bottom-left'>
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>

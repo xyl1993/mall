@@ -1,5 +1,5 @@
 /* pages/shopcar/shopcar.wxss */
-
+@import '../../resources/css/noData.wxss';
 .cointer {
   width: 100%;
   box-sizing: border-box;

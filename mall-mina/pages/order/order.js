@@ -86,7 +86,7 @@ Page({
         const { data, status } = res;
         if (status === 200) {
           wx.redirectTo({
-            url: '../orderRecordDetail/orderRecordDetail'
+            url: '../orderSuccess/orderSuccess'
           })
         }
       });
