@@ -81,6 +81,7 @@ const insertOrder = async (req, res, next)=> {
     //批量新增商品订单表
     let values = [];
     let date = new Date();
+    let productIdArr = [];
     productList.map((item,index)=>{
       values.push([
         orderRows.insertId,
@@ -90,6 +91,7 @@ const insertOrder = async (req, res, next)=> {
         item.current_price,
         date
       ]);
+      productIdArr.push(item.product_id);
     })
     _sql = `insert into order_goods (order_id,product_id,specifications_name,number,price,create_time) values ?`;
     _sql = mysql.format(_sql, [values]);
@@ -98,6 +100,11 @@ const insertOrder = async (req, res, next)=> {
    
     //更新购物车状态
     _sql = `update goods_shopcar set shopcar_status = 2 where id in (${chooseId.replace(/-/g,',')})`;
+    log.info(_sql);
+    await pool.query(_sql);
+
+    //更新商品的销售数量
+    _sql = `update product set seal_num = seal_num + 1 where id in (${productIdArr.join()})`
     log.info(_sql);
     await pool.query(_sql);
     res.status(status.OK).json(orderRows.insertId);

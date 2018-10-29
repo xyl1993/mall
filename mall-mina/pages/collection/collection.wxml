@@ -9,4 +9,8 @@
       </view>
     </view>
   </view>
+  <view class='no-data' wx:if="{{collectionList.length===0}}">
+    <image class='no-data-png' src='../../resources/imgs/nodata.png'></image>
+    <view>暂无数据</view>
+  </view>
 </view>

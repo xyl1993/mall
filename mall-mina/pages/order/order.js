@@ -67,20 +67,30 @@ Page({
 
   replay:function(e){
     ButtonClicked(this, e);
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
-    });
-    let productList = this.data.productList;
-    let allPrice = this.data.allPrice;
-    let chooseId = this.data.chooseId;
-    let params = { allPrice, chooseId, productList, ...this.data.address[0]};
-    api.post(`program/order`, params).then(res => {
-      const { data, status } = res;
-      if (status === 200) {
-        
-      }
-    });
+    if (this.data.address.length===0){
+      wx.showToast({
+        title: '请选择收货地址',
+        icon: 'none',
+        duration: 1000
+      })
+    }else{
+      wx.showLoading({
+        title: '正在提交',
+        mask: true
+      });
+      let productList = this.data.productList;
+      let allPrice = this.data.allPrice;
+      let chooseId = this.data.chooseId;
+      let params = { allPrice, chooseId, productList, ...this.data.address[0] };
+      api.post(`program/order`, params).then(res => {
+        const { data, status } = res;
+        if (status === 200) {
+          wx.redirectTo({
+            url: '../orderRecordDetail/orderRecordDetail'
+          })
+        }
+      });
+    }
   },
 
   addAddress:function(){

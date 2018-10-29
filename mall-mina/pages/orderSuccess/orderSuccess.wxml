@@ -1,0 +1,10 @@
+<view class='cointer'>
+  <button open-type="contact" class='contact-btn'></button>
+  <view class='success-cointer'>
+    <image src='../../resources/imgs/success.png'></image>
+    <view>
+      <text>下单成功，点击屏幕联系客服付款</text>
+    </view>
+
+  </view>
+</view>

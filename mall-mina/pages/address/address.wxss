@@ -1,3 +1,5 @@
+@import '../../resources/css/noData.wxss';
+
 .address-item {
   display: flex;
   flex-direction: rpw;
@@ -65,10 +67,8 @@
 
 .add-btn {
   width: 90rpx;
-  height: 90rpx;
   background: #FE8DAE;
   text-align: center;
-  line-height: 90rpx;
   border-radius: 50%;
   overflow: hidden;
   position: fixed;
@@ -76,4 +76,5 @@
   right: 20rpx;
   color: #fff;
   font-size: 40rpx;
+  line-height: 90rpx;
 }

@@ -1,0 +1,12 @@
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 200rpx;
+}
+
+.no-data-png {
+  width: 260rpx;
+  height: 170rpx;
+  padding-bottom: 20rpx;
+}
