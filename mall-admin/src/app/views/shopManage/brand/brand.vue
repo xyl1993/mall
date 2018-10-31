@@ -182,9 +182,7 @@ export default {
     };
   },
   computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    }
+    
   },
   components: {},
   mounted() {
@@ -193,8 +191,8 @@ export default {
       lock: true,
       background: "rgba(255, 255, 255, 0.74)"
     });
-    this.filePath = this.userInfo.filePath;
-    const token = localStorage.getItem("token");
+    this.filePath = localStorage.getItem("mallfilePath");
+    const token = localStorage.getItem("malltoken");
     this.headers = { "token": token };
     this.getBrandList();
     this.getTypeList();
@@ -224,7 +222,9 @@ export default {
             rows.splice(index, 1);
           }
         });
-      })
+      }).catch(() => {
+          
+      });
     },
     deleteType(index, item, rows) {
       const _this = this;

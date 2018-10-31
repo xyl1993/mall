@@ -89,29 +89,12 @@ export default {
   },
   methods: {
     onSubmit() {},
-    //退出登录
-    // logout: function() {
-    //   var _this = this;
-    //   this.$confirm("确认退出吗?", "提示", {
-    //     //type: 'warning'
-    //   })
-    //     .then(() => {
-    //       logOut().then(res => {
-    //         let { data, code, message } = res;
-    //         //请求校验
-    //         if (statusValid(_this, code, message)) {
-    //           localStorage.removeItem("user");
-    //           localStorage.removeItem("app-token");
-    //           _this.$router.push("/login");
-    //         }
-    //       });
-    //     })
-    //     .catch(() => {});
-    // },
+    
     logout: function() {
       var _this = this;
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      localStorage.removeItem("malluser");
+      localStorage.removeItem("mallfilePath");
+      localStorage.removeItem("malltoken");
       _this.$router.push("/login");
     },
     //折叠导航栏
@@ -153,7 +136,7 @@ export default {
                 message: "保存成功",
                 type: "success"
               });
-              localStorage.setItem("token", token);
+              localStorage.setItem("malltoken", token);
             }
           });
         }
@@ -161,7 +144,7 @@ export default {
     }
   },
   mounted() {
-    let user = localStorage.getItem("user");
+    let user = localStorage.getItem("malluser");
     if (user) {
       user = JSON.parse(user);
       this.sysUserName = user.nike_name || "";

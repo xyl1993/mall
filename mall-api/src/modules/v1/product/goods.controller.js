@@ -72,7 +72,7 @@ const deleteBrand = async (req, res, next)=> {
     _sql = `update goods_type set type_status = -1 where brand_id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
-    _sql = `update goods_type set brand_status = -1 where brand_id=${id}`;
+    _sql = `update goods_brand set brand_status = -1 where id=${id}`;
     log.info(_sql);
     await pool.query(_sql);
     res.status(status.OK).json('操作成功');

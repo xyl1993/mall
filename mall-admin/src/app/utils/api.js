@@ -10,7 +10,7 @@ const allowUrls = new RegExp(apiConfig.allowUrls); //'g'
 const noJsonTypeUrls = new RegExp(apiConfig.noJsonTypeUrls); //'g'
 function createAuthorizationHeader(url) {
   if (!allowUrls.test(url)) {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('malltoken');
     if (noJsonTypeUrls.test(url)) {
       return {
         "token": token

@@ -31,8 +31,9 @@ export const statusValid = (that, status, data) => {
       type: 'warning',
       duration: 2000,
       onClose: () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+        localStorage.removeItem("malluser");
+        localStorage.removeItem("malltoken");
+        localStorage.removeItem("mallfilePath");
         that.$router.replace({ path: '/login' });
       }
     });

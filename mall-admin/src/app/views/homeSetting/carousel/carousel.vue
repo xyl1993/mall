@@ -35,15 +35,14 @@ export default {
     };
   },
   computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    }
+    
+    
   },
   components: {},
   mounted() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("malltoken");
     this.headers = { "token": token };
-    this.filePath = this.userInfo.filePath;
+    this.filePath = localStorage.getItem('mallfilePath');
     this.getCarouselList();
   },
   methods: {

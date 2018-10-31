@@ -56,9 +56,7 @@ export default {
     };
   },
   computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    }
+    
   },
   components: {
     prompt: prompt
@@ -72,7 +70,7 @@ export default {
       this.formModel.account = Cookies.get("mallAccount");
     }
     if (Cookies.get("mallPassword")) {
-      this.formModel.checkPass = Cookies.get("mallPassword");
+      this.formModel.password = Cookies.get("mallPassword");
     }
   },
   methods: {
@@ -89,15 +87,14 @@ export default {
             this.logining = false;
             let { data, status } = res;
             if (statusValid(this, status, data)) {
-              localStorage.setItem("token", data.token);
-              localStorage.setItem("user", JSON.stringify(data));
-              this.$store.commit("setUserInfo",data);
+              localStorage.setItem("malltoken", data.token);
+              localStorage.setItem("malluser", JSON.stringify(data));
+              localStorage.setItem("mallfilePath", data.filePath);
               //将用户名密码存在cookie中
               //7天
               Cookies.set("mallAccount", loginParams.account, { expires: 7 });
               Cookies.set("mallPassword", loginParams.password, { expires: 7 });
-              //往vuex中设置用户对象
-              this.$store.commit("setUserInfo", data);
+              
               this.$router.push({ path: "/orderList" });
             }
           });

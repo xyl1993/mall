@@ -56,9 +56,6 @@ export default {
     };
   },
   computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    },
     collapsed() {
       return this.$store.state.baseStore.collapsed;
     }

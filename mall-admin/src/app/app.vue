@@ -12,22 +12,11 @@ const noAppToken = new RegExp(apiConfig.noAppToken, "g"); //'g'
 export default {
   name: "app",
   components: {},
-  computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    }
-  },
   mounted() {
     let currentRoute = this.$router.currentRoute;
-    if (!noAppToken.test(currentRoute.path) && !localStorage.getItem("token")) {
+    if (!noAppToken.test(currentRoute.path) && !localStorage.getItem("malltoken")) {
       this.$router.push({ path: "/login" });
     }
-    this.$store.commit(
-      "setUserInfo",
-      localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user"))
-        : {}
-    );
   },
   created() {}
 };

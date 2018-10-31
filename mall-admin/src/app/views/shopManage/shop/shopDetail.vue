@@ -316,9 +316,6 @@ export default {
     };
   },
   computed: {
-    userInfo() {
-      return this.$store.state.baseStore.userInfo;
-    }
   },
   components: {
     quillEditor,
@@ -326,8 +323,8 @@ export default {
     swiperSlide
   },
   mounted() {
-    this.filePath = this.userInfo.filePath;
-    let token = localStorage.getItem("token");
+    this.filePath = localStorage.getItem("mallfilePath");
+    let token = localStorage.getItem("malltoken");
     this.productId = this.$route.query.scree;
     if(this.productId){
       loading = this.$loading({

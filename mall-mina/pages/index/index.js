@@ -112,6 +112,7 @@ Page({
   //下拉刷新
   onPullDownRefresh: function() {
     wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.loadBrand();
     this.setData({ isHideLoadMore: true, current: 1,noData:false });
     getBrandList(this,function(){
       wx.hideNavigationBarLoading() //完成停止加载
