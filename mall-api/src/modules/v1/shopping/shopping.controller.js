@@ -37,7 +37,7 @@ const getShopcarList = async (req, res, next)=> {
     from goods_shopcar a 
     left join product b on a.product_id = b.id
     left join product_specifications c on a.specifications_id = c.id
-    where account_id = ? and shopcar_status = 1`;
+    where shopcar_status = 1`;
 
     if(chooseId){
       let shopcarid = chooseId.replace(/-/g,',');

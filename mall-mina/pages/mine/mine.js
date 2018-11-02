@@ -11,6 +11,10 @@ Page({
   },
   onLoad: function () {
     let _this = this;
+    let is_admin = wx.getStorageSync('is_admin');
+    this.setData({
+      isAdmin: is_admin
+    });
     wx.getSetting({
       success(settingRes) {
         if (settingRes.authSetting['scope.userInfo']){
@@ -45,21 +49,6 @@ Page({
         }
       })
     }
-    this.getUserRole();
-  },
-  getUserRole:function(){
-    api.get("program/user").then(res => {
-      let {
-        data,
-        status
-      } = res;
-      if (status === 200) {
-        console.log(data);
-        this.setData({
-          isAdmin: data.is_admin
-        });
-      }
-    });
   },
   onGotUserInfo(e){
     if (e.detail.userInfo){

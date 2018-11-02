@@ -19,8 +19,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let sessionid = wx.getStorageSync('sessionid')
-    if (!sessionid){
+    const { redirecturi,productId,addressId,chooseId } = options;
+    const self = this;
+    const sessionid = wx.getStorageSync('sessionid')
+    // if (!sessionid){
       wx.getSetting({
         success(settingRes) {
           wx.login({
@@ -29,6 +31,8 @@ Page({
                 let { data, status } = res;
                 if (status === 200) {
                   wx.setStorageSync('sessionid', data.sessionid) //把登录后获取的openId等信息保存本地
+                  wx.setStorageSync('is_admin', data.is_admin) //把登录后获取的openId等信息保存本地
+                  wx.setStorageSync('mall_user', data) //把登录后获取的openId等信息保存本地
                   if (settingRes.authSetting['scope.userInfo']) {
                     // 已经授权，可以直接调用 getUserInfo 获取头像昵称
                     wx.getUserInfo({
@@ -38,17 +42,12 @@ Page({
                           iv: res.iv
                         };
                         api.put(`program/user/auth`, param).then(res => {
-                          let { data, status } = res;
-                          wx.switchTab({
-                            url: '../index/index',
-                          })
+                          self.redirect(redirecturi,productId,addressId,chooseId);
                         });
                       }
                     })
                   } else {
-                    wx.switchTab({
-                      url: '../index/index',
-                    })
+                    self.redirect(redirecturi,productId,addressId,chooseId);
                   }
                 }
               });
@@ -56,13 +55,33 @@ Page({
           })
         }
       })
+    // }else{
+    //   wx.switchTab({
+    //     url: '../index/index',
+    //   })
+    // }
+  },
+  redirect:function(uri,productId,addressId,chooseId){
+    if(uri){
+      switch(uri){
+        case 'productDetail':
+          wx.navigateTo({
+            url: '../productDetail/productDetail?productId=' + productId
+          })
+        break;
+        case 'shareOrder':
+          wx.navigateTo({
+            url: `../shareOrder/shareOrder?addressId=${addressId}&chooseId=${chooseId}`
+          })
+          break;
+        default:break;
+      }
     }else{
       wx.switchTab({
         url: '../index/index',
       })
     }
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

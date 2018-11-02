@@ -1,9 +1,9 @@
 <view class='cointer'>
-  <button open-type="contact" class='contact-btn'></button>
+  <button bindtap='toHome' class='contact-btn'></button>
   <view class='success-cointer'>
     <image src='../../resources/imgs/success.png'></image>
     <view>
-      <text>下单成功，点击屏幕联系客服付款</text>
+      <text>下单成功，点击屏幕浏览更多商品吧</text>
     </view>
 
   </view>

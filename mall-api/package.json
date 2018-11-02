@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start ./src/index.js --name mall-srv",
+    "stop": "pm2 stop 0",
     "dev": "nodemon -x cross-env NODE_ENV=development node ./src/index.js",
     "test": "cross-env NODE_ENV=test mocha",
     "env_tests": "mocha",

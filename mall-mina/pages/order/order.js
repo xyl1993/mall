@@ -22,13 +22,20 @@ Page({
     allPrice: 0.00,
     buttonClicked: false,
     fileIp: Config.file_servier,
-    chooseId:''
+    chooseId:'',
+    is_admin: 0,
+    addressId:''
   },
 
   onLoad: function (options) {
+    let self = this;
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
       this.getShopcarList();
+    };
+    if (options.addressId) {
+      this.setData({ addressId: options.addressId });
+      this.getAddressDetail(options.addressId);
     };
   },
 
@@ -45,7 +52,29 @@ Page({
   onHide: function () {
 
   },
-
+  getUserRole:function(){
+    api.get("program/user").then(res => {
+      let {
+        data,
+        status
+      } = res;
+      if (status === 200) {
+        this.setData({
+          is_admin: data.is_admin
+        });
+      }
+    });
+  },
+  getAddressDetail: function (addressId){
+    let address = [];
+    api.get(`program/user/address/${addressId}`).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        console.log(res);
+        this.setData({ address: address.push(data)});
+      }
+    });
+  },
   getShopcarList: function () {
     api.get("program/shopcar", { chooseId: this.data.chooseId}).then(res => {
       let { data, status } = res;
@@ -67,30 +96,28 @@ Page({
 
   replay:function(e){
     ButtonClicked(this, e);
-    if (this.data.address.length===0){
-      wx.showToast({
-        title: '请选择收货地址',
-        icon: 'none',
-        duration: 1000
-      })
-    }else{
-      wx.showLoading({
-        title: '正在提交',
-        mask: true
-      });
-      let productList = this.data.productList;
-      let allPrice = this.data.allPrice;
-      let chooseId = this.data.chooseId;
-      let params = { allPrice, chooseId, productList, ...this.data.address[0] };
-      api.post(`program/order`, params).then(res => {
-        const { data, status } = res;
-        if (status === 200) {
-          wx.redirectTo({
-            url: '../orderSuccess/orderSuccess'
-          })
-        }
-      });
+    wx.showLoading({
+      title: '正在提交',
+      mask: true
+    });
+    let subForm = e.detail.value;
+    let productList = this.data.productList;
+    let allPrice = this.data.allPrice;
+    let chooseId = this.data.chooseId;
+    let address = {
+      collect_name:subForm.collect_name,
+      phone:subForm.phone,
+      address:subForm.address
     }
+    let params = { allPrice, chooseId, productList, ...address };
+    api.post(`program/order`, params).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        wx.redirectTo({
+          url: '../orderSuccess/orderSuccess'
+        })
+      }
+    });
   },
 
   addAddress:function(){
@@ -99,8 +126,40 @@ Page({
     })
   },
   tabAddress:function(){
-    wx.navigateTo({
-      url: '../address/address?type=order'
-    })
+    if(this.data.is_admin === 1){
+      wx.navigateTo({
+        url: '../address/address?type=order'
+      })
+    }else{
+      let id = e.currentTarget.dataset.id;
+      wx.navigateTo({
+        url: `../addressDetail/addressDetail?addressId=${id}`
+      })
+    }
+  },
+  
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function (res) {
+    if (this.data.address.length===0){
+      wx.showToast({
+        title: '请选择收货地址',
+        icon: 'none',
+        duration: 1000
+      })
+      return false;
+    }else{
+      return {
+        title: '请确认您的订单',
+        path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}`,
+        success: (res) => {
+          console.log("转发成功", res);
+        },
+        fail: (res) => {
+          console.log("转发失败", res);
+        }
+      }
+    }
   }
 })

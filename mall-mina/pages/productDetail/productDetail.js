@@ -1,6 +1,7 @@
 import api from '../../utils/api.js';
 import { Config } from '../../config/index.js';
 import { ButtonClicked } from '../../utils/esUtils.js'
+import {shareData} from '../../config/share-data.js'
 var WxParse = require('../../lib/wxParse/wxParse.js');
 
 Page({
@@ -19,7 +20,6 @@ Page({
     productDetail:{},
     specifications:[],
     carousel: [
-     
     ],
     indicatorDots: true,
     autoplay: true,
@@ -27,38 +27,39 @@ Page({
     interval: 5000,
     duration: 1000,
     shouldBuy:false,
+    is_admin:0,
+    shareImageStatus:false,
+    painting: {},
+    
+    paintingIndex:0,
+    shareImage: '',
+
+    mode: 'normal' // cry
   },
   onLoad: function (options) {
-
-    let sessionid = wx.getStorageSync('sessionid')
-    if (!sessionid) {
-      wx.login({
-        success: res => {
-          api.get(`program/user/auth/` + res.code).then(res => {
-            let { data, status } = res;
-            if (status === 200) {
-              wx.setStorageSync('sessionid', data.sessionid) //把登录后获取的openId等信息保存本地
-            }
-          });
-        }
-      })
-    }
+    const is_admin = wx.getStorageSync('is_admin');
+    
+    this.setData({
+      is_admin: is_admin
+    });
     if (options.productId) this.setData({ productId: options.productId });
     this.getProductDetail(options.productId);
     this.getCollectionStatus();
     this.updatereadNumber(options.productId);
   },
+ 
   updatereadNumber: function (productId){
     api.put(`product/${productId}/read_number`).then(res => {
     });
   },
   getProductDetail: function (productId) {
+    let shareObj = shareData.views;
     api.get(`product/${productId}`).then(res => {
       const { data, status } = res;
       const { fileIp } = this.data;
       if (status === 200) {
+        let carousel = [];
         if (data.carousel) {
-          let carousel = [];
           data.carousel.split(',').map((item, index) => {
             carousel.push(
               fileIp + item
@@ -66,7 +67,18 @@ Page({
           });
           this.setData({ carousel: carousel});
         }
-        this.setData({ productDetail: data, specifications: data.specifications });
+        const mall_user = wx.getStorageSync('mall_user');
+        if(mall_user){
+          const {nikename,portrait} = mall_user;
+          if(portrait) shareObj[1].url = portrait;
+          if(nikename) shareObj[3].content = `您的好友${nikename}`;
+          shareObj[5].url = carousel[0];
+          shareObj[7].content = data.title;
+          shareObj[8].content = `￥${data.specifications[0].current_price}`;
+          shareObj[9].content = `原价￥${data.specifications[0].original_price}`;
+          shareData.views = shareObj;
+        }
+        this.setData({ productDetail: data, specifications: data.specifications, painting:shareData});
         var that = this;
         WxParse.wxParse('article', 'html', data.detail, that, 15);
       }
@@ -181,6 +193,53 @@ Page({
         // if (page == undefined || page == null) return;
         // page.onLoad();
       }
+    })
+  },
+  eventDraw(){
+    if(this.data.shareImage){
+      this.setData({
+        shareImageStatus:true
+      })
+    }else{
+      wx.showLoading({
+        title: '绘制分享图片中',
+        mask: true
+      })
+      const { painting } = this.data;
+      console.log(painting);
+      this.setData({
+        mode: 'normal',
+        painting: painting,
+        paintingIndex:0
+      })
+    }
+  },
+  eventGetImage (event) {
+    wx.hideLoading()
+    const { tempFilePath } = event.detail
+    this.setData({
+      shareImage: tempFilePath,
+      shareImageStatus:true,
+    })
+    if (this.data.mode === 'cry') {
+      this.eventDrawCry()
+    }
+  },
+  eventDrawCry () {
+    wx.showLoading({
+      title: '刷新后停止绘制',
+      mask: true
+    })
+    const { painting } = this.data
+    this.setData({
+      mode: 'cry',
+      painting: painting,
+      paintingIndex:0
+    })
+  },
+  hideShareImage(){
+    this.setData({
+      shareImageStatus:false
     })
   },
   //分享按钮函数

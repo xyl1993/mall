@@ -34,7 +34,7 @@
     <view class='header_item clear'>
       <view class='title'>常用工具</view>
     </view>
-    <view class='util-item' data-type='address' bindtap='handleFun'>
+    <view wx:if="{{isAdmin === 1}}" class='util-item' data-type='address' bindtap='handleFun'>
       <image src='../../resources/imgs/address.png'></image>
       <view class='text'>收货地址</view>
     </view>

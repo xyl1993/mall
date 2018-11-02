@@ -57,7 +57,8 @@ const getOrderList = async (req, res, next)=> {
  */
 const insertOrder = async (req, res, next)=> {
   const { account_id } = req;
-  const {allPrice,collect_name,address,phone,productList,chooseId} = req.body;
+  const {allPrice,collect_name,address,phone,productList,chooseId,addressId} = req.body;
+
   // const {specifications_name,number,price} = productList;
   try {
     const orderNumberRows = Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,8-1));
@@ -106,6 +107,13 @@ const insertOrder = async (req, res, next)=> {
     //更新商品的销售数量
     _sql = `update product set seal_num = seal_num + 1 where id in (${productIdArr.join()})`
     log.info(_sql);
+    await pool.query(_sql);
+
+
+    //更新收貨地址
+    _sql = `update account_address set collect_name = ?,address=?,phone = ? where id = ?`;
+    let addressParam = [collect_name,address,phone,addressId];
+    _sql = mysql.format(_sql,addressParam);
     await pool.query(_sql);
     res.status(status.OK).json(orderRows.insertId);
   } catch(err) {

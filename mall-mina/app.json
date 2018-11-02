@@ -13,7 +13,8 @@
     "pages/order/order",
     "pages/allorder/allorder",
     "pages/orderRecordDetail/orderRecordDetail",
-    "pages/orderSuccess/orderSuccess"
+    "pages/orderSuccess/orderSuccess",
+    "pages/shareOrder/shareOrder"
   ],
   "tabBar": {
     "color": "#818181",
