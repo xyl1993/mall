@@ -1,4 +1,5 @@
 <!--pages/allorder/allorder.wxml-->
+<wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <view class='main'>
   <view class='header'>
     <view class='header-list'>
@@ -20,7 +21,9 @@
     <view class='order-list' wx:for="{{orderList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
       <view class='view-list' data-order_number = "{{item.order_number}}" bindtap='toOrderDetail'>
         <view class='list-cointer'>
-          <view class='order-title'>订单编号: {{item.order_number}}</view>
+          <view class='order-title'>订单编号: {{item.order_number}}
+            <text class="{{ filters.collectClass(item.collect_status) }}">{{ filters.collectName(item.collect_status) }}</text>
+          </view>
           <view class='list-main' >
             <image class='img-cointer' wx:for="{{item.cover}}" wx:key="i" wx:for-item="img" wx:for-index="i" src='{{fileIp+img}}'></image>
           </view>
@@ -32,8 +35,8 @@
       <view class='option-list' wx-if="{{isAdmin == 1 && (item.collect_status === 1)}}">
         <view class='btn error'  data-order_number = "{{item.order_number}}" bindtap='deliverGoods' wx-if="{{item.collect_status === 1}}">点击发货</view>
       </view>
-      <view class='option-list' wx-if="{{isAdmin == 0 && (item.collect_status === 3)}}">
-        <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 3}}">确认收货</view>
+      <view class='option-list' wx-if="{{item.collect_status === 2}}">
+        <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 2}}">确认收货</view>
       </view>
     </view>
   </view>

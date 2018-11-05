@@ -130,3 +130,8 @@
 .input-dyn label{
   width: 140rpx;
 }
+.sure-btn{
+  font-size: 28rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+}

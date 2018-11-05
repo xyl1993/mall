@@ -46,3 +46,12 @@ page {
 .right{
   float: right;
 }
+.blue{
+  color: #409EFF;
+}
+.success{
+  color: #67C23A;
+}
+.warning{
+  color: #E6A23C;
+}

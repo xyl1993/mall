@@ -83,7 +83,7 @@ Page({
   //删除订单
   deleteOrder:function(e){
     let order_number = e.currentTarget.dataset.order_number;
-    api.delete("program/order/${order_number}").then(res => {
+    api.delete(`program/order/${order_number}`).then(res => {
       let {
         data,
         status
@@ -97,7 +97,7 @@ Page({
   //收货
   collectGoods:function(e){
     let order_number = e.currentTarget.dataset.order_number;
-    api.put("program/collect/${order_number}").then(res => {
+    api.put(`program/order/collect/${order_number}`).then(res => {
       let {
         data,
         status

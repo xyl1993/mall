@@ -1,7 +1,12 @@
 <import src="../../lib/wxParse/wxParse.wxml" />
 <canvasdrawer painting="{{painting}}" bind:getImage="eventGetImage"  class="canvasdrawer"/>
 <view class='container'>
-  <image src="{{shareImage}}" wx-if="{{shareImageStatus}}" bindtap='hideShareImage' class="share-image"></image>
+  <view class='dialog' wx-if="{{shareImageStatus && shareImage}}"  bindtap='hideShareImage'>
+    <image src="{{shareImage}}"  class="share-image"></image>
+    <view class='share-btn-gop'>
+      <view class='img-btn' bindtap='saveShareImg'>保存图片</view>
+    </view>
+  </view>
   <view class='scroll-view'>
     <scroll-view class="scroll-view" scroll-y style="height: 100%;">
       <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">

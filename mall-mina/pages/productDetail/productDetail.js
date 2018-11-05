@@ -196,11 +196,11 @@ Page({
     })
   },
   eventDraw(){
-    if(this.data.shareImage){
-      this.setData({
-        shareImageStatus:true
-      })
-    }else{
+    this.setData({
+      shareImageStatus: true
+    })
+    if(!this.data.shareImage){
+
       wx.showLoading({
         title: '绘制分享图片中',
         mask: true
@@ -210,31 +210,32 @@ Page({
       this.setData({
         mode: 'normal',
         painting: painting,
-        paintingIndex:0
+        paintingIndex: 0
       })
+
     }
   },
   eventGetImage (event) {
-    wx.hideLoading()
-    const { tempFilePath } = event.detail
-    this.setData({
-      shareImage: tempFilePath,
-      shareImageStatus:true,
-    })
-    if (this.data.mode === 'cry') {
-      this.eventDrawCry()
-    }
+    let self = this;
+    setTimeout(function(){
+      wx.hideLoading()
+      const { tempFilePath } = event.detail
+      self.setData({
+        shareImage: tempFilePath,
+        shareImageStatus: self.data.shareImageStatus
+      })
+    },2000)
   },
-  eventDrawCry () {
-    wx.showLoading({
-      title: '刷新后停止绘制',
-      mask: true
-    })
-    const { painting } = this.data
-    this.setData({
-      mode: 'cry',
-      painting: painting,
-      paintingIndex:0
+  saveShareImg(){
+    wx.saveImageToPhotosAlbum({
+      filePath: this.data.shareImage,
+      success(res) {
+        wx.showToast({
+          title: '保存图片成功',
+          icon: 'success',
+          duration: 2000
+        })
+      }
     })
   },
   hideShareImage(){

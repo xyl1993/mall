@@ -29,7 +29,17 @@
       </view>
     </view>
   </view>
-  <form  wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit">
+  <view hidden="{{orderInfo.collect_status != 2 && orderInfo.collect_status !=3}}">
+    <view class='address'>
+      <view>
+        物流名称: {{orderInfo.logistics_name}}
+      </view>
+      <view>
+        物流单号: {{orderInfo.logistics_number}}
+      </view>
+    </view>
+  </view>
+  <form wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit">
     <view class='input-list'>
       <view class='input-dyn'>
         <label>物流名称</label>
@@ -41,7 +51,7 @@
       </view>
     </view>
     <view class='btn-view'>
-      <button class='sure-btn' size="mini" loading="{{loading}}" form-type='submit'> 发货 </button>
+      <button class='sure-btn' loading="{{loading}}" form-type='submit'> 发 货 </button>
     </view>
   </form>
   <view class='bottom' wx:if="{{status != 'deliver'}}">

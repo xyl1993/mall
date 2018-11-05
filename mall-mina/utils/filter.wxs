@@ -6,9 +6,39 @@ var filters = {
     }else{
       return ''
     }
-   
+  },
+  collectName: function(value) {
+    switch (value){
+      case 1:
+        return '待发货';
+        break;
+      case 2:
+        return '待收货';
+        break;
+      case 3:
+        return '确认收货';
+        break;
+      default:return '';break;
+    }
+  },
+  collectClass: function(value) {
+    console.log(value)
+    switch (value){
+      case 1:
+        return 'blue';
+        break;
+      case 2:
+        return 'warning';
+        break;
+      case 3:
+        return 'success';
+        break;
+      default:return '';break;
+    }
   },
 }
 module.exports = {
-  toFix: filters.toFix
+  toFix: filters.toFix,
+  collectName:filters.collectName,
+  collectClass:filters.collectClass
 }

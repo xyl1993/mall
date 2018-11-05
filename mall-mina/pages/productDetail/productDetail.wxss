@@ -350,3 +350,28 @@
   transform: translate(-50%,-50%);
   z-index: 99;
 }
+.dialog{
+  background: rgba(0, 0, 0, 0.28);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 99
+}
+
+.img-btn{
+  padding: 10rpx 30rpx;
+  width: 120rpx;
+  background: #ff3364;
+  border-radius: 12rpx;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0 auto;
+  color: #fff;
+}
+.share-btn-gop{
+  position: absolute;
+  bottom: 20rpx;
+  width: 100%;
+}

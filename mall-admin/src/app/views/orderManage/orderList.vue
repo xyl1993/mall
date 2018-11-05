@@ -193,7 +193,7 @@ export default {
     handleSizeChange(val) {},
     handleCurrentChange(val) {
       this.current = val;
-      findlist(this);
+      this.findlist(this);
     },
     handleEdit(index, row) {
       this.$router.push({
