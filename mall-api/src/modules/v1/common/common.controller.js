@@ -7,9 +7,11 @@ const qn = require('qn');
 const multerHelper = require('../../../utils/multerHelper');
 const config = require('../../../config/environment');
 const qiniuConfig = config.qiniuConfig;
+const axios = require('axios');
+const { sendMessageUri,getAccessTokenUri } = require('../../../config/programApi');
+var accessTokenJson = require('../../../config/data/access_token');
 
-
-exports.uploadQiniu = function (req, res, next) {
+const uploadQiniu = function (req, res, next) {
   // 七牛相关配置信息
   let client = qn.create(qiniuConfig);
   // 上传单个文件
@@ -41,7 +43,7 @@ exports.uploadQiniu = function (req, res, next) {
 };
 
 
-exports.uploadDisk = function (req, res, next) {
+const uploadDisk = function (req, res, next) {
   // 上传单个文件
   multerHelper.multerUpload().single('file')(req, res, function (err) {
     if (err) {
@@ -51,3 +53,9 @@ exports.uploadDisk = function (req, res, next) {
     res.status(status.OK).json(req.file.filename);
   });
 };
+
+module.exports = {
+  uploadQiniu,
+  uploadDisk,
+};
+

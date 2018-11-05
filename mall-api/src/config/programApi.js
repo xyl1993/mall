@@ -13,7 +13,18 @@ function jscode2session(APPID,SECRET,JSCODE) {
   return `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${JSCODE}&grant_type=authorization_code`;
 }
 
+function getAccessTokenUri(APPID,APP_SECRIPT){
+  return `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APP_SECRIPT}`;
+}
+
+function sendMessageUri(ACCESS_TOKEN){
+  return `https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${ACCESS_TOKEN}`;
+}
+
 module.exports = {
+
   jscode2session,
-  decryptData
+  decryptData,
+  sendMessageUri,
+  getAccessTokenUri
 };

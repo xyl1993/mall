@@ -52,7 +52,7 @@ Page({
     let order_number = this.data.order_number;
     formData.logistics_name = subForm.logistics_name;
     formData.logistics_number = subForm.logistics_number;
-
+    formData.form_id = e.detail.formId;
     if (validate(this, formData)) {
       wx.showLoading({
         title: '请求中',

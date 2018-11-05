@@ -3,16 +3,22 @@ const path = require('path');
 require('dotenv').config();
 
 const config = {
-  AppID:'wxe797f4238bafb0f4',
-  AppSecret:'80a7fc258b74bcbd8ae103482524d81c',
-  AppjwtEncryption:'gaochengyouhui',
+  AppID: 'wxe797f4238bafb0f4',
+  AppSecret: '80a7fc258b74bcbd8ae103482524d81c',
+  AppjwtEncryption: 'gaochengyouhui',
+  //微信模板id组
+  programTemplate: {
+    //消息模板id
+    deliverTemplateId: 'd_7n4WWnfeUp1pN7gg6uvnlWVEHJ9GD6XQhZ6R6T3pY',
+  },
   // MongoDB connection options
   uploadRoot: path.normalize(__dirname + '/../../../../upload'),
   adminUI: {
     root: path.normalize(__dirname + '/../../../../admin/dist'),
     index: path.normalize(__dirname + '/../../../../admin/dist/index.html')
   },
-  uploadFolder:path.normalize(__dirname + '/../../../../upload/'),
+  uploadFolder: path.normalize(__dirname + '/../../../../upload/'),
+  serverDataFolder: path.normalize(__dirname + '/../data/'),
   QNdomain: 'http://oq4pg1mfz.bkt.clouddn.com/',
   //七牛云 配置
   qiniuConfig: {
