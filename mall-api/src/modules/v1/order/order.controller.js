@@ -80,7 +80,6 @@ const insertOrder = async (req, res, next)=> {
     _sql = mysql.format(_sql, params);
     log.info(_sql);
     const orderRows = await pool.query(_sql);   //订单id
-    console.log(orderRows);
     //批量新增商品订单表
     let values = [];
     let date = new Date();
@@ -280,7 +279,6 @@ deliverGoods =  async (req, res, next)=> {
     if(rows){
       //获取accessToken
       programApi.getAccessToken().then((access_token)=>{
-        console.log(access_token);
         const user = rows[0];
         const tempData = {
           "touser":user.openid,
@@ -310,7 +308,8 @@ deliverGoods =  async (req, res, next)=> {
         }
         //发送消息
         programApi.sendMessage(access_token,tempData).then((message)=>{
-          console.log(message);
+          log.info('模板消息返回');
+          log.info(message);
         })
       })
     }

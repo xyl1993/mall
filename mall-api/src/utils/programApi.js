@@ -51,7 +51,6 @@ const sendMessage = function (access_token,body) {
       url:sendMessageUri(access_token),
     })
     .then((response)=> {
-      console.log(response);
       const data = response.data;
       if (!data.errcode) {
         resolve(data);
