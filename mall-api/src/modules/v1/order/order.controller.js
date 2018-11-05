@@ -4,8 +4,10 @@ const {
 } = require('../../../utils/handleUtilFun');
 const log = require('log4js').getLogger("orderController");
 const mysql = require('mysql');
-
+const config = require('../../../config/environment');
 const pool = require('../../../utils/pool')
+const programApi = require('../../../utils/programApi');
+
 
 /**
  * 后台获取所有订单
@@ -249,7 +251,7 @@ deleteOrder =  async (req, res, next)=> {
 //发货
 deliverGoods =  async (req, res, next)=> {
   const {order_number} = req.params;  
-  const {logistics_name,logistics_number} = req.body;  
+  const {logistics_name,logistics_number,form_id} = req.body;  
   try {
     let sql =  `update account_order set
       collect_status = 2,
@@ -262,6 +264,48 @@ deliverGoods =  async (req, res, next)=> {
     sql = mysql.format(sql,params);
     log.info(sql);
     await pool.query(sql);
+
+    //获取收货人基本信息
+    sql = `select a.*,b.openid from account_order a left join account b on a.account_id = b.id where order_number = ${order_number}`;
+    const rows = await pool.query(sql);
+    
+    if(rows){
+      //获取accessToken
+      programApi.getAccessToken().then((access_token)=>{
+        console.log(access_token);
+        const user = rows[0];
+        const tempData = {
+          "touser":user.openid,
+          "template_id":config.programTemplate.deliverTemplateId,
+          "page":`pages/orderRecordDetail/orderRecordDetail?order_number=${order_number}`,
+          "form_id":form_id,
+          "data": {
+            "keyword1": {
+              "value": order_number, 
+            }, 
+            "keyword2": {
+              "value": logistics_name 
+            }, 
+            "keyword3": {
+              "value": logistics_number
+            } , 
+            "keyword4": {
+              "value": user.collect_name
+            } ,
+            "keyword5": {
+              "value": user.phone
+            } ,
+            "keyword6": {
+              "value": user.address
+            } 
+          }
+        }
+        //发送消息
+        programApi.sendMessage(access_token,tempData).then((message)=>{
+          console.log(message);
+        })
+      })
+    }
     res.status(status.OK).json(order_number);
   } catch(err) {
     log.error(err);

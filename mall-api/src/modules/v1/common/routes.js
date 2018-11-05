@@ -8,8 +8,7 @@ const controller = require('./common.controller');
 admin.post('/uploadQiniu',verifyToken, controller.uploadQiniu);   //上传文件到七牛
 admin.post('/uploadDisk',verifyToken, controller.uploadDisk);   //上传文件到本地
 
-router.use('/admin', admin); //后台接口
+router.use('/admin', admin);
 
-router.use('/', web);  //小程序接口
-
+router.use('/', web); 
 module.exports = router;

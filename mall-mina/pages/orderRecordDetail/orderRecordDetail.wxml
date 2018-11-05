@@ -29,7 +29,7 @@
       </view>
     </view>
   </view>
-  <form  wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit">
+  <form  wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit" report-submit="true">
     <view class='input-list'>
       <view class='input-dyn'>
         <label>物流名称</label>
