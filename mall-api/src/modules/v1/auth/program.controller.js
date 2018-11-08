@@ -17,6 +17,7 @@ const accountAction = async (req, res, response)=> {
     let params = [response.openid];
     _sql = mysql.format(_sql,params);
     let account_id = '';
+    let mall_user = {};
     const rows = await pool.query(_sql);
     if(rows.length === 0){
       //新增
@@ -26,11 +27,11 @@ const accountAction = async (req, res, response)=> {
       const rows = await pool.query(_sql);
       account_id = rows.insertId;
     }else{
-      console.log(rows[0]);
       account_id = rows[0].id;
+      mall_user = rows[0]
     }
     const sessionid = jwt.sign({ openid: response.openid,session_key:response.session_key,account_id:account_id}, config.AppjwtEncryption);
-    return res.status(status.OK).json({sessionid});
+    return res.status(status.OK).json({sessionid,...mall_user});
   }catch(err){
     return handleError(res, err);
   }
