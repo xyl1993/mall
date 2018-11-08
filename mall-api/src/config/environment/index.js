@@ -9,7 +9,8 @@ const config = {
   //微信模板id组
   programTemplate: {
     //消息模板id
-    deliverTemplateId: 'd_7n4WWnfeUp1pN7gg6uvnlWVEHJ9GD6XQhZ6R6T3pY',
+    deliverTemplateId: 'd_7n4WWnfeUp1pN7gg6uvnlWVEHJ9GD6XQhZ6R6T3pY',    //发货成功
+    orderSuccessTemplateId:'rRcvokdX9bAEOw2OjYI3Gs5I5AiKR_8Gb0MoAD5sqmM'   //确认下单成功
   },
   // MongoDB connection options
   uploadRoot: path.normalize(__dirname + '/../../../../upload'),

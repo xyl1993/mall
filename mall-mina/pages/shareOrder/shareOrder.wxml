@@ -1,5 +1,5 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-<form bindsubmit="replay" class='mainer'>
+<form bindsubmit="replay" class='mainer' report-submit='true'>
   <view class='cointer'>
     <view class='input-dyn'>
       <input type='text' placeholder='收货人' value='{{address[0].collect_name}}' name="collect_name"></input>

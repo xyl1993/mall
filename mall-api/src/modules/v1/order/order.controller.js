@@ -59,17 +59,17 @@ const getOrderList = async (req, res, next)=> {
  */
 const insertOrder = async (req, res, next)=> {
   const { account_id } = req;
-  const {allPrice,collect_name,address,phone,productList,chooseId,addressId} = req.body;
+  const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id} = req.body;
 
   // const {specifications_name,number,price} = productList;
   try {
-    const orderNumberRows = Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,8-1));
+    const orderNumberRows = new Date().getTime()+''+Math.floor((Math.random()+Math.floor(Math.random()*9+1))*Math.pow(10,8-1));
     _sql = `insert into account_order(account_id,order_number,should_price,
       collect_name,address,phone,create_time,pay_status)
       values(?,?,?,?,?,?,?,?)`;
     const params = [
       account_id,
-      new Date().getTime()+''+orderNumberRows,
+      orderNumberRows,
       allPrice,
       collect_name,
       address,
@@ -117,6 +117,43 @@ const insertOrder = async (req, res, next)=> {
     _sql = mysql.format(_sql,addressParam);
     await pool.query(_sql);
     res.status(status.OK).json(orderRows.insertId);
+
+    /***给管理员发送消息** */
+    _sql = `select * from account where is_admin = 1 limit 1`;
+    const adminUser = await pool.query(_sql);
+    //获取accessToken
+    programApi.getAccessToken().then((access_token)=>{
+      const user = adminUser[0];
+      console.log(form_id);
+      const tempData = {
+        "touser":user.openid,
+        "template_id":config.programTemplate.orderSuccessTemplateId,
+        "page":`pages/allorder/allorder?type = 2`,
+        "form_id":form_id,
+        "data": {
+          "keyword1": {
+            "value": orderNumberRows, 
+          }, 
+          "keyword2": {
+            "value": new Date() 
+          }, 
+          "keyword3": {
+            "value": collect_name
+          } , 
+          "keyword4": {
+            "value": phone
+          } ,
+          "keyword5": {
+            "value": address
+          } 
+        }
+      }
+      //发送消息
+      programApi.sendMessage(access_token,tempData).then((message)=>{
+        log.info('模板消息返回');
+        log.info(message);
+      })
+    })
   } catch(err) {
     log.error(err);
     return handleError(res, err);
@@ -183,7 +220,7 @@ const getProgramOrderList = async (req, res, next)=> {
   }
 };
 
-getOrderDetail =  async (req, res, next)=> {
+const getOrderDetail =  async (req, res, next)=> {
   const {order_number} = req.params;  
   try {
     let sql =  `SELECT
@@ -228,7 +265,7 @@ getOrderDetail =  async (req, res, next)=> {
   }
 };
 //确认收货
-collectGoods =  async (req, res, next)=> {
+const collectGoods =  async (req, res, next)=> {
   const {order_number} = req.params;  
   try {
     let sql =  `update account_order set collect_status = 3,receipt_time=? where order_number = ?`;
@@ -242,7 +279,7 @@ collectGoods =  async (req, res, next)=> {
   }
 };
 //删除订单
-deleteOrder =  async (req, res, next)=> {
+const deleteOrder =  async (req, res, next)=> {
   const {order_number} = req.params;  
   try {
     let sql =  `update account_order set order_status = 0 where order_number = ?`;
@@ -256,7 +293,7 @@ deleteOrder =  async (req, res, next)=> {
   }
 };
 //发货
-deliverGoods =  async (req, res, next)=> {
+const deliverGoods =  async (req, res, next)=> {
   const {order_number} = req.params;  
   const {logistics_name,logistics_number,form_id} = req.body;  
   try {
@@ -275,7 +312,7 @@ deliverGoods =  async (req, res, next)=> {
     //获取收货人基本信息
     sql = `select a.*,b.openid from account_order a left join account b on a.account_id = b.id where order_number = ${order_number}`;
     const rows = await pool.query(sql);
-    
+    res.status(status.OK).json(order_number);
     if(rows){
       //获取accessToken
       programApi.getAccessToken().then((access_token)=>{
@@ -313,7 +350,6 @@ deliverGoods =  async (req, res, next)=> {
         })
       })
     }
-    res.status(status.OK).json(order_number);
   } catch(err) {
     log.error(err);
     return handleError(res, err);

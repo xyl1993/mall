@@ -79,7 +79,7 @@ export default {
     },
     search() {
       this.current = 1;
-      this.findlist(this);
+      this.findlist();
     },
     add() {
       this.$router.push({ path: "/shopDetail" });
@@ -87,7 +87,7 @@ export default {
     handleSizeChange(val) {},
     handleCurrentChange(val) {
       this.current = val;
-      findlist(this);
+      this.findlist();
     },
     handleEdit(index, row) {
       this.$router.push({ path: "/shopDetail" ,query: { scree: `${row.id}` }});

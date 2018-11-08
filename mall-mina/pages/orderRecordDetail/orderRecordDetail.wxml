@@ -7,7 +7,7 @@
         <view>{{orderInfo.phone}}</view>
       </view>
       <view>
-        收货地址: {{orderInfo.address}}
+      收货地址: {{orderInfo.address}}
       </view>
     </view>
     <view class='product-list'>

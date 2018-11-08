@@ -87,6 +87,7 @@ Page({
       title: '正在提交',
       mask: true
     });
+    const form_id = e.detail.formId;
     let subForm = e.detail.value;
     let productList = this.data.productList;
     let allPrice = this.data.allPrice;
@@ -97,7 +98,7 @@ Page({
       address: subForm.address,
       addressId: this.data.addressId
     }
-    let params = { allPrice, chooseId, productList, ...address };
+    let params = { allPrice, chooseId, productList, form_id, ...address };
     api.post(`program/order`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
