@@ -1,6 +1,5 @@
 // const serIp = 'http://47.98.243.170/mall/';
-// const serIp = 'http://172.16.6.190:8002/mall/';
-const serIp = 'http://192.168.100.159:8002/mall/';
+const serIp = 'http://172.16.6.190:8002/mall/';
 export const Config = {
   api_url: serIp+'api/v1/',
   file_servier: serIp+'upload/',
