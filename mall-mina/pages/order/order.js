@@ -29,6 +29,11 @@ Page({
 
   onLoad: function (options) {
     let self = this;
+    const is_admin = wx.getStorageSync('is_admin');
+
+    this.setData({
+      is_admin: is_admin
+    });
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
       this.getShopcarList();
@@ -51,19 +56,6 @@ Page({
    */
   onHide: function () {
 
-  },
-  getUserRole:function(){
-    api.get("program/user").then(res => {
-      let {
-        data,
-        status
-      } = res;
-      if (status === 200) {
-        this.setData({
-          is_admin: data.is_admin
-        });
-      }
-    });
   },
   getAddressDetail: function (addressId){
     let address = [];
@@ -125,7 +117,7 @@ Page({
       url: '../address/address?type=order'
     })
   },
-  tabAddress:function(){
+  tabAddress:function(e){
     if(this.data.is_admin === 1){
       wx.navigateTo({
         url: '../address/address?type=order'

@@ -6,9 +6,7 @@
         <view>收货人: {{address[0].collect_name}}</view>
         <view>{{address[0].phone}}</view>
       </view>
-      <view>
-        收货地址: {{address[0].address}}
-      </view>
+      <view>收货地址: {{address[0].address}}</view>
     </view>
     <view class='address' wx:else bindtap='addAddress'>
       <view class='ad-address'>

@@ -25,14 +25,14 @@ const getProductList = function(_this,callback){
       }
       if (data.data.length !== 0) {
         productList = productList.concat(data.data);
-        _this.setData({
-          productList: productList
-        })
       } else {
         _this.setData({
           noData: true
         })
       }
+      _this.setData({
+        productList: productList
+      })
       if (typeof callback == 'function') callback();
     }
   });
@@ -90,7 +90,6 @@ Page({
   onReachBottom: function () {
     const _this = this;
     if (!this.data.noData) {
-      console.log('加载更多')
       let current = ++this.data.current;
       this.setData({ isHideLoadMore: false, current: current});
       getProductList(this, function () {
@@ -117,7 +116,7 @@ Page({
         sortType.value = 1;
       }
     }
-    this.setData({ sortType: sortType });
+    this.setData({ sortType: sortType, current: 1 });
     getProductList(this);
   }
 })

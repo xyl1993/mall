@@ -27,26 +27,26 @@ const getProductList = async (req, res)=> {
   if (brand_id) _sql = _sql + ` and a.brand_id = ${brand_id}`;
   if (recommendStatus) _sql = _sql + ` and a.recommend = ${recommendStatus}`;
   const _countSql = `select count(*) as count from (${_sql}) a`;
-  if(sort_type === 1){
+  if(sort_type == 1){
     //综合
     _sql = _sql + ` order by recommend desc,seal_num desc,create_time desc`;
-  }else if(sort_type === 2){
+  }else if(sort_type == 2){
     //价格
-    if(sort_des === 1){
+    if(sort_des == 1){
       _sql = _sql + ` order by current_price asc`;
     }else{
       _sql = _sql + ` order by current_price desc`;
     }
-  }else if(sort_type === 3){
+  }else if(sort_type == 3){
     //销量
-    if(sort_des === 1){
+    if(sort_des == 1){
       _sql = _sql + ` order by seal_num asc`;
     }else{
       _sql = _sql + ` order by seal_num desc`;
     }
-  }else if(sort_type === 4){
+  }else if(sort_type == 4){
     //日期
-    if(sort_des === 1){
+    if(sort_des == 1){
       _sql = _sql + ` order by create_time asc`;
     }else{
       _sql = _sql + ` order by create_time desc`;

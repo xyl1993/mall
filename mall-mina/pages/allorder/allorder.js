@@ -73,7 +73,6 @@ Page({
         status
       } = res;
       if (status === 200) {
-        console.log(data);
         this.setData({
           isAdmin: data.is_admin
         });
@@ -96,17 +95,26 @@ Page({
   },
   //收货
   collectGoods:function(e){
-    let order_number = e.currentTarget.dataset.order_number;
-    api.put(`program/order/collect/${order_number}`).then(res => {
-      let {
-        data,
-        status
-      } = res;
-      if (status === 200) {
-        this.setData({ isHideLoadMore: true, current: 1, noData: false });
-        getProgramOrderList(this);
+    wx.showModal({
+      title: '提示',
+      content: '确认收货吗？',
+      success(res) {
+        if (res.confirm) {
+          let order_number = e.currentTarget.dataset.order_number;
+          api.put(`program/order/collect/${order_number}`).then(res => {
+            let {
+              data,
+              status
+            } = res;
+            if (status === 200) {
+              this.setData({ isHideLoadMore: true, current: 1, noData: false });
+              getProgramOrderList(this);
+            }
+          });
+        } else if (res.cancel) {
+        }
       }
-    });
+    })
   },
   //发货
   deliverGoods: function (e) {

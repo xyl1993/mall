@@ -1,15 +1,22 @@
 /* pages/collection/collection.wxss */
 @import '../../resources/css/noData.wxss';
+
 .collection-item {
-  padding: 20rpx;
   background: #fff;
   width: 100%；;
+  position: relative;
+  height: 178rpx;
 }
 
 .item-content {
-  height: 138rpx;
+  box-sizing: border-box;
+  height: 100%;
   width: 100%;
+  position: absolute;
   display: flex;
+  padding: 20rpx;
+  z-index: 10;
+  background: #fff;
 }
 
 .item-content image {
@@ -18,7 +25,7 @@
 }
 
 .product-detail {
-  height: 138rpx;
+  height: 100%;
   flex: 1;
   padding-left: 20rpx;
   display: flex;
@@ -43,4 +50,21 @@
   border-bottom: none;
 }
 
-
+.posit {
+  position: absolute;
+  background: #FF3364;
+  height: 100%;
+  right: 0;
+  transition: left 0.2s ease-in-out;
+  width: 140rpx;
+  text-align: center;
+  z-index: 1;
+  color: #fff;
+  top: 0;
+}
+.del{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

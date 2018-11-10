@@ -22,6 +22,10 @@
                         <div class="list-index-detail">{{orderInfo.create_time | dateTimeFilter}}</div>
                       </el-col>
                       <el-col :span="12">
+                        <div class="list-index-term">付款金额</div>
+                        <div class="list-index-detail">{{orderInfo.should_price}}</div>
+                      </el-col>
+                      <el-col :span="12">
                         <div class="list-index-term">付款状态</div>
                         <div class="list-index-detail">{{orderInfo.pay_status | payStatusFilter}}</div>
                       </el-col>
@@ -91,6 +95,8 @@
                 <el-table-column prop="specifications_name" label="规格" width="180">
                 </el-table-column>
                 <el-table-column prop="number" label="数量" width="180">
+                </el-table-column>
+                <el-table-column prop="price" label="单价">
                 </el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">

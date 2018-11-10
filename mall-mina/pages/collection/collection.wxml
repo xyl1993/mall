@@ -1,13 +1,18 @@
 <!--pages/collection/collection.wxml-->
 <view class='collection-list'>
-  <view class='collection-item' wx:for="{{collectionList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" bindtap='toDetail' data-product_id="{{item.product_id}}"> 
-    <view class='item-content'>
+  <view class='collection-item' wx:for="{{collectionList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" bindtap='toDetail' data-product_id="{{item.product_id}}">
+    <view class='item-content' data-index="{{idx}}" style="{{item.txtStyle}}" bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE">
       <image src='{{fileIp+item.cover}}'></image>
       <view class='product-detail'>
         <view class='title'>{{item.title}}</view>
         <view class='price'>￥{{item.current_price}}</view>
       </view>
     </view>
+    <!--这里是左滑按钮部分----start-->
+    <view bindtap="delItem" class="posit">
+      <view class="del" data-product_id="{{item.product_id}}" data-index="{{idx}}" catchtap="delCollect">删除</view>
+    </view>
+    <!--这里是左滑按钮部分----end-->
   </view>
   <view class='no-data' wx:if="{{collectionList.length===0}}">
     <image class='no-data-png' src='../../resources/imgs/nodata.png'></image>

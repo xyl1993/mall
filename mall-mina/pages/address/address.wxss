@@ -66,23 +66,27 @@
 }
 
 .add-btn {
+  position: absolute;
   width: 90rpx;
   height: 90rpx;
+  line-height: 90rpx;
   background: #FE8DAE;
   text-align: center;
   border-radius: 50%;
   overflow: hidden;
-  position: fixed;
   bottom: 40rpx;
   right: 20rpx;
   color: #fff;
-  font-size: 40rpx;
+  vertical-align: middle;
 }
-
-.add-btn view{
+.add-btn  view{
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.add-btn image{
+  width: 40rpx;
+  height: 40rpx;
 }

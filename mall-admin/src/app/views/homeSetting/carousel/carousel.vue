@@ -71,8 +71,10 @@ export default {
       this.dialogVisible = true;
     },
     onSignImgRemove(res,list) {
-      var test = /\/([^\/]*?\.)/i;
-      var img = test.exec(res.url)[1].split('.')[0];
+      // var test = /\/([^\/]*?\.)/i;
+      var url = res.url.split('/');
+      var img = url[url.length-1].split('.')[0];
+      console.log(img);
       service.deleteCarousel(img).then(res => {});
     },
     signUploadSuccess(res, list){

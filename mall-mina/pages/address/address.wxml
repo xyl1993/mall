@@ -24,5 +24,9 @@
     <image class='no-data-png' src='../../resources/imgs/nodata.png'></image>
     <view>暂无数据</view>
   </view>
-  <view class='add-btn' bindtap='add'><view>+</view></view>
+  <view class='add-btn' bindtap='add'>
+    <view>
+      <image src='../../resources/imgs/add.png'></image>
+    </view>
+  </view>
 </view>

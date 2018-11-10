@@ -5,7 +5,7 @@ const {
 const log = require('log4js').getLogger("orderController");
 const mysql = require('mysql');
 const config = require('../../../config/environment');
-const pool = require('../../../utils/pool')
+const pool = require('../../../utils/pool');
 const programApi = require('../../../utils/programApi');
 
 
