@@ -1,8 +1,6 @@
 **/node_modules/
-dist/
 .idea/
 .vscode/
 .svn/
-admin/
 upload/
 *.log
