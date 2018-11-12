@@ -71,7 +71,8 @@ Page({
     let is_admin = wx.getStorageSync('is_admin');
     let mall_user = wx.getStorageSync('mall_user');
     this.setData({
-      openid: mall_user.openid
+      openid: mall_user.openid,
+      isAdmin: is_admin
     });
   },
   //删除订单
@@ -90,6 +91,7 @@ Page({
   },
   //收货
   collectGoods:function(e){
+    const self = this;
     wx.showModal({
       title: '提示',
       content: '确认收货吗？',
@@ -102,8 +104,8 @@ Page({
               status
             } = res;
             if (status === 200) {
-              this.setData({ isHideLoadMore: true, current: 1, noData: false });
-              getProgramOrderList(this);
+              self.setData({ isHideLoadMore: true, current: 1, noData: false });
+              getProgramOrderList(self);
             }
           });
         } else if (res.cancel) {

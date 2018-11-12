@@ -32,10 +32,10 @@
       <view class='price-list'>
         共计 {{item.count}} 件商品 合计：￥{{item.should_price}}
       </view>
-      <view class='option-list' wx-if="{{isAdmin == 1 && (item.collect_status === 1)}}">
+      <view class='option-list' wx-if="{{isAdmin == 1 && (item.collect_status == 1)}}">
         <view class='btn error'  data-order_number = "{{item.order_number}}" bindtap='deliverGoods' wx-if="{{item.collect_status === 1}}">点击发货</view>
       </view>
-      <view class='option-list' wx-if="{{item.collect_status === 2 && item.isSelf}}">
+      <view class='option-list' wx-if="{{item.collect_status == 2 && item.isSelf}}">
         <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 2}}">确认收货</view>
       </view>
     </view>

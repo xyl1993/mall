@@ -5,7 +5,7 @@ export const shareData =
     views: [
       {
         type: 'image',
-        url: 'https://www.billionsen.cn/mall/upload/theme/1531103986231.jpeg',   //图片背景图  
+        url: 'https://billionsen.cn/mall/upload/theme/1531103986231.jpeg',   //图片背景图  
         top: 0,
         left: 0,
         width: 375,
@@ -14,7 +14,7 @@ export const shareData =
       {
         // 用户头像  如果没有取默认头像
         type: 'image',
-        url: 'https://www.billionsen.cn/mall/upload/theme/93831541999309540.jpg',
+        url: 'https://billionsen.cn/mall/upload/theme/93831541999309540.jpg',
         top: 27.5,
         left: 29,
         width: 55,
@@ -22,7 +22,7 @@ export const shareData =
       },
       {   //不用替换
         type: 'image',
-        url: 'https://www.billionsen.cn/mall/upload/theme/1531401349117.jpeg',
+        url: 'https://billionsen.cn/mall/upload/theme/1531401349117.jpeg',
         top: 27.5,
         left: 29,
         width: 55,
@@ -58,7 +58,7 @@ export const shareData =
       {
            //小程序二维码
         type: 'image',
-        url: 'https://www.billionsen.cn/mall/upload/theme/93831541999309540.jpg',
+        url: 'https://billionsen.cn/mall/upload/theme/93831541999309540.jpg',
         top: 443,
         left: 85,
         width: 68,

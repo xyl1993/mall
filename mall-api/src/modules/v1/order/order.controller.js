@@ -116,18 +116,14 @@ const insertOrder = async (req, res, next)=> {
     log.info(_sql);
     await pool.query(_sql);
 
-    //修改库存
-
     //更新收貨地址
     _sql = `update account_address set collect_name = ?,address=?,phone = ? where id = ?`;
     let addressParam = [collect_name,address,phone,addressId];
     _sql = mysql.format(_sql,addressParam);
     await pool.query(_sql);
-    res.status(status.OK).json(orderRows.insertId);
-
     /***给用户发送消息** */
     //获取收货人基本信息
-    sql = `select * from account where account_id = ${account_id}`;
+    _sql = `select * from account where id = ${account_id}`;
     const adminUser = await pool.query(_sql);
     //获取accessToken
     programApi.getAccessToken().then((access_token)=>{
@@ -157,10 +153,12 @@ const insertOrder = async (req, res, next)=> {
       }
       //发送消息
       programApi.sendMessage(access_token,tempData).then((message)=>{
+        console.log(message);
         log.info('模板消息返回');
         log.info(message);
       })
     })
+    res.status(status.OK).json(orderRows.insertId);
   } catch(err) {
     log.error(err);
     return handleError(res, err);

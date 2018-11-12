@@ -194,14 +194,13 @@ Page({
   eventGetImage (event) {
     let self = this;
     setTimeout(function(){
-      wx.hideLoading()
+      wx.hideLoading();
       const { tempFilePath } = event.detail
       self.setData({
         shareImage: tempFilePath,
         shareImageStatus: self.data.shareImageStatus
       })
-      console.log()
-    },2000)
+    },5000)
   },
   saveShareImg(){
     wx.saveImageToPhotosAlbum({
