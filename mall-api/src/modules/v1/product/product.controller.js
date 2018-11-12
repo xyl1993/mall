@@ -12,7 +12,7 @@ const getProductList = async (req, res)=> {
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
   const {search,type_id,brand_id,recommendStatus,sort_type,sort_des} = req.query;
-  let _sql = `select a.id,a.type_id,a.brand_id,a.title,a.cover,a.carousel,a.read_number,a.create_time,a.recommend,
+  let _sql = `select a.id,a.type_id,a.brand_id,a.title,a.cover,a.carousel,a.read_number,a.create_time,a.recommend,a.seal_num,
     b.name as type,c.name as brand,d.current_price,d.original_price,d.stock from product a 
     left join goods_type b on a.type_id = b.id
     left join goods_brand c on c.id = a.brand_id 
