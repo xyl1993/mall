@@ -85,7 +85,7 @@ const deleteBrand = async (req, res, next)=> {
 //查询品牌
 const getBrandList = async (req, res, next)=> {
   let _sql = `select * from goods_brand where brand_status = 1`;
-  _sql = _sql + ` order by id desc`;
+  _sql = _sql + ` order by id asc`;
   log.info(_sql);
   try {
     const rows = await pool.query(_sql);

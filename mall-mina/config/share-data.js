@@ -5,7 +5,7 @@ export const shareData =
     views: [
       {
         type: 'image',
-        url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531103986231.jpeg',   //图片背景图  
+        url: 'https://www.billionsen.cn/mall/upload/theme/1531103986231.jpeg',   //图片背景图  
         top: 0,
         left: 0,
         width: 375,
@@ -14,7 +14,7 @@ export const shareData =
       {
         // 用户头像  如果没有取默认头像
         type: 'image',
-        url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epJEPdPqQVgv6D8bojGT4DrGXuEC4Oe0GXs5sMsN4GGpCegTUsBgL9SPJkN9UqC1s0iakjQpwd4h4A/132',
+        url: 'https://www.billionsen.cn/mall/upload/theme/93831541999309540.jpg',
         top: 27.5,
         left: 29,
         width: 55,
@@ -22,7 +22,7 @@ export const shareData =
       },
       {   //不用替换
         type: 'image',
-        url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531401349117.jpeg',
+        url: 'https://www.billionsen.cn/mall/upload/theme/1531401349117.jpeg',
         top: 27.5,
         left: 29,
         width: 55,
@@ -30,7 +30,7 @@ export const shareData =
       },
       {   //分享人昵称  没有取默认
         type: 'text',
-        content: '您的好友【kuckboy】',
+        content: '您的好友',
         fontSize: 16,
         color: '#402D16',
         textAlign: 'left',
@@ -49,7 +49,7 @@ export const shareData =
       },
       {   //商品缩略图
         type: 'image',
-        url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385366950.jpeg',
+        url: '',
         top: 136,
         left: 42.5,
         width: 290,
@@ -58,7 +58,7 @@ export const shareData =
       {
            //小程序二维码
         type: 'image',
-        url: 'https://www.billionsen.cn/mall/upload/93831541999309540.jpg',
+        url: 'https://www.billionsen.cn/mall/upload/theme/93831541999309540.jpg',
         top: 443,
         left: 85,
         width: 68,
@@ -92,7 +92,7 @@ export const shareData =
       {  
         //价格
         type: 'text',
-        content: '原价:￥138.00',
+        content: '原价:￥',
         fontSize: 13,
         color: '#7E7E8B',
         textAlign: 'left',

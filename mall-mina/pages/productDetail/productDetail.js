@@ -224,6 +224,7 @@ Page({
         shareImage: tempFilePath,
         shareImageStatus: self.data.shareImageStatus
       })
+      console.log()
     },2000)
   },
   saveShareImg(){
