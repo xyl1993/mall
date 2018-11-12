@@ -49,7 +49,7 @@ export const shareData =
       },
       {   //商品缩略图
         type: 'image',
-        url: '',
+        url: 'https://billionsen.cn/mall/upload/theme/1531401349117.jpeg',
         top: 136,
         left: 42.5,
         width: 290,

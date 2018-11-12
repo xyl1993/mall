@@ -7,7 +7,7 @@ Component({
       value: {view: []},
       observer (newVal, oldVal) {
         if (!this.data.isPainting) {
-          if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          // if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
             if (newVal && newVal.width && newVal.height) {
               this.setData({
                 showCanvas: true,
@@ -15,11 +15,11 @@ Component({
               })
               this.readyPigment()
             }
-          } else {
-            if (newVal && newVal.mode !== 'same') {
-              this.triggerEvent('getImage', {errMsg: 'canvasdrawer:samme params'})
-            }
-          }
+          // } else {
+          //   if (newVal && newVal.mode !== 'same') {
+          //     this.triggerEvent('getImage', {errMsg: 'canvasdrawer:samme params'})
+          //   }
+          // }
         }
       }
     }

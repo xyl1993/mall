@@ -21,6 +21,7 @@ Page({
     specifications:[],
     carousel: [
     ],
+    shareStatus:0,
     indicatorDots: true,
     autoplay: true,
     circular: true,
@@ -173,34 +174,32 @@ Page({
   },
   eventDraw(){
     this.setData({
-      shareImageStatus: true
+      shareStatus: 1
     })
-    if(!this.data.shareImage){
 
-      wx.showLoading({
-        title: '绘制分享图片中',
-        mask: true
-      })
-      const { painting } = this.data;
-      console.log(painting);
-      this.setData({
-        mode: 'normal',
-        painting: painting,
-        paintingIndex: 0
-      })
+    wx.showLoading({
+      title: '绘制分享图片中',
+      mask: true
+    })
+    const { painting } = this.data;
+    this.setData({
+      mode: 'normal',
+      painting: painting,
+      paintingIndex: 0
+    })
 
-    }
   },
   eventGetImage (event) {
-    let self = this;
-    setTimeout(function(){
-      wx.hideLoading();
-      const { tempFilePath } = event.detail
-      self.setData({
-        shareImage: tempFilePath,
-        shareImageStatus: self.data.shareImageStatus
+    wx.hideLoading()
+    const { tempFilePath } = event.detail
+    this.setData({
+      shareImage: tempFilePath,
+    })
+    if (this.data.shareStatus == 1){
+      this.setData({
+        shareImageStatus: true
       })
-    },5000)
+    }
   },
   saveShareImg(){
     wx.saveImageToPhotosAlbum({
