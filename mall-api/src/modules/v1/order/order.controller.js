@@ -63,8 +63,7 @@ const spitStockSql = async(num,id)=>{
  * @param {*} next 
  */
 const insertOrder = async (req, res, next)=> {
-  const { account_id } = req;
-  const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id} = req.body;
+  const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id,account_id} = req.body;
 
   // const {specifications_name,number,price} = productList;
   try {

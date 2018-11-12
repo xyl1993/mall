@@ -30,9 +30,10 @@ Page({
   onLoad: function (options) {
     let self = this;
     const is_admin = wx.getStorageSync('is_admin');
-
+    const mall_user = wx.getStorageSync('mall_user');
     this.setData({
-      is_admin: is_admin
+      is_admin: is_admin,
+      account_id: mall_user.id
     });
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
@@ -141,7 +142,7 @@ Page({
   onShareAppMessage: function (res) {
     return {
       title: '',
-      path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}`,
+      path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}&account_id=${this.data.account_id}`,
       success: (res) => {
         console.log("转发成功", res);
       },

@@ -32,6 +32,7 @@ Page({
       title: '正在请求',
       mask: true
     })
+    this.setData({ account_id: options.account_id });
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
       this.getShopcarList();
@@ -106,13 +107,14 @@ Page({
         let productList = self.data.productList;
         let allPrice = self.data.allPrice;
         let chooseId = self.data.chooseId;
+        let account_id = self.data.account_id;
         let address = {
           collect_name: subForm.collect_name,
           phone: subForm.phone,
           address: subForm.address,
           addressId: self.data.addressId
         }
-        let params = { allPrice, chooseId, productList, form_id, ...address };
+        let params = { allPrice, chooseId, account_id, productList, form_id, ...address };
         api.post(`program/order`, params).then(res => {
           const { data, status } = res;
           if (status === 200) {
