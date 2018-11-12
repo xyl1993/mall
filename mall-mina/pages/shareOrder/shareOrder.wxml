@@ -11,7 +11,7 @@
       <textarea placeholder='收货地址' value='{{address[0].address}}' auto-height name="address"></textarea>
     </view>
     <view class='product-list'>
-      <view class='view-list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+      <view class='view-list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" data-id="{{item.product_id}}" bindtap='toDetail'>
         <view class='list-cointer'>
           <view class='list-main'>
             <view class='img-cointer'>
@@ -19,6 +19,7 @@
             </view>
             <view class='product-view'>
               <view class='title'>{{item.title}}</view>
+              <view>{{item.name}}</view>
               <view class='price-view'>
                 <text class='price'>￥{{item.current_price}}</text>
                 <text>X {{item.number}}</text>
@@ -34,6 +35,6 @@
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
       <view class='other'>不含运费</view>
     </view>
-    <button loading="{{loading}}" form-type='submit' class='sure-brn'>确认下单</button>
+    <button loading="{{loading}}" form-type='submit' class='sure-brn'>确认付款</button>
   </view>
 </form>

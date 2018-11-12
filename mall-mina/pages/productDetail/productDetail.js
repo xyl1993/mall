@@ -27,21 +27,13 @@ Page({
     interval: 5000,
     duration: 1000,
     shouldBuy:false,
-    is_admin:0,
     shareImageStatus:false,
     painting: {},
-    
     paintingIndex:0,
     shareImage: '',
-
     mode: 'normal' // cry
   },
   onLoad: function (options) {
-    const is_admin = wx.getStorageSync('is_admin');
-    
-    this.setData({
-      is_admin: is_admin
-    });
     if (options.productId) this.setData({ productId: options.productId });
     this.getProductDetail(options.productId);
     this.getCollectionStatus();
@@ -76,10 +68,15 @@ Page({
           shareObj[7].content = data.title;
           shareObj[8].content = `￥${data.specifications[0].current_price}`;
           shareObj[9].content = `原价￥${data.specifications[0].original_price}`;
+          console.log(shareObj);
           shareData.views = shareObj;
         }
         this.setData({ productDetail: data, specifications: data.specifications, painting:shareData});
         var that = this;
+        let buyCar = {
+          product_id: productId
+        };
+        initBuyCar(this, data.specification_id, buyCar);
         WxParse.wxParse('article', 'html', data.detail, that, 15);
       }
     });
@@ -136,33 +133,12 @@ Page({
   joinCar(e){
     let type = e.currentTarget.dataset.type;
     this.setData({ shouldBuy: type?true:false})
-    let productDetail = this.data.productDetail;
-    let specifications = this.data.specifications;
-    let id = productDetail.specifications[0].id;//规格id
-    let buyCar = {
-      product_id: this.data.productId,
-      specifications_id: id,
-      number:1,
-      current_price: specifications[0].current_price,
-      stock: specifications[0].stock
-    }
-    specifications[0].active = true;
-    this.setData({ dialogStatus: true, buyCar: buyCar, specifications: specifications});
+    this.setData({ dialogStatus: true});
   },
   choose(e){
     let id = e.currentTarget.dataset.id;//规格id
     let buyCar = this.data.buyCar;
-    buyCar.specifications_id = id;
-    let specifications = this.data.specifications;
-    specifications.map((item,index)=>{
-      item.active = false;
-      if (item.id === id){
-        item.active = true;
-        buyCar.current_price = item.current_price;
-        buyCar.stock = item.stock;
-      }
-    })
-    this.setData({ specifications: specifications, buyCar: buyCar})
+    initBuyCar(this, id, buyCar);
   },
   joinCarSure(e){
     ButtonClicked(this, e);
@@ -262,3 +238,19 @@ Page({
     }
   }
 })
+
+function initBuyCar(self, id, buyCar){
+  buyCar.specifications_id = id;
+  let specifications = self.data.specifications;
+  specifications.map((item, index) => {
+    item.active = false;
+    if (item.id === id) {
+      item.active = true;
+      buyCar.current_price = item.current_price;
+      buyCar.original_price = item.original_price;
+      buyCar.stock = item.stock;
+      buyCar.number = 1;
+    }
+  })
+  self.setData({ specifications: specifications, buyCar: buyCar })
+}

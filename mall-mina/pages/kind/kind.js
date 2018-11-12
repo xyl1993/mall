@@ -74,6 +74,11 @@ Page({
       wx.stopPullDownRefresh() //停止下拉刷新
     })
   },
+  search: function () {
+    wx.navigateTo({
+      url: '../detail/detail'
+    })
+  },
   tabBrand:function(e){
     let _this = this;
     let brandList = this.data.brandList;

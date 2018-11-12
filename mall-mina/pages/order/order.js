@@ -129,28 +129,24 @@ Page({
       })
     }
   },
-  
+  toDetail: function (e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../productDetail/productDetail?productId=' + id
+    })
+  },
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function (res) {
-    if (this.data.address.length===0){
-      wx.showToast({
-        title: '请选择收货地址',
-        icon: 'none',
-        duration: 1000
-      })
-      return false;
-    }else{
-      return {
-        title: '请确认您的订单',
-        path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}`,
-        success: (res) => {
-          console.log("转发成功", res);
-        },
-        fail: (res) => {
-          console.log("转发失败", res);
-        }
+    return {
+      title: '',
+      path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}`,
+      success: (res) => {
+        console.log("转发成功", res);
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
       }
     }
   }

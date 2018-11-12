@@ -7,6 +7,7 @@ import {
 } from '../../config/index.js'
 
 const getProgramOrderList = function (_this, callback) {
+  let openid = _this.data.openid;
   let params = {
     current: _this.data.current,
     pageSize: _this.data.pageSize,
@@ -22,6 +23,9 @@ const getProgramOrderList = function (_this, callback) {
       let result = data.data;
       if (result.length !== 0) {
         result.map((item,index)=>{
+          if (openid === item.openid){
+            item.isSelf = true;
+          }
           if (item.cover){
             item.cover = item.cover.split(',');
           }
@@ -64,19 +68,10 @@ Page({
     console.log(options.type);
     if (options.type) this.setData({ type: options.type });
     getProgramOrderList(this);
-    this.getUserRole();
-  },
-  getUserRole: function () {
-    api.get("program/user").then(res => {
-      let {
-        data,
-        status
-      } = res;
-      if (status === 200) {
-        this.setData({
-          isAdmin: data.is_admin
-        });
-      }
+    let is_admin = wx.getStorageSync('is_admin');
+    let mall_user = wx.getStorageSync('mall_user');
+    this.setData({
+      openid: mall_user.openid
     });
   },
   //删除订单

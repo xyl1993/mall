@@ -13,7 +13,7 @@ const getProductList = async (req, res)=> {
   const start = (current - 1) * pageSize;
   const {search,type_id,brand_id,recommendStatus,sort_type,sort_des} = req.query;
   let _sql = `select a.id,a.type_id,a.brand_id,a.title,a.cover,a.carousel,a.read_number,a.create_time,a.recommend,
-    b.name as type,c.name as brand,d.current_price,d.original_price from product a 
+    b.name as type,c.name as brand,d.current_price,d.original_price,d.stock from product a 
     left join goods_type b on a.type_id = b.id
     left join goods_brand c on c.id = a.brand_id 
     left join (
@@ -138,7 +138,22 @@ const deleteProduct = async (req, res)=> {
 };
 const getProductDetail = async (req, res, next)=>{
   const productId = req.params.id;
-  let _sql = `select * from product where id=${productId}`;
+  let _sql = `SELECT
+        a.*, b.id AS specification_id
+      FROM
+        product a
+      LEFT JOIN (
+        SELECT
+          id,
+          product_id,
+          MIN(current_price)
+        FROM
+          product_specifications
+        WHERE
+          product_id = ${productId}
+      ) b ON a.id = b.product_id
+      WHERE
+        a.id = ${productId}`;
   log.info(_sql);
   try{
     const rows = await pool.query(_sql);
@@ -262,6 +277,7 @@ const updatereadNumber = async (req, res, next)=> {
     return handleError(res, err);
   }
 };
+
 module.exports = {
   getProductList,
   addProduct,

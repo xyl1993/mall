@@ -13,7 +13,8 @@
     </view>
   </view>
   <view class='center' scroll-y style='height:100%;'>
-    <view class='view-list' wx:for="{{carList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
+    <view class='view-list' wx:for="{{carList}}" wx:key="idx" wx:for-item="item"
+     wx:for-index="idx"  data-id="{{item.product_id}}" bindtap='toDetail'>
       <view class='list-cointer'>
         <view class='list-main'>
           <radio checked="{{item.checked}}" data-item="{{item}}" data-index="{{idx}}" bindtap='chooseItem' />
@@ -22,6 +23,7 @@
           </view>
           <view class='product-view'>
             <view class='title'>{{item.title}}</view>
+            <view>{{item.name}}</view>
             <view class='price-view'>
               <text class='price'>￥{{item.current_price}}</text>
               <text wx-if="{{!editStatus}}">X {{item.number}}</text>

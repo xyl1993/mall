@@ -2,7 +2,7 @@
   <view class='scroll'>
     <view class="container">
       <view class="header">
-        <view class="search_div">
+        <view class="search_div" bindtap='search'>
           <image src="../../resources/imgs/search-icon.png" alt=""></image>
           请输入搜索关键词
         </view>

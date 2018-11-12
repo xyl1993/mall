@@ -188,7 +188,7 @@ const getTypeList = async (req, res, next)=> {
   } = req.query;
   let _sql = `select * from goods_type where type_status = 1`;
   if (brand_id) _sql = _sql + ` and brand_id = ?`;
-  _sql = _sql + ` order by id desc`;
+  _sql = _sql + ` order by id asc`;
   _sql = mysql.format(_sql, [brand_id]);
   log.debug(_sql);
   try {

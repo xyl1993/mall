@@ -161,5 +161,11 @@ Page({
         url: `../order/order?chooseId=${chooseId}`
       })
     }
-  }
+  },
+  toDetail: function (e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../productDetail/productDetail?productId=' + id
+    })
+  },
 })

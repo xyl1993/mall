@@ -33,7 +33,7 @@ const getShopcarList = async (req, res, next)=> {
     const { chooseId } = req.query;
     let params = [req.account_id];
     
-    let sql = `select a.id,a.number,a.create_time,b.id as product_id,b.title,b.cover,c.current_price,c.name
+    let sql = `select a.id,a.number,a.create_time,b.id as product_id,b.title,b.cover,c.current_price,c.name,c.id as specifications_id
     from goods_shopcar a 
     left join product b on a.product_id = b.id
     left join product_specifications c on a.specifications_id = c.id
@@ -86,9 +86,7 @@ const getCollectionList = async (req, res, next)=> {
     let sql = `select a.*,b.cover,b.title,d.current_price from collections a 
       left join product b on a.product_id = b.id 
       left join (
-        select a.* from 
-        (select product_id,min(current_price) current_price from product_specifications GROUP BY product_id ) b
-        JOIN product_specifications a ON a.product_id = b.product_id AND a.current_price = b.current_price
+        select id,product_id,name,min(current_price) current_price,stock,original_price from product_specifications GROUP BY product_id
       ) d on d.product_id = a.product_id
       where account_id = ?`;
     let params = [account_id];

@@ -323,10 +323,10 @@
   overflow: auto;
 }
 .specifications-item{
-  padding: 6rpx 12rpx;
+  padding: 10rpx 16rpx;
   border-radius: 5rpx;
   margin-bottom: 10rpx;
-  font-size: 22rpx;
+  font-size: 24rpx;
   margin-left: 20rpx;
   background: #e4e7ed;
   float: left;
@@ -345,7 +345,7 @@
   width: 600rpx;
   height: 888rpx;
   position: absolute;
-  top:50%;
+  top:44%;
   left: 50%;
   transform: translate(-50%,-50%);
   z-index: 99;
@@ -361,8 +361,9 @@
 }
 
 .img-btn{
-  padding: 10rpx 30rpx;
+  padding: 16rpx 30rpx;
   width: 120rpx;
+  font-size: 28rpx;
   background: #ff3364;
   border-radius: 12rpx;
   text-align: center;
@@ -372,6 +373,17 @@
 }
 .share-btn-gop{
   position: absolute;
-  bottom: 20rpx;
+  bottom: 100rpx;
   width: 100%;
+}
+.detail-specifications-item{
+  margin-right: 15rpx;
+  border: 1rpx solid #ddd;
+  padding: 20rpx 25rpx;
+  display: inline-block;
+  margin-bottom: 10rpx;
+}
+.detail-specifications-item.active{
+  border: 1px solid #fe5e24;
+  color: #fe5e24;
 }

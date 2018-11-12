@@ -39,8 +39,8 @@
           <view class='old_price'>￥{{item.original_price}}</view>
         </view>
         <view class='between_view clear'>
-          <view class='left'>销量：{{item.seal_num}}</view>
-          <!-- <view class='right'>库存：1029万</view> -->
+          <view class='left'>销量：{{item.seal_num?seal_num:0}}</view>
+          <view class='right'>库存：{{item.stock?item.stock:0}}</view>
         </view>
       </view>
     </view>

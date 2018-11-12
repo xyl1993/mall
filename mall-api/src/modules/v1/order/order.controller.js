@@ -50,7 +50,12 @@ const getOrderList = async (req, res, next)=> {
     return handleError(res, err);
   }
 };
-
+//修改库存
+const spitStockSql = async(num,id)=>{
+  let _update = `update product_specifications set stock= stock - ${num} where id = ${id}`;
+  log.info(_update);
+  await pool.query(_update);
+}
 /**
  * 小程序用 生成订单
  * @param {*} req 
@@ -94,6 +99,7 @@ const insertOrder = async (req, res, next)=> {
         date
       ]);
       productIdArr.push(item.product_id);
+      spitStockSql(item.number,item.specifications_id);
     })
     _sql = `insert into order_goods (order_id,product_id,specifications_name,number,price,create_time) values ?`;
     _sql = mysql.format(_sql, [values]);
@@ -110,6 +116,7 @@ const insertOrder = async (req, res, next)=> {
     log.info(_sql);
     await pool.query(_sql);
 
+    //修改库存
 
     //更新收貨地址
     _sql = `update account_address set collect_name = ?,address=?,phone = ? where id = ?`;
@@ -118,13 +125,13 @@ const insertOrder = async (req, res, next)=> {
     await pool.query(_sql);
     res.status(status.OK).json(orderRows.insertId);
 
-    /***给管理员发送消息** */
-    _sql = `select * from account where is_admin = 1 limit 1`;
+    /***给用户发送消息** */
+    //获取收货人基本信息
+    sql = `select * from account where account_id = ${account_id}`;
     const adminUser = await pool.query(_sql);
     //获取accessToken
     programApi.getAccessToken().then((access_token)=>{
       const user = adminUser[0];
-      console.log(form_id);
       const tempData = {
         "touser":user.openid,
         "template_id":config.programTemplate.orderSuccessTemplateId,
@@ -182,9 +189,11 @@ const getProgramOrderList = async (req, res, next)=> {
                 (
                   SELECT
                     a.*, GROUP_CONCAT(c.cover) AS cover,
-                    count(order_number) AS count
+                    count(order_number) AS count,
+                    d.openid
                   FROM
                     account_order a
+                  LEFT JOIN account d ON d.id = a.account_id
                   LEFT JOIN order_goods b ON a.id = b.order_id
                   LEFT JOIN product c ON c.id = b.product_id
                   GROUP BY

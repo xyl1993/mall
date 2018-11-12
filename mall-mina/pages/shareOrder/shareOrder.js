@@ -28,6 +28,10 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.showLoading({
+      title: '正在请求',
+      mask: true
+    })
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
       this.getShopcarList();
@@ -67,20 +71,25 @@ Page({
   getShopcarList: function () {
     api.get("program/shopcar", { chooseId: this.data.chooseId }).then(res => {
       let { data, status } = res;
-      console.log(data);
       if (status === 200) {
+        wx.hideLoading()
         if(data && data.length>0){
           let allPrice = sumPrice(data);
           this.setData({ productList: data, allPrice: allPrice })
         } else {
-          wx.redirectTo({
-            url: '../orderSuccess/orderSuccess'
+          wx.switchTab({
+            url: '../index/index'
           })
         }
       }
     });
   },
-
+  toDetail:function(e){
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../productDetail/productDetail?productId=' + id
+    })
+  },
   replay: function (e) {
     ButtonClicked(this, e);
     wx.showLoading({
@@ -103,7 +112,7 @@ Page({
       const { data, status } = res;
       if (status === 200) {
         wx.redirectTo({
-          url: '../orderSuccess/orderSuccess'
+          url: '../allorder/allorder?type=2'
         })
       }
     });

@@ -28,8 +28,8 @@
           </view>
           <view class='header-other'>
             <view class='price'>
-              <text class="now">￥{{productDetail.specifications[0].current_price}}</text>
-              <text class="old">原价:{{productDetail.specifications[0].original_price}}</text>
+              <text class="now">￥{{buyCar.current_price}}</text>
+              <text class="old">原价:{{buyCar.original_price}}</text>
             </view>
             <view class="seal-content">
               <text class="left">销量：{{productDetail.seal_num}}件</text>
@@ -37,20 +37,14 @@
             </view>
           </view>
         </view>
-        <!-- <view class="list-content">
-          <view class='shop_content_header clear'>
-            <view class='title'>规格分类</view>
-            <view class='more'>
-              <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
+        <view class="detail-content">
+          规格分类
+          <view class="detail">
+            <view class="detail-specifications-item {{item.active?'active':''}}"  wx:for="{{specifications}}" wx:for-item="item" data-id="{{item.id}}" data-name="item.name" bindtap='choose'>
+              {{item.name}}
             </view>
           </view>
-          <view class='shop_content_header clear'>
-            <view class='title'>宝贝评价</view>
-            <view class='more'>
-              <image class='icon_right' src='../../resources/imgs/icon_right.png'></image>
-            </view>
-          </view>
-        </view> -->
+        </view>
         <view class="detail-content">
           图文详情
           <view class="detail">
@@ -61,7 +55,7 @@
     </scroll-view>
   </view>
   <view class="shop-footer">
-    <view class="footer-tag" wx-if="{{is_admin === 1}}">
+    <view class="footer-tag">
       <image class='shop-car-img' src='../../resources/imgs/shop-car.png' bindtap='goShopcar'></image>
       购物车
     </view>
@@ -75,10 +69,10 @@
       <image class='shop-car-img' bindtap='cancelCollection' src='../../resources/imgs/start.png'wx-if="{{isCollection}}"></image>
       收藏
     </view>
-    <view class="footer-btn join" bindtap='joinCar'  wx-if="{{is_admin === 1}}">
+    <view class="footer-btn join" bindtap='joinCar'>
       加入购物车
     </view>
-    <view class="footer-btn buy" data-type='buy' bindtap='joinCar' wx-if="{{is_admin === 1}}">
+    <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
       立即购买
     </view>
   </view>
