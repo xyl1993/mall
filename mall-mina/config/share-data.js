@@ -40,7 +40,7 @@ export const shareData =
       },
       {   //商品标题
         type: 'text',
-        content: '发现一件好货，邀请你一起0元免费拿！',
+        content: '发现一件好货！',
         fontSize: 15,
         color: '#563D20',
         textAlign: 'left',
@@ -58,7 +58,7 @@ export const shareData =
       {
            //小程序二维码
         type: 'image',
-        url: 'https://hybrid.xiaoying.tv/miniprogram/viva-ad/1/1531385433625.jpeg',
+        url: 'https://www.billionsen.cn/mall/upload/93831541999309540.jpg',
         top: 443,
         left: 85,
         width: 68,
@@ -67,7 +67,7 @@ export const shareData =
       {
         //商品标题
         type: 'text',
-        content: '正品MAC魅可口红礼盒生日唇膏小辣椒Chili西柚情人',
+        content: '',
         fontSize: 16,
         lineHeight: 21,
         color: '#383549',

@@ -45,6 +45,7 @@ const programLogin = async (req, res, next)=> {
       url: jscode2session(config.AppID,config.AppSecret,code)
     }).then((response) => {
       const data = response.data;
+      console.log(data);
       if(data.errcode){
         return handleError(res, data.errMsg);
       }else{
