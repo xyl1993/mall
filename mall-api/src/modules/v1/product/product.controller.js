@@ -17,9 +17,7 @@ const getProductList = async (req, res)=> {
     left join goods_type b on a.type_id = b.id
     left join goods_brand c on c.id = a.brand_id 
     left join (
-      select a.* from 
-      (select product_id,min(current_price) current_price from product_specifications GROUP BY product_id ) b
-      JOIN product_specifications a ON a.product_id = b.product_id AND a.current_price = b.current_price
+      select id,product_id,name,min(current_price) current_price,stock,original_price from product_specifications GROUP BY product_id
     ) d on d.product_id = a.id
     where product_status = 1`;
   if (search) _sql = _sql + ` and a.title like '%${search}%'`;

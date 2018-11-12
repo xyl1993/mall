@@ -1,4 +1,3 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CompressionWebpackPlugin = require('compression-webpack-plugin');
