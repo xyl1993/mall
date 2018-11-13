@@ -33,7 +33,7 @@
   <view class='bottom'>
     <view class='bottom-left'>
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
-      <view class='other'>不含运费</view>
+      <view class='other'>含运费</view>
     </view>
     <button loading="{{loading}}" form-type='submit' class='sure-brn'>确认收款</button>
   </view>

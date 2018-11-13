@@ -32,8 +32,11 @@
 }
 .header_item .title{
   float: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
   height: 32rpx;
-  line-height: 32rpx;
 }
 .header_item .more {
   float: right;

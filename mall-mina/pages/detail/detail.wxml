@@ -31,7 +31,7 @@
       </view>
     </view>
   </view>
-  <view class="shop_content">
+  <view class="shop_content" style="padding:{{productList.length>0?'20rpx':'0'}}">
     <view class='shop_list' bindtap="toDetail" wx:for="{{productList}}" wx:for-item="item" data-id="{{item.id}}">
       <view class='list_content'>
         <view class='preview_tsl'>

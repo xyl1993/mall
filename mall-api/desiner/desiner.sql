@@ -227,6 +227,7 @@ drop table if exists tpl_config;
 CREATE TABLE `tpl_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT, /*id*/
   `openid` varchar(32)  NOT NULL, /*用户openid*/
+  `account_id` bigint(20) NOT NULL,   /*用户id*/
   `type` varchar(2), /*01表单提交   02支付场景*/
   `form_id` varchar(300),/*表单提交场景下，为 submit 事件带上的 formId；支付场景下，为本次支付的 prepay_id*/
   `create_time` datetime, /*创建时间*/

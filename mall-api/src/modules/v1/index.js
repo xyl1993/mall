@@ -7,6 +7,7 @@ const homeSetting = require('./homeSetting/routes');
 const order = require('./order/routes');
 const shopping = require('./shopping/routes');
 const user = require('./user/routes');
+const tplConfig = require('./tplConfig/routes');
 
 router.use(auth);
 router.use(product);
@@ -15,4 +16,5 @@ router.use(homeSetting);
 router.use(order);
 router.use(shopping);
 router.use(user);
+router.use(tplConfig);
 module.exports = router;

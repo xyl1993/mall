@@ -56,7 +56,7 @@
   <view class='bottom' wx:if="{{status != 'deliver'}}">
     <view class='bottom-left'>
       <view class='sum'>合计 ￥{{ filters.toFix(orderInfo.should_price) }}</view>
-      <view class='other'>不含运费</view>
+      <view class='other'>含运费</view>
     </view>
   </view>
 </view>

@@ -12,7 +12,9 @@
   font-size: 24rpx;
   color: #dbdbdb;
 }
-
+.shop_content{
+  margin-top: 0 !important;
+}
 .search_div {
   height: 100%;
   width: 100%;

@@ -19,7 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const { redirecturi,productId,addressId,chooseId } = options;
+    const { redirecturi, productId, addressId, chooseId, account_id } = options;
     const self = this;
     const sessionid = wx.getStorageSync('sessionid')
     // if (!sessionid){
@@ -42,12 +42,12 @@ Page({
                           iv: res.iv
                         };
                         api.put(`program/user/auth`, param).then(res => {
-                          self.redirect(redirecturi,productId,addressId,chooseId);
+                          self.redirect(redirecturi, productId, addressId, chooseId, account_id);
                         });
                       }
                     })
                   } else {
-                    self.redirect(redirecturi,productId,addressId,chooseId);
+                    self.redirect(redirecturi, productId, addressId, chooseId, account_id);
                   }
                 }
               });
@@ -61,18 +61,25 @@ Page({
     //   })
     // }
   },
-  redirect:function(uri,productId,addressId,chooseId){
+  redirect: function (uri, productId, addressId, chooseId, account_id){
+    let is_admin = wx.getStorageSync('is_admin');
     if(uri){
       switch(uri){
         case 'productDetail':
-          wx.navigateTo({
+          wx.redirectTo({
             url: '../productDetail/productDetail?productId=' + productId
           })
         break;
         case 'shareOrder':
-          wx.navigateTo({
-            url: `../shareOrder/shareOrder?addressId=${addressId}&chooseId=${chooseId}`
-          })
+          if (is_admin === 1){
+            wx.redirectTo({
+              url: `../shareOrder/shareOrder?addressId=${addressId}&chooseId=${chooseId}&account_id=${account_id}`
+            })
+          }else{
+            wx.switchTab({
+              url: '../shopcar/shopcar',
+            })
+          }
           break;
         default:break;
       }

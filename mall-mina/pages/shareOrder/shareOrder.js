@@ -28,10 +28,7 @@ Page({
   },
 
   onLoad: function (options) {
-    wx.showLoading({
-      title: '正在请求',
-      mask: true
-    })
+    
     this.setData({ account_id: options.account_id });
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });
@@ -70,17 +67,22 @@ Page({
     });
   },
   getShopcarList: function () {
+    wx.showLoading({
+      title: '正在请求',
+      mask: true
+    })
     api.get("program/shopcar", { chooseId: this.data.chooseId }).then(res => {
       let { data, status } = res;
       if (status === 200) {
-        wx.hideLoading()
         if(data && data.length>0){
           let allPrice = sumPrice(data);
           this.setData({ productList: data, allPrice: allPrice })
+          wx.hideLoading()
         } else {
           wx.switchTab({
             url: '../index/index'
           })
+          wx.hideLoading()
         }
       }
     });

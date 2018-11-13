@@ -1,5 +1,6 @@
 //获取应用实例
 import api from '../../utils/api.js';
+import { ButtonClicked } from '../../utils/esUtils.js'
 import {
   Config
 } from '../../config/index.js'
@@ -23,6 +24,7 @@ Page({
   data: {
     allChecked: false,
     editStatus: false,
+    buttonClicked:false,
     fileIp: Config.file_servier,
     carList: [],
     allPrice:0.00,
@@ -143,9 +145,11 @@ Page({
       }
     });
   },
-  replay:function(){
+  replay:function(e){
+    console.log(e);
     let item = this.data.carList;
     let chooseId = '';
+    ButtonClicked(this, e);
     let allPrice = this.data.allPrice;
     item.map((item, index) => {
       if (item.checked) {
@@ -157,6 +161,12 @@ Page({
       }
     });
     if (chooseId){
+      const form = {
+        form_id: e.detail.formId,
+        type:'01',
+      }
+      api.post(`program/tpl`, form).then(res => {
+      });
       wx.navigateTo({
         url: `../order/order?chooseId=${chooseId}`
       })

@@ -142,7 +142,7 @@ Page({
   onShareAppMessage: function (res) {
     return {
       title: '',
-      path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}&account_id=${this.data.account_id}`,
+      path: `pages/start/start?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}&account_id=${this.data.account_id}&redirecturi=shareOrder`,
       success: (res) => {
         console.log("转发成功", res);
         wx.switchTab({
@@ -153,5 +153,13 @@ Page({
         console.log("转发失败", res);
       }
     }
-  }
+  },
+  share: function (e) {
+    const form = {
+      form_id: e.detail.formId,
+      type: '01',
+    }
+    api.post(`program/tpl`, form).then(res => {
+    });
+  },
 })

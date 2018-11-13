@@ -36,8 +36,10 @@
   <view class='bottom'>
     <view class='bottom-left'>
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
-      <view class='other'>不含运费</view>
+      <view class='other'>含运费</view>
     </view>
-    <button class='sure-brn' disabled='' open-type="share">转发给商家</button>
+    <form bindsubmit="share"  report-submit='true'>
+      <button class='sure-brn' form-type="submit" open-type="share">转发给商家</button>
+    </form>
   </view>
 </view>

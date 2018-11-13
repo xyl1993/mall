@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const config = require('../../../config/environment');
 const pool = require('../../../utils/pool');
 const programApi = require('../../../utils/programApi');
-
+const updateUsed = require('../tplConfig/tplConfig.controller').updateUsed;
 
 /**
  * 后台获取所有订单
@@ -56,6 +56,8 @@ const spitStockSql = async(num,id)=>{
   log.info(_update);
   await pool.query(_update);
 }
+
+
 /**
  * 小程序用 生成订单
  * @param {*} req 
@@ -122,40 +124,44 @@ const insertOrder = async (req, res, next)=> {
     await pool.query(_sql);
     /***给用户发送消息** */
     //获取收货人基本信息
-    _sql = `select * from account where id = ${account_id}`;
+    _sql = `select * from tpl_config where account_id = ${account_id} and invalid_time > now() and used = 0 limit 1`;
     const adminUser = await pool.query(_sql);
     //获取accessToken
     programApi.getAccessToken().then((access_token)=>{
-      const user = adminUser[0];
-      const tempData = {
-        "touser":user.openid,
-        "template_id":config.programTemplate.orderSuccessTemplateId,
-        "page":`pages/allorder/allorder?type = 2`,
-        "form_id":form_id,
-        "data": {
-          "keyword1": {
-            "value": orderNumberRows, 
-          }, 
-          "keyword2": {
-            "value": new Date() 
-          }, 
-          "keyword3": {
-            "value": collect_name
-          } , 
-          "keyword4": {
-            "value": phone
-          } ,
-          "keyword5": {
-            "value": address
-          } 
+      if(adminUser){
+        const user = adminUser[0];
+        const tempData = {
+          "touser":user.openid,
+          "template_id":config.programTemplate.orderSuccessTemplateId,
+          "page":`pages/allorder/allorder?type = 2`,
+          "form_id":user.form_id,
+          "data": {
+            "keyword1": {
+              "value": orderNumberRows, 
+            }, 
+            "keyword2": {
+              "value": new Date() 
+            }, 
+            "keyword3": {
+              "value": collect_name
+            } , 
+            "keyword4": {
+              "value": phone
+            } ,
+            "keyword5": {
+              "value": address
+            } 
+          }
         }
+        
+        //发送消息
+        programApi.sendMessage(access_token,tempData).then((message)=>{
+          console.log(message);
+          updateUsed(user.id);
+          log.info('模板消息返回');
+          log.info(message);
+        })
       }
-      //发送消息
-      programApi.sendMessage(access_token,tempData).then((message)=>{
-        console.log(message);
-        log.info('模板消息返回');
-        log.info(message);
-      })
     })
     res.status(status.OK).json(orderRows.insertId);
   } catch(err) {
@@ -320,14 +326,18 @@ const deliverGoods =  async (req, res, next)=> {
     const rows = await pool.query(sql);
     res.status(status.OK).json(order_number);
     if(rows){
+      const user = rows[0];
+      
+      _sql = `select * from tpl_config where account_id = ${user.account_id} and invalid_time > now() and used = 0 limit 1`;
+      const tplRows = await pool.query(_sql);
+      const tplConfig = tplRows[0];
       //获取accessToken
       programApi.getAccessToken().then((access_token)=>{
-        const user = rows[0];
         const tempData = {
-          "touser":user.openid,
+          "touser":tplConfig.openid,
           "template_id":config.programTemplate.deliverTemplateId,
           "page":`pages/orderRecordDetail/orderRecordDetail?order_number=${order_number}`,
-          "form_id":form_id,
+          "form_id":tplConfig.form_id,
           "data": {
             "keyword1": {
               "value": order_number, 
@@ -351,6 +361,7 @@ const deliverGoods =  async (req, res, next)=> {
         }
         //发送消息
         programApi.sendMessage(access_token,tempData).then((message)=>{
+          updateUsed(tplConfig.id);
           log.info('模板消息返回');
           log.info(message);
         })

@@ -65,7 +65,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.type);
     if (options.type) this.setData({ type: options.type });
     
     let is_admin = wx.getStorageSync('is_admin');
@@ -74,6 +73,9 @@ Page({
       openid: mall_user.openid,
       isAdmin: is_admin
     });
+    
+  },
+  onShow:function(){
     getProgramOrderList(this);
   },
   //删除订单

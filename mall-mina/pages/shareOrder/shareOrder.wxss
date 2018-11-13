@@ -119,6 +119,7 @@
 }
 
 .sum {
+  padding-top: 5rpx;
   font-size: 30rpx;
   color: #333;
 }

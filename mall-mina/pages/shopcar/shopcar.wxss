@@ -50,8 +50,14 @@ radio {
   background: #ff3364;
   text-align: center;
   color: #fff;
-  line-height: 90rpx;
-}
+  border:none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  padding: 0;
+  border-radius: none;
+} 
 
 .bottom-left {
   flex: 1;
@@ -64,6 +70,7 @@ radio {
 
 .sum {
   text-align: right;
+  padding-top: 5rpx;
   font-size: 28rpx;
   color: #333;
 }

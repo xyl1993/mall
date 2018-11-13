@@ -226,7 +226,7 @@ Page({
     }
     return {
       title: Config.share_name,
-      path: 'pages/productDetail/productDetail?productId=' + this.data.productId,
+      path: `pages/start/start?productId=${this.data.productId}&redirecturi=productDetail`,
       success: function (res) {
         // 转发成功
       },

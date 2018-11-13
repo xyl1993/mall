@@ -48,8 +48,10 @@
   <view class='bottom'>
     <view class='bottom-left'>
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
-      <view class='other'>不含运费</view>
+      <view class='other'>含运费</view>
     </view>
-    <view class='sure-brn' bindtap='replay'>结算 ({{allNum}})</view>
+    <form bindsubmit="replay"  report-submit='true'>
+      <button class='sure-brn' form-type="submit">结算 ({{allNum}})</button>
+    </form>
   </view>
 </view>
