@@ -30,8 +30,8 @@ const insertShopcar = async (req, res, next)=> {
 
 const getShopcarList = async (req, res, next)=> {
   try {
+    const { account_id } = req;
     const { chooseId } = req.query;
-    let params = [req.account_id];
     
     let sql = `select a.id,a.number,a.create_time,b.id as product_id,b.title,b.cover,c.current_price,c.name,c.id as specifications_id
     from goods_shopcar a 
@@ -42,10 +42,10 @@ const getShopcarList = async (req, res, next)=> {
     if(chooseId){
       let shopcarid = chooseId.replace(/-/g,',');
       sql = sql + ` and a.id in (${shopcarid})`;
+    }else{
+      sql = sql + ` and a.account_id = ${account_id}`;
     }
-    console.log(params);
     sql = sql + ` order by a.create_time desc`;
-    sql = mysql.format(sql,params);
     log.info(sql);
     const rows = await pool.query(sql);
     res.status(status.OK).json(rows);

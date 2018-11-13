@@ -56,7 +56,12 @@
   font-size: 28rpx;
   float: left;
 }
-
+.row .col .image{
+  width: 100%;
+  height: 261rpx;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .row .col image {
   width: 100%;
   height: 100%;

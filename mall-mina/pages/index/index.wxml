@@ -31,8 +31,8 @@
     <view class='shop_list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
       <view class='list_content' bindtap='detail' data-id="{{item.id}}">
         <view class='preview_tsl'>
-          <view class='image'  style="background-image: url({{fileIp+item.cover}})"></view>
-          <!-- <image src="{{fileIp+item.cover}}" /> -->
+          <!-- <view class='image'  style="background-image: url({{fileIp+item.cover}})"></view> -->
+          <image src="{{fileIp+item.cover}}" />
         </view>
         <view class="preview_title text_ellipsis">{{item.title}}</view>
         <view class='between_view clear'>
@@ -40,7 +40,7 @@
           <view class='old_price'>￥{{item.original_price}}</view>
         </view>
         <view class='between_view clear'>
-          <view class='left'>销量：{{item.seal_num?seal_num:0}}</view>
+          <view class='left'>销量：{{item.seal_num?item.seal_num:0}}</view>
           <view class='right'>库存：{{item.stock?item.stock:0}}</view>
         </view>
       </view>
