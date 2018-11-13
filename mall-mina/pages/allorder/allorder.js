@@ -67,13 +67,14 @@ Page({
   onLoad: function (options) {
     console.log(options.type);
     if (options.type) this.setData({ type: options.type });
-    getProgramOrderList(this);
+    
     let is_admin = wx.getStorageSync('is_admin');
     let mall_user = wx.getStorageSync('mall_user');
     this.setData({
       openid: mall_user.openid,
       isAdmin: is_admin
     });
+    getProgramOrderList(this);
   },
   //删除订单
   deleteOrder:function(e){

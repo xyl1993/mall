@@ -145,6 +145,9 @@ Page({
       path: `pages/shareOrder/shareOrder?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}&account_id=${this.data.account_id}`,
       success: (res) => {
         console.log("转发成功", res);
+        wx.switchTab({
+          url: '../index/index',
+        })
       },
       fail: (res) => {
         console.log("转发失败", res);

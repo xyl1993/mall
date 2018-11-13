@@ -31,7 +31,8 @@
     <view class='shop_list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx">
       <view class='list_content' bindtap='detail' data-id="{{item.id}}">
         <view class='preview_tsl'>
-          <image src="{{fileIp+item.cover}}" />
+          <view class='image'  style="background-image: url({{fileIp+item.cover}})"></view>
+          <!-- <image src="{{fileIp+item.cover}}" /> -->
         </view>
         <view class="preview_title text_ellipsis">{{item.title}}</view>
         <view class='between_view clear'>

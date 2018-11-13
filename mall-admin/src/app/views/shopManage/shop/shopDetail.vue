@@ -150,14 +150,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="list-content">
-                  <div class="list-item">
-                    <span class="gui">商品规格</span>
-                    <span class="sp">></span>
-                  </div>
-                  <div class="list-item">
-                    <span class="gui">商品评价</span>
-                    <span class="sp">></span>
+                <div class="detail-content">
+                  规格分类
+                  <div class="detail">
+                    <div class="app-specifications-item" v-for="(item, index) in form.specifications" :key="index">{{item.name}}</div>
                   </div>
                 </div>
                 <div class="detail-content">
@@ -722,7 +718,14 @@ export default {
   text-align: center;
   font-weight: 700;
 }
-
+.app-specifications-item{
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
 </style>
 <style lang="scss">
 .phone{
