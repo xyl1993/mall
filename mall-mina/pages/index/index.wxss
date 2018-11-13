@@ -45,7 +45,7 @@
 .row {
   background: #fdfdfd;
   position: relative;
-  padding-top: 20rpx;
+  padding-top: 9rpx;
 }
 
 .row .col {

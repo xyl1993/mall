@@ -2,13 +2,13 @@
 <form bindsubmit="replay" class='mainer' report-submit='true'>
   <view class='cointer'>
     <view class='input-dyn'>
-      <input type='text' placeholder='收货人' value='{{address[0].collect_name}}' name="collect_name"></input>
+      <input type='text' placeholder='收货人' disabled='true' value='{{address[0].collect_name}}' name="collect_name"></input>
     </view>
     <view class='input-dyn'>
-      <input type='number' value='{{address[0].phone}}' placeholder='联系电话' name="phone"></input>
+      <input type='number' value='{{address[0].phone}}' disabled='true' placeholder='联系电话' name="phone"></input>
     </view>
     <view class='input-dyn'>
-      <textarea placeholder='收货地址' value='{{address[0].address}}' auto-height name="address"></textarea>
+      <textarea placeholder='收货地址' value='{{address[0].address}}' disabled='true' auto-height name="address"></textarea>
     </view>
     <view class='product-list'>
       <view class='view-list' wx:for="{{productList}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" data-id="{{item.product_id}}" bindtap='toDetail'>
