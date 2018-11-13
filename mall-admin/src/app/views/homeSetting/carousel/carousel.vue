@@ -1,5 +1,5 @@
 <template>
-  <div class="cointer">
+  <div class="cointer carousel-cointer">
     <el-upload
       :headers="headers" 
       list-type="picture-card" 
@@ -95,5 +95,14 @@ export default {
   padding-top: 20px;
   height: 100%;
   width: 100%;
+}
+
+</style>
+<style lang="scss">
+.carousel-cointer{
+  .el-upload-list--picture-card .el-upload-list__item{
+    width: 376px;
+    height: 200px;
+  }
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="cointer-box">
     <el-row class="row">
       <el-col :span="16">
-        <el-form ref="form" :model="form" label-width="80px" status-icon :rules="rules">
+        <el-form class="detail-form" ref="form" :model="form" label-width="80px" status-icon :rules="rules">
           <el-form-item label="商品标题" prop="title">
             <el-input v-model="form.title" style="max-width:480px;"></el-input>
           </el-form-item>
@@ -112,7 +112,7 @@
               </quill-editor>
             </el-row>
           </div>
-          <el-form-item>
+          <el-form-item class="footer-submit">
             <el-button type="primary" :disabled="actionStatus" @click="onSubmit">立即创建</el-button>
             <el-button @click="cancel()">取消</el-button>
           </el-form-item>
@@ -515,6 +515,15 @@ export default {
 }
 .quill-main{
   margin-bottom:25px;
+}
+// .footer-submit{
+//   position: fixed;
+//   bottom: 0;
+//   right: 223px;
+//   z-index: 99;
+// }
+.detail-form{
+  padding-right: 15px;
 }
 .phone {
   margin: 0 auto;
