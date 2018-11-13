@@ -43,7 +43,7 @@
 }
 
 .row {
-  background: #fff;
+  background: #fdfdfd;
   position: relative;
   padding-top: 20rpx;
 }

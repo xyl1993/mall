@@ -44,7 +44,7 @@
   flex-direction: row;
   align-items: center;
   text-align: right;
-  font-size: 20rpx;
+  font-size: 24rpx;
   height: 32rpx;
 }
 .icon_right{
