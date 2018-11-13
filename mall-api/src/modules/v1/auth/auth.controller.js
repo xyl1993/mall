@@ -1,15 +1,24 @@
 const status = require('http-status');
-const { handleError } = require('../../../utils/handleUtilFun');
+const {
+  handleError
+} = require('../../../utils/handleUtilFun');
 const mysql = require('mysql');
 const config = require('../../../config/environment');
 const log = require('log4js').getLogger("authController");
-const bcrypt = require('bcryptjs');  //加密对象
-const pool = mysql.createPool(config.mysql);
+const bcrypt = require('bcryptjs'); //加密对象
 const jwt = require('jsonwebtoken');
-const loginSuccess = function(res,user,connection){
+const pool = require('../../../utils/pool');
+
+
+const loginSuccess = async (res, user) => {
   // 签发 Token
-  const token = jwt.sign({ userId: user.id }, config.jwtEncryption);
-  res.status(status.OK).json({ ...user, token: token,filePath:config.filePath });
+  const token = jwt.sign({
+    userId: user.id
+  }, config.jwtEncryption);
+  res.status(status.OK).json({ ...user,
+    token: token,
+    filePath: config.filePath
+  });
 
   let updateLoginTime = `update sys_users set login_time = ? where id=?`;
   let params = [
@@ -18,63 +27,57 @@ const loginSuccess = function(res,user,connection){
   ];
   updateLoginTime = mysql.format(updateLoginTime, params);
   log.info(updateLoginTime);
-  connection.query(updateLoginTime, function (err, rows, result) {
-
-  });
+  await pool.query(updateLoginTime);
 }
 
-exports.webLogin = function(req, res, next) {
+const webLogin = async (req, res, next) => {
   let _sql = `select * from sys_users where account = ?`;
   let params = [req.query.account];
   _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows, result) {
-      if (err) {
-        log.error(err);
-        return handleError(res,err);
+  try {
+    const rows = await pool.query(_sql);
+    if (rows.length > 0) {
+      const user = rows[0];
+      if (user.account === 'admin' && user.password === req.query.password) {
+        loginSuccess(res, user);
       } else {
-        if (rows.length > 0) {
-          const user = rows[0];
-          if(user.account==='admin' && user.password === req.query.password){
-            loginSuccess(res,user,connection);
-          }else{
-            bcrypt.compare(req.query.password, user.password, function (error, valid) {
-              if (valid === true) {
-                loginSuccess(res,user,connection);
-              } else {
-                res.status(status.UNAUTHORIZED).json('密码错误');
-              }
-            })
+        bcrypt.compare(req.query.password, user.password, function (error, valid) {
+          if (valid === true) {
+            loginSuccess(res, user);
+          } else {
+            res.status(status.UNAUTHORIZED).json('密码错误');
           }
-        } else {
-          res.status(status.UNAUTHORIZED).json('用户不存在');
-        }
+        })
       }
-      connection.release();
-    });
-  });
+    } else {
+      res.status(status.UNAUTHORIZED).json('用户不存在');
+    }
+  } catch (err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
-exports.updatePassword = function(req, res, next) {
+const updatePassword = async (req, res, next)=>{
   let _sql = `update sys_users set password = ? where id = ?`;
   let params = [
     req.body.password,
     req.userId
   ]
-  _sql = mysql.format(_sql,params);
+  _sql = mysql.format(_sql, params);
   log.info(_sql);
-  pool.getConnection(function (err, connection) {
-    connection.query(_sql, function (err, rows) {
-      if (err) {
-        log.error(err);
-        return handleError(res, err);
-      }
-      res.status(status.OK).json('修改成功');
-      connection.release();
-    });
-  })
-
+  try {
+    await pool.query(_sql);
+    res.status(status.OK).json('修改成功');
+  } catch (err) {
+    log.error(err);
+    return handleError(res, err);
+  }
 };
 
-exports.createUser = function(req, res, next) {};
+
+module.exports = {
+  webLogin,
+  updatePassword
+};

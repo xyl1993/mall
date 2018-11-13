@@ -100,11 +100,11 @@
   display: flex;
   flex-direction: column;
   padding-right: 20rpx;
-  justify-content: space-around;
   padding-left: 25rpx;
 }
 
 .sum {
+  padding-top: 14rpx;
   font-size: 30rpx;
   color: #333;
   text-align: right;

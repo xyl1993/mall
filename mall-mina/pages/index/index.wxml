@@ -15,11 +15,11 @@
       </block>
     </swiper>
   </view>
-  <!-- <view class='row clear'>
+  <view class='row clear'>
     <view class='col' data-id='{{item.id}}' wx:key="idx" bindtap='brandDetail' wx:for="{{brandList}}" wx:for-item="item" wx:for-index="idx">
       <image src="{{fileIp+item.cover}}" />
     </view>
-  </view> -->
+  </view>
   <view class='shop_content'>
     <view class='shop_content_header clear'>
       <view class='title'>推荐产品</view>

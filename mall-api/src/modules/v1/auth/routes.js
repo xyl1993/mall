@@ -8,7 +8,7 @@ const program = express.Router();
 const controller = require('./auth.controller');
 const programController = require('./program.controller');
 
-admin.post('/user',verifyToken, controller.createUser);   //创建用户
+// admin.post('/user',verifyToken, controller.createUser);   //创建用户
 admin.get('/user/auth', controller.webLogin);   //邮箱登陆
 admin.put('/user/password', verifyToken,controller.updatePassword);   //修改密码
 

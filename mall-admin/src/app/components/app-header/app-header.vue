@@ -24,14 +24,11 @@
     </el-col>
     <el-dialog title="修改密码" :closeOnClickModal="false" :visible.sync="formStatus" v-on:close="formClose">
       <el-form :model="formModel" :rules="rules" ref="passForm">
-        <el-form-item label="原密码" prop="password" label-width="120px">
-          <el-input style="width:480px;" type="password" v-model="formModel.password"></el-input>
-        </el-form-item>
         <el-form-item label="新密码" label-width="120px" prop="newPassword">
-          <el-input style="width:480px;" type="password" v-model="formModel.newPassword"></el-input>
+          <el-input style="width:480px;max-width:100%;" type="password" v-model="formModel.newPassword"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" label-width="120px" prop="surePassword">
-          <el-input style="width:480px;" type="password" v-model="formModel.surePassword"></el-input>
+          <el-input style="width:480px;max-width:100%;" type="password" v-model="formModel.surePassword"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -74,11 +71,11 @@ export default {
       rules: {
         password: [
           { required: true, message: "请输入原密码", trigger: "blur" },
-          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+          { min: 5, max: 20, message: "长度在 5 到 20 个字符", trigger: "blur" }
         ],
         newPassword: [
           { required: true, message: "请输入新密码", trigger: "blur" },
-          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+          { min: 5, max: 20, message: "长度在 5 到 20 个字符", trigger: "blur" }
         ],
         surePassword: [
           { required: true, message: "请输入确认密码", trigger: "blur" },
@@ -125,18 +122,16 @@ export default {
       this.$refs["passForm"].validate(valid => {
         if (valid) {
           let pdata = {
-            password: this.formModel.password
+            password: this.formModel.newPassword
           };
           updatePassword(pdata).then(res => {
-            let { data, code, message, token } = res;
-            //请求校验
-            if (statusValid(_this, code, message)) {
+            let { data, status } = res;
+            if (statusValid(_this, status, data)) {
               _this.formStatus = false;
               _this.$message({
                 message: "保存成功",
                 type: "success"
               });
-              localStorage.setItem("malltoken", token);
             }
           });
         }

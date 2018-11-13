@@ -100,31 +100,33 @@ Page({
       title: '提示',
       content: '确认收款吗?',
       success(res) {
-        wx.showLoading({
-          title: '正在提交',
-          mask: true
-        });
-        const form_id = e.detail.formId;
-        let subForm = e.detail.value;
-        let productList = self.data.productList;
-        let allPrice = self.data.allPrice;
-        let chooseId = self.data.chooseId;
-        let account_id = self.data.account_id;
-        let address = {
-          collect_name: subForm.collect_name,
-          phone: subForm.phone,
-          address: subForm.address,
-          addressId: self.data.addressId
-        }
-        let params = { allPrice, chooseId, account_id, productList, form_id, ...address };
-        api.post(`program/order`, params).then(res => {
-          const { data, status } = res;
-          if (status === 200) {
-            wx.redirectTo({
-              url: '../allorder/allorder?type=2'
-            })
+        if (res.confirm) {
+          wx.showLoading({
+            title: '正在提交',
+            mask: true
+          });
+          const form_id = e.detail.formId;
+          let subForm = e.detail.value;
+          let productList = self.data.productList;
+          let allPrice = self.data.allPrice;
+          let chooseId = self.data.chooseId;
+          let account_id = self.data.account_id;
+          let address = {
+            collect_name: subForm.collect_name,
+            phone: subForm.phone,
+            address: subForm.address,
+            addressId: self.data.addressId
           }
-        });
+          let params = { allPrice, chooseId, account_id, productList, form_id, ...address };
+          api.post(`program/order`, params).then(res => {
+            const { data, status } = res;
+            if (status === 200) {
+              wx.redirectTo({
+                url: '../allorder/allorder?type=2'
+              })
+            }
+          });
+        }
       }
     })
   },
