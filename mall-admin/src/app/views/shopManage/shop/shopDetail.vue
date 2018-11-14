@@ -508,8 +508,7 @@ export default {
 .cointer-box {
   padding-top: 20px;
 }
-.detail-box {
-}
+
 .row {
   overflow: auto;
 }

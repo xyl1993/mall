@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var path = require('path');
 var ROOT_PATH = path.resolve(__dirname);
 const devProxyPath = 'http://localhost:8002/';
@@ -64,10 +63,6 @@ module.exports = merge(baseWebpackConfig, {
       }
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
-    }),
     new HtmlWebpackPlugin({
       template: path.resolve(ROOT_PATH, '../src/index.html'),
       inject: true,

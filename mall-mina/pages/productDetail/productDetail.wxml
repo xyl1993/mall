@@ -57,7 +57,7 @@
   <view class="shop-footer">
     <view class="footer-tag">
       <image class='shop-car-img' src='../../resources/imgs/shop-car.png' bindtap='goShopcar'></image>
-      购物车
+      星愿单
     </view>
     <view class="footer-tag">
       <button open-type="contact" class='contact-btn'></button>
@@ -70,11 +70,11 @@
       收藏
     </view>
     <view class="footer-btn join" bindtap='joinCar'>
-      加入购物车
+      加入心愿单
     </view>
-    <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
-      立即购买
-    </view>
+    <!-- <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
+      立即结算
+    </view> -->
   </view>
   <view class='buy-dialog' wx-if="{{dialogStatus}}">
     <view class='modal'></view>

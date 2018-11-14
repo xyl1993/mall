@@ -37,7 +37,7 @@
         "iconPath": "resources/imgs/un_shopcar.png",
         "selectedIconPath": "resources/imgs/shopcar.png",
         "pagePath": "pages/shopcar/shopcar",
-        "text": "购物车"
+        "text": "有意向"
       },
       {
         "iconPath": "resources/imgs/un_my.png",

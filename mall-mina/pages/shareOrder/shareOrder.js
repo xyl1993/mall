@@ -98,7 +98,7 @@ Page({
     const self = this;
     wx.showModal({
       title: '提示',
-      content: '确认收款吗?',
+      content: '确认这样操作吗?',
       success(res) {
         if (res.confirm) {
           wx.showLoading({
