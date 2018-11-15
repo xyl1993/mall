@@ -70,17 +70,27 @@ module.exports = {
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
-          'postcss-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: (loader) => [
+                require('autoprefixer')({
+                  browsers: ['last 5 versions']
+                }),
+              ]
+            },
+          },
           'sass-loader',
         ],
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
         use: 'babel-loader?cacheDirectory',
         exclude: path.resolve(__dirname, "node_modules"),
         include: path.resolve(__dirname, 'src')
-      }, {
-        test: /\.(png|jpg|gif|cur)$/,
+      },{
+        test: /\.(png|jpe?g|gif|cur)(\?.*)?$/,
         use: [pngUserBase]
       }, {
         test: /\.(woff|woff2|eot|ttf|otf|svg)(\?.*$|$)/,

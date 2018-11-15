@@ -5,7 +5,6 @@ const SimpleLayout = () => import('./containers/simple-layout/simple-layout');
  * 工作台目录模块 start
  */
 import ShopManage from './views/shopManage/routes';
-import Dashboard from './views/dashboard/routes';
 import HomeSetting from './views/homeSetting/routes';
 import OrderManage from './views/orderManage/routes';
 import userManage from './views/userManage/routes';

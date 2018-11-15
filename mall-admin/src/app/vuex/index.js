@@ -8,8 +8,6 @@ Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
-console.log(process.env.NODE_ENV);
-
 export default new Vuex.Store({
   modules: {
     baseStore

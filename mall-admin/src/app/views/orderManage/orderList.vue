@@ -58,9 +58,7 @@
         </el-table-column>
         <el-table-column prop="nikename" align="center" label="顾客昵称">
         </el-table-column>
-        <el-table-column prop="should_price" align="center" label="应收款">
-        </el-table-column>
-        <el-table-column prop="pay_price" align="center" label="实收款">
+        <el-table-column prop="should_price" align="center" label="合计">
         </el-table-column>
         <el-table-column prop="pay_status" align="center" label="支付状态">
           <template slot-scope="scope">

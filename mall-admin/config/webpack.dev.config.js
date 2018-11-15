@@ -6,10 +6,8 @@ const devProxyPath = 'http://localhost:8002/';
 
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
+const appPort = 4000;
 
-function resolve(dir) {
-  return path.join(__dirname, '..', dir)
-}
 module.exports = merge(baseWebpackConfig, {
 
   devServer: {
@@ -19,15 +17,16 @@ module.exports = merge(baseWebpackConfig, {
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: false,
     disableHostCheck: true,
-    port: 4000,
+    port: appPort,
+    overlay: { warnings: false, errors: true }, // 在浏览器上全屏显示编译的errors或warnings。
     open: true,
     host: 'localhost',
     inline: true, //实时刷新
-    // quiet: true, // necessary for FriendlyErrorsPlugin
-    stats: {
-      // colors: true,
-      chunks: false
+    quiet: false, // necessary for FriendlyErrorsPlugin
+    watchOptions: {
+      poll: false
     },
+    stats: 'errors-only',
     proxy: {
       '/mall/api/*': {
         target: devProxyPath 
