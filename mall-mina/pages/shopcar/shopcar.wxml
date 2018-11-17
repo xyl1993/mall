@@ -51,7 +51,7 @@
       <view class='other'>含运费</view>
     </view>
     <form bindsubmit="replay"  report-submit='true'>
-      <button class='sure-brn' form-type="submit">生成清单 ({{allNum}})</button>
+      <button class='sure-brn' form-type="submit">生成订单 ({{allNum}})</button>
     </form>
   </view>
 </view>

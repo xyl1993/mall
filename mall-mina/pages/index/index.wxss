@@ -4,7 +4,7 @@
 
 
 .header {
-  background: #ff3364;
+  background: #F1EDEC;
   width: 100%;
   padding: 17rpx 20rpx;
   box-sizing: border-box;

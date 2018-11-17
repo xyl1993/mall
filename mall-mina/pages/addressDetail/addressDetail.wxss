@@ -30,7 +30,7 @@ textarea{
 
 }
 .delete-text{
-  color: #ff3364;
+  color: #666;
   height: 50rpx;
   line-height: 50rpx;
 }
@@ -40,7 +40,7 @@ textarea{
 
 .sure-btn{
   width: 100%;
-  background-color: #ff3364;
+  background-color: #F1EDEC;
   border:none;
   color: #fff;
   height: 70rpx;

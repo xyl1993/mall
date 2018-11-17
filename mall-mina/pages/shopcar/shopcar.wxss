@@ -47,7 +47,7 @@ radio {
 .sure-brn {
   height: 90rpx;
   width: 200rpx;
-  background: #ff3364;
+  background: #FFCC00;
   text-align: center;
   color: #fff;
   border:none;
@@ -71,7 +71,7 @@ radio {
   text-align: right;
   padding-top: 8rpx;
   font-size: 28rpx;
-  color: #333;
+  color: #666;
 }
 
 .other {
@@ -133,15 +133,15 @@ radio {
   justify-content: space-between;
 }
 .product-view .price{
-  color: #ff3364;
+  color: #666;
 }
 .delete-view{
-  background: #ff3364;
+  background: #F1EDEC;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100rpx;
-  color: #fff;
+  color: #000;
 }
 .num-add-dyn {
   float: right;

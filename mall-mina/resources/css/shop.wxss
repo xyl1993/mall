@@ -21,7 +21,7 @@
 }
 
 .shop_content_header .title {
-  border-left: 5rpx solid #ff3364;
+  border-left: 5rpx solid #F1EDEC;
   padding-left: 8rpx;
   float: left;
 }
@@ -87,7 +87,7 @@
 }
 
 .now_price {
-  color: #ff3364;
+  color: #666;
   font-size: 28rpx;
   float: left;
 }

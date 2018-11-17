@@ -57,7 +57,7 @@
   <view class="shop-footer">
     <view class="footer-tag">
       <image class='shop-car-img' src='../../resources/imgs/shop-car.png' bindtap='goShopcar'></image>
-      星愿单
+      购物车
     </view>
     <view class="footer-tag">
       <button open-type="contact" class='contact-btn'></button>
@@ -70,7 +70,7 @@
       收藏
     </view>
     <view class="footer-btn join" bindtap='joinCar'>
-      加入心愿单
+      加入购物车
     </view>
     <!-- <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
       立即结算

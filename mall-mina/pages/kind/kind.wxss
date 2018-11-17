@@ -25,8 +25,8 @@
   background: #fff;
 }
 .menu_list.active view {
-  border-left: 5rpx solid #FF3364;
-  color: #FF3364;
+  border-left: 5rpx solid #F1EDEC;
+  color: #666;
 }
 .product_content{
   height: 100%;

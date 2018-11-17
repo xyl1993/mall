@@ -1,4 +1,7 @@
 <!--pages/start/start.wxml-->
 <view class='cointer'>
- <image class='start-png' src='../../resources/imgs/hello.png'></image>
+    <loading>
+        正在登陆
+    </loading>
+ <!-- <image class='start-png' src='../../resources/imgs/loading.gif'></image> -->
 </view>

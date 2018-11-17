@@ -82,7 +82,7 @@
   justify-content: space-between;
 }
 .product-view .price{
-  color: #ff3364;
+  color: #666;
 }
 
 .bottom {
@@ -99,11 +99,11 @@
 .sure-brn {
   height: 110rpx;
   padding: 0 30rpx;
-  background: #ff3364;
+  background: #FFCC00;
   text-align: center;
   color: #fff;
   line-height: 110rpx;
-  border:none;
+  border:0;
   font-weight: 500;
   font-size: 28rpx;
   border-radius: 0;
@@ -121,7 +121,7 @@
 .sum {
   padding-top:16rpx;
   font-size:30rpx;
-  color:#333;
+  color:#666;
 }
 
 .other {

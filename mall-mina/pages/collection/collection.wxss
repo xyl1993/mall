@@ -34,7 +34,7 @@
 }
 
 .price {
-  color: #ff3364;
+  color: #666;
   font-size: 28rpx;
 }
 
@@ -52,7 +52,7 @@
 
 .posit {
   position: absolute;
-  background: #FF3364;
+  background: #F1EDEC;
   height: 100%;
   right: 0;
   transition: left 0.2s ease-in-out;

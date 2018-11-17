@@ -18,7 +18,7 @@
   ],
   "tabBar": {
     "color": "#818181",
-    "selectedColor": "#FF3364",
+    "selectedColor": "#FFCC00",
     "backgroundColor": "#ffffff",
     "list": [
       {
@@ -37,7 +37,7 @@
         "iconPath": "resources/imgs/un_shopcar.png",
         "selectedIconPath": "resources/imgs/shopcar.png",
         "pagePath": "pages/shopcar/shopcar",
-        "text": "有意向"
+        "text": "购物车"
       },
       {
         "iconPath": "resources/imgs/un_my.png",
@@ -55,8 +55,8 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarTitleText": "木木素万Suvarn",
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "backgroundColor": "#f4f4f4",
-    "navigationBarBackgroundColor": "#FF3364"
+    "navigationBarBackgroundColor": "#F1EDEC"
   }
 }

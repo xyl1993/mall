@@ -73,7 +73,7 @@
 }
 
 .now {
-  color: #f14d59;
+  color: #FFCC00;
   font-size: 32rpx;
   padding-right: 10rpx;
 }
@@ -279,7 +279,7 @@
   position: absolute;
   line-height: 80rpx;
   width: 100%;
-  background: #fd3130;
+  background: #FFCC00;
   color: #fff;
   bottom: 0;
   text-align: center;
@@ -302,7 +302,7 @@
 }
 
 .price-dyn .price {
-  color: #f14d59;
+  color: #FFCC00;
   font-size: 32rpx;
 }
 
@@ -328,16 +328,17 @@
   margin-bottom: 10rpx;
   font-size: 24rpx;
   margin-left: 20rpx;
-  background: #e4e7ed;
+  background: #F1EDEC;
   float: left;
   margin-right: 18rpx;
-   border: 1px solid #e4e7ed;
+  border: 1px solid #e4e7ed;
+  color: 666;
 }
 .specifications-item.active{
-  border: 1px solid #fe5e24;
+  border: 1px solid #FFCC00;
   border-radius: 5rpx;
   background: #fff;
-  color: #fe5e24;
+  color: #FFCC00;
 }
 /*添加购物车  end*/
 
@@ -364,7 +365,7 @@
   padding: 16rpx 30rpx;
   width: 120rpx;
   font-size: 28rpx;
-  background: #ff3364;
+  background: #F1EDEC;
   border-radius: 12rpx;
   text-align: center;
   line-height: 1.4;
@@ -384,6 +385,6 @@
   margin-bottom: 10rpx;
 }
 .detail-specifications-item.active{
-  border: 1px solid #fe5e24;
-  color: #fe5e24;
+  border: 1px solid #FFCC00;
+  color: #FFCC00;
 }
