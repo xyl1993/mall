@@ -24,6 +24,7 @@ function resolve(dir) {
 
 process.traceDeprecation = true;
 let entry = {
+  'babel-polyfill': 'babel-polyfill',
   build: ['./src/app/app.js'],
 };
 if (devMode) {

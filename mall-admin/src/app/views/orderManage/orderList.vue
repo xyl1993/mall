@@ -110,25 +110,25 @@ export default {
       payStatus:[
         {
           label:'待支付',
-          value:1,
+          value:1
         },{
           label:'已支付',
-          value:2,
+          value:2
         },{
           label:'已退款',
-          value:3,
+          value:3
         }
       ],
       collectStatus:[
         {
           label:'待发货',
-          value:1,
+          value:1
         },{
           label:'待收货',
-          value:2,
+          value:2
         },{
           label:'已收货',
-          value:3,
+          value:3
         }
       ]
     };
@@ -169,12 +169,9 @@ export default {
   methods: {
     findlist() {
       this.listLoading = true;
-      let params = {
-        current: this.current,
-        pageSize: pageSize
-      };
-      params = {...params,...this.searchModel};
-      console.log(params);
+      const params = Object.assign({},this.searchModel);
+      params.current= this.current;
+      params.pageSize= pageSize;
       service.getOrderList(params).then(res => {
         let { data, status } = res;
         if (statusValid(this, status, data)) {
