@@ -24,8 +24,7 @@ function resolve(dir) {
 
 process.traceDeprecation = true;
 let entry = {
-  'babel-polyfill': 'babel-polyfill',
-  build: ['./src/app/app.js'],
+  build: ['babel-polyfill', './src/app/app.js'],
 };
 if (devMode) {
   entry.vendor = [];
@@ -90,7 +89,7 @@ module.exports = {
         use: 'babel-loader?cacheDirectory',
         exclude: path.resolve(__dirname, "node_modules"),
         include: path.resolve(__dirname, 'src')
-      },{
+      }, {
         test: /\.(png|jpe?g|gif|cur)(\?.*)?$/,
         use: [pngUserBase]
       }, {

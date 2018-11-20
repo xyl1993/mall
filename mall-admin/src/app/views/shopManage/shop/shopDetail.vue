@@ -405,9 +405,11 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.actionStatus = true;
+          //新增
+          let params = Object.assign({},this.form);
+          params.carousel = this.imgArray.join();
           if(this.productId){
             //修改
-            let params = Object.assign({},this.form);
             service.editProductDetail(this.productId,params).then(res => {
               let { data, status } = res;
               if (statusValid(this, status, data)) {
@@ -423,9 +425,6 @@ export default {
               }
             });
           }else{
-            //新增
-            let params = Object.assign({},this.form);
-            params.carousel = this.imgArray.join();
             service.addProduct(params).then(res => {
               let { data, status } = res;
               if (statusValid(this, status, data)) {

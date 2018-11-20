@@ -74,13 +74,15 @@ export default {
       // var test = /\/([^\/]*?\.)/i;
       var url = res.url.split('/');
       var img = url[url.length-1].split('.')[0];
-      console.log(img);
       service.deleteCarousel(img).then(res => {});
     },
     signUploadSuccess(res, list){
       let form = {
         url:res
       }
+      this.fileList.push({
+        url:this.filePath + res
+      });
       service.addCarousel(form).then(res => {
         const { data, status } = res;
         if (statusValid(this, status, data)) {
@@ -102,8 +104,8 @@ export default {
 <style lang="scss">
 .carousel-cointer{
   .el-upload-list--picture-card .el-upload-list__item{
-    width: 376px;
-    height: 200px;
+    width: 278.24px;
+    height: 148px;
   }
 }
 </style>

@@ -1,17 +1,22 @@
 {
   "presets": [
-    ["es2015","vue-app"],
-    "stage-0"
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+      }
+    }],
+    ["es2015", { "modules": false }],
+    "stage-2"
   ],
-  "plugins": ["syntax-dynamic-import","transform-runtime","transform-vue-jsx"],
+  "plugins": ["syntax-dynamic-import", "transform-runtime", "transform-vue-jsx"],
   "comments": false,
   "env": {
     "test": {
-      "plugins": [ "istanbul" ]
+      "plugins": ["istanbul"]
     },
     "production": {
       "plugins": ["transform-react-constant-elements"]
     }
   }
 }
-
