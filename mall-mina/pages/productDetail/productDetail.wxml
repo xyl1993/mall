@@ -72,9 +72,9 @@
     <view class="footer-btn join" bindtap='joinCar'>
       加入购物车
     </view>
-    <!-- <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
+    <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
       立即结算
-    </view> -->
+    </view>
   </view>
   <view class='buy-dialog' wx-if="{{dialogStatus}}">
     <view class='modal'></view>

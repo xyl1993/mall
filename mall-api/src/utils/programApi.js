@@ -4,7 +4,7 @@ const {
 const config = require('../config/environment');
 const axios = require('axios');
 var accessTokenJson = require('../config/data/access_token');
-const {getAccessTokenUri,sendMessageUri} = require('../config/programApi');
+const {getAccessTokenUri,sendMessageUri,getPayUri} = require('../config/programApi');
 const fs = require('fs');
 const getAccessToken = function(){
   return new Promise((resolve,reject)=>{
@@ -65,8 +65,145 @@ const sendMessage = function (access_token,body) {
     })
   })
 };
+
+const payAction = function (req,openId) {
+  const appId = config.AppID;
+  // 商户号
+  const mchId = config.mchId;
+  // 支付的 key
+  const PAY_API_KEY = 'pay api key';
+  // attach 是一个任意的字符串, 会原样返回, 可以用作一个标记
+  const attach = 'GJS-ORG';
+  // 一个随机字符串
+  const nonceStr = getNonceStr();
+  // 用户的 openId
+  const openId = openId;
+  // 生成商家内部自定义的订单号, 商家内部的系统用的, 不用 attach 加入也是可以的
+  const tradeId = getTradeId(attach)
+  // 生成签名
+  const sign = getPrePaySign(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price,PAY_API_KEY);
+  // 这里是在 express 获取用户的 ip, 因为使用了 nginx 的反向代理, 所以这样获取
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
+  //将微信需要的数据拼成 xml 发送出去
+  const sendData = wxSendData(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price, sign)
+
+  return new Promise((resolve,reject)=>{
+    axios({
+      method:'post',
+      data:sendData,
+      url:getPayUri(),
+    })
+    .then((response)=> {
+      const data = response.data;
+      if (!data.errcode) {
+        // 微信返回的数据也是 xml, 使用 xmlParser 将它转换成 js 的对象
+        xmlParser.parseString(data, (err, success) => {
+          if (err) {
+            log('parser xml error ', err);
+            resolve(500);
+          } else {
+            if (success.xml.return_code[0] === 'SUCCESS') {
+              const prepayId = success.xml.prepay_id[0]
+              const payParamsObj = getPayParams(prepayId, tradeId)
+              // 返回给前端, 这里是 express 的写法
+              // res.json(payParamsObj)
+              resolve(payParamsObj);
+            } else {
+              resolve(500);
+            }
+          }
+        })
+      } else {
+        //将错误返回
+        resolve(500);
+      }
+    })
+    .catch((err)=>{
+      //将错误返回
+      reject(500)
+    })
+  })
+};
+
+
+// 预定义的一些工具函数
+function getNonceStr() {
+  var text = ""
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  for (var i = 0; i < 16; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return text
+}
+
+function getTradeId(attach) {
+  var date = new Date().getTime().toString()
+  var text = ""
+  var possible = "0123456789"
+  for (var i = 0; i < 5; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  var tradeId = 'ty_' + attach + '_' + date + text
+  return tradeId
+}
+
+function getPrePaySign(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price) {
+  var stringA = 'appid=' + appId +
+    '&attach=' + attach +
+    '&body=' + productIntro +
+    '&mch_id=' + mchId +
+    '&nonce_str=' + nonceStr +
+    '&notify_url=' + notifyUrl +
+    '&openid=' + openId +
+    '&out_trade_no=' + tradeId +
+    '&spbill_create_ip=' + ip +
+    '&total_fee=' + price +
+    '&trade_type=JSAPI'
+  var stringSignTemp = stringA + '&key=' + PAY_API_KEY
+  var sign = md5(stringSignTemp).toUpperCase()
+  return sign
+}
+
+function wxSendData(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price, sign) {
+  const sendData = '<xml>' +
+    '<appid>' + appId + '</appid>' +
+    '<attach>' + attach + '</attach>' +
+    '<body>' + productIntro + '</body>' +
+    '<mch_id>' + mchId + '</mch_id>' +
+    '<nonce_str>' + nonceStr + '</nonce_str>' +
+    '<notify_url>' + notifyUrl + '</notify_url>' +
+    '<openid>' + openId + '</openid>' +
+    '<out_trade_no>' + tradeId + '</out_trade_no>' +
+    '<spbill_create_ip>' + ip + '</spbill_create_ip>' +
+    '<total_fee>' + price + '</total_fee>' +
+    '<trade_type>JSAPI</trade_type>' +
+    '<sign>' + sign + '</sign>' +
+    '</xml>'
+  return sendData
+}
+
+function getPayParams(prepayId, tradeId) {
+  const nonceStr = util.getNonceStr()
+  const timeStamp = new Date().getTime().toString()
+  const package = 'prepay_id=' + prepayId
+  const paySign = util.getPaySign(appId, timeStamp, nonceStr, package)
+  // 前端需要的所有数据, 都从这里返回过去
+  const payParamsObj = {
+    nonceStr: nonceStr,
+    timeStamp: timeStamp,
+    package: package,
+    paySign: paySign,
+    signType: 'MD5',
+    tradeId: tradeId,
+  }
+  return payParamsObj
+}
+
+
 module.exports = {
   getAccessToken,
-  sendMessage
+  sendMessage,
+  payAction
 };
 

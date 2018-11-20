@@ -8,6 +8,8 @@ const program = express.Router();
 const controller = require('./order.controller');
 
 program.post('/order',appVerifyToken,controller.insertOrder);
+program.post('/order/pay',appVerifyToken,controller.payOrder);
+
 
 program.get('/order',appVerifyToken,controller.getProgramOrderList);
 

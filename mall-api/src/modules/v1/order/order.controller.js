@@ -376,6 +376,25 @@ const deliverGoods =  async (req, res, next)=> {
   }
 };
 
+/**
+ * 支付
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const payOrder = async (req, res, next)=> {
+  try {
+    const rows = await pool.query(_sql);
+    const counts = await pool.query(_countSql);
+    res.status(status.OK).json({ data:rows,
+      totalItems: counts[0].count
+    });
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
 module.exports = {
   getOrderList,
   insertOrder,
@@ -383,5 +402,6 @@ module.exports = {
   getOrderDetail,
   collectGoods,
   deleteOrder,
-  deliverGoods
+  deliverGoods,
+  payOrder
 };

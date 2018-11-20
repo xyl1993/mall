@@ -4,7 +4,7 @@ const {
 } = require('../../../utils/handleUtilFun');
 const log = require('log4js').getLogger("orderController");
 const mysql = require('mysql');
-
+const programApi = require('../../../utils/programApi');
 const pool = require('../../../utils/pool')
 
 const insertTpl = async (req, res, next)=> {
@@ -39,7 +39,22 @@ const updateUsed = async (id)=> {
     log.error(err);
   }
 };
+
+/**
+ * 获取微信支付签名
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const payAction = async (req, res, next)=> {
+  programApi.payAction(req,req.openid).then((payParamsObj)=>{
+    if(payParamsObj !== 500){
+      res.status(status.OK).json(payParamsObj);
+    }
+  })
+};
 module.exports = {
   insertTpl,
-  updateUsed
+  updateUsed,
+  payAction
 };

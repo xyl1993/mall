@@ -6,6 +6,8 @@ const { appVerifyToken } = require('../../../utils/appVerifyToken');
 
 
 program.post('/tpl',appVerifyToken,controller.insertTpl);   //加入模板id
+program.post('/payAction',appVerifyToken,controller.payAction);   //加入模板id
+
 
 router.use('/program', program); 
 module.exports = router;

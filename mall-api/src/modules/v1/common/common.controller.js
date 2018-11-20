@@ -7,9 +7,6 @@ const qn = require('qn');
 const multerHelper = require('../../../utils/multerHelper');
 const config = require('../../../config/environment');
 const qiniuConfig = config.qiniuConfig;
-const axios = require('axios');
-const { sendMessageUri,getAccessTokenUri } = require('../../../config/programApi');
-var accessTokenJson = require('../../../config/data/access_token');
 
 const uploadQiniu = function (req, res, next) {
   // 七牛相关配置信息

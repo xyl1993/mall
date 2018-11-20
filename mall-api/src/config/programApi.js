@@ -21,10 +21,15 @@ function sendMessageUri(ACCESS_TOKEN){
   return `https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${ACCESS_TOKEN}`;
 }
 
+function getPayUri(){
+  return `https://api.mch.weixin.qq.com/pay/unifiedorder`;
+}
+
 module.exports = {
 
   jscode2session,
   decryptData,
   sendMessageUri,
-  getAccessTokenUri
+  getAccessTokenUri,
+  getPayUri
 };

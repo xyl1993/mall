@@ -39,7 +39,7 @@
       <view class='other'>含运费</view>
     </view>
     <form bindsubmit="share"  report-submit='true'>
-      <button class='sure-brn' form-type="submit" open-type="share">转发给好友</button>
+      <button class='sure-brn' form-type="submit">去支付</button>
     </form>
   </view>
 </view>
