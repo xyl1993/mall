@@ -9,36 +9,35 @@ const os = require('os') //获取电脑的处理器有几个核心，作为配�
 const happyThreadPool = HappyPack.ThreadPool({
   size: os.cpus().length
 })
+
 const devMode = process.env.NODE_ENV === 'development';
 var utils = require('../build/utils');
 var path = require('path');
-var ROOT_PATH = path.resolve(__dirname);
-var publicPath = devMode ? "http://localhost:4000/" : './';
+var publicPath = devMode ? '/' : './';
 
 var pngUserBase = 'url-loader?limit=8192&name=';
 var fontUserBase = 'url-loader?importLoaders=1&limit=80000&name=';
-
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
-
+var projectRoot = path.resolve(__dirname, '../')
 process.traceDeprecation = true;
 let entry = {
-  build: ['babel-polyfill', './src/app/app.js'],
+  app: ['babel-polyfill','./src/app/app.js'],
 };
 if (devMode) {
-  entry.vendor = [];
-  pngUserBase = pngUserBase + 'images/[hash:8].[name].[ext]';
+  // entry.vendor = [];
+  pngUserBase = pngUserBase + 'images/[path][name].[ext]';
   fontUserBase = fontUserBase + 'fonts/[name].[ext]'
 } else {
-  pngUserBase = pngUserBase + utils.assetsPath('images/[hash:8].[name].[ext]');
+  pngUserBase = pngUserBase + utils.assetsPath('images/[hash:8].[ext]');
   fontUserBase = fontUserBase + utils.assetsPath('fonts/[name].[ext]');
 }
 
 module.exports = {
   entry: entry,
   output: {
-    path: path.resolve(ROOT_PATH, '../../admin/dist'),
+    path:  resolve('../../adminBuild/dist'),
     publicPath: publicPath,
     filename: devMode ? '[name].js' : utils.assetsPath('js/[name]_[chunkhash].js'),
     pathinfo: devMode ? true : false
@@ -49,8 +48,9 @@ module.exports = {
     alias: {
       // jquery: 'jquery/jquery.min.js',
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
-      'scss_vars': '@/assets/common/styles.scss'
+      '@': resolve('src/app'),
+      '#': resolve('src/assets'),
+      'img':resolve('src/assets/images')  //配置一个img的别名指向src/assets/img
     }
   },
   module: {
@@ -68,7 +68,12 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          devMode ? 'style-loader' : {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../../'
+            }
+          },
           'css-loader',
           {
             loader: 'postcss-loader',
@@ -85,11 +90,16 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        use: 'babel-loader?cacheDirectory',
-        exclude: path.resolve(__dirname, "node_modules"),
-        include: path.resolve(__dirname, 'src')
-      }, {
+        use: {
+          loader: 'babel-loader?cacheDirectory=true',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/transform-runtime',"@babel/plugin-syntax-dynamic-import"]
+          }
+        },
+        include: projectRoot,
+        exclude: /node_modules/
+      },{
         test: /\.(png|jpe?g|gif|cur)(\?.*)?$/,
         use: [pngUserBase]
       }, {
