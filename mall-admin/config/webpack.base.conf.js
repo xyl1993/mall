@@ -14,7 +14,7 @@ const devMode = process.env.NODE_ENV === 'development';
 var utils = require('../build/utils');
 var path = require('path');
 var publicPath = devMode ? '/' : './';
-
+var ROOT_PATH = path.resolve(__dirname);
 var pngUserBase = 'url-loader?limit=8192&name=';
 var fontUserBase = 'url-loader?importLoaders=1&limit=80000&name=';
 function resolve(dir) {
@@ -37,7 +37,7 @@ if (devMode) {
 module.exports = {
   entry: entry,
   output: {
-    path:  resolve('../../adminBuild/dist'),
+    path: path.resolve(ROOT_PATH, '../../admin/dist'),
     publicPath: publicPath,
     filename: devMode ? '[name].js' : utils.assetsPath('js/[name]_[chunkhash].js'),
     pathinfo: devMode ? true : false
