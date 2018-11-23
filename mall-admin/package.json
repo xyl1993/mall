@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --config ./config/build-server.js",
-    "build": "rimraf ../admin/dist && webpack --mode production --config ./config/webpack.build.config.js",
+    "build": "rimraf ../admin/distBuild && webpack --mode production --config ./config/webpack.build.config.js",
     "profile": "webpack --config ./webpack.build.config.js --json --profile > stats.json",
     "analyz": "cross-env NODE_ENV=production npm_config_report=true npm run build"
   },
