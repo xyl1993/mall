@@ -16,8 +16,8 @@ const config = {
   // MongoDB connection options
   uploadRoot: path.normalize(__dirname + '/../../../../upload'),
   adminUI: {
-    root: path.normalize(__dirname + '/../../../../admin/dist'),
-    index: path.normalize(__dirname + '/../../../../admin/dist/index.html')
+    root: path.normalize(__dirname + '/../../../../admin/distBuild'),
+    index: path.normalize(__dirname + '/../../../../admin/distBuild/index.html')
   },
   uploadFolder: path.normalize(__dirname + '/../../../../upload/'),
   serverDataFolder: path.normalize(__dirname + '/../data/'),

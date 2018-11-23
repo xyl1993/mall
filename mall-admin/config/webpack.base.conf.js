@@ -37,7 +37,7 @@ if (devMode) {
 module.exports = {
   entry: entry,
   output: {
-    path: path.resolve(ROOT_PATH, '../../admin/dist'),
+    path: path.resolve(ROOT_PATH, '../../admin/distBuild'),
     publicPath: publicPath,
     filename: devMode ? '[name].js' : utils.assetsPath('js/[name]_[chunkhash].js'),
     pathinfo: devMode ? true : false
