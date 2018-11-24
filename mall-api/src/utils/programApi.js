@@ -66,7 +66,8 @@ const sendMessage = function (access_token,body) {
   })
 };
 
-const payAction = function (req,openId) {
+const payAction = function (req) {
+  const { openId } = req;
   const appId = config.AppID;
   // 商户号
   const mchId = config.mchId;

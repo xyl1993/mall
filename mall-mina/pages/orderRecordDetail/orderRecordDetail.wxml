@@ -58,5 +58,8 @@
       <view class='sum'>合计 ￥{{ filters.toFix(orderInfo.should_price) }}</view>
       <view class='other'>含运费</view>
     </view>
+    <form bindsubmit="pay"  report-submit='true' wx:if="{{status == 'pay'}}">
+      <button class='pay-btn' form-type="submit">去支付</button>
+    </form>
   </view>
 </view>

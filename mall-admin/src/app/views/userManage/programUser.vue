@@ -1,7 +1,7 @@
 <template>
   <div class="cointer-box">
     <div class="toolbar el-col el-col-24">
-      <el-form :inline="true" class="demo-form-inline">
+      <el-form :inline="true" class="search-form">
         <el-form-item>
           <el-input v-model="nikename" @keyup.enter.native="search" placeholder="请输入昵称"></el-input>
         </el-form-item>
@@ -123,5 +123,8 @@ export default {
   height: 50px;
   border-radius: 50%;
   overflow: hidden;
+}
+.search-form{
+  height:41px;
 }
 </style>

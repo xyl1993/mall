@@ -73,7 +73,7 @@
       加入购物车
     </view>
     <view class="footer-btn buy" data-type='buy' bindtap='joinCar'>
-      立即结算
+      立即购买
     </view>
   </view>
   <view class='buy-dialog' wx-if="{{dialogStatus}}">

@@ -146,7 +146,6 @@ Page({
     });
   },
   replay:function(e){
-    console.log(e);
     let item = this.data.carList;
     let chooseId = '';
     ButtonClicked(this, e);

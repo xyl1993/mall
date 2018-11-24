@@ -123,6 +123,13 @@ Page({
       url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&status=deliver` 
     })
   },
+  //去付款
+  payGoods:function(e){
+    let order_number = e.currentTarget.dataset.order_number;
+    wx.navigateTo({
+      url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&status=pay`
+    })
+  },
   choseType:function(e){
     let _this = this;
     let type = e.currentTarget.dataset.type;

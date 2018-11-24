@@ -81,7 +81,7 @@ const insertOrder = async (req, res, next)=> {
       address,
       phone,
       new Date(),
-      2
+      1
     ]
     _sql = mysql.format(_sql, params);
     log.info(_sql);
@@ -113,9 +113,9 @@ const insertOrder = async (req, res, next)=> {
     await pool.query(_sql);
 
     //更新商品的销售数量
-    _sql = `update product set seal_num = seal_num + 1 where id in (${productIdArr.join()})`
-    log.info(_sql);
-    await pool.query(_sql);
+    // _sql = `update product set seal_num = seal_num + 1 where id in (${productIdArr.join()})`
+    // log.info(_sql);
+    // await pool.query(_sql);
 
     //更新收貨地址
     _sql = `update account_address set collect_name = ?,address=?,phone = ? where id = ?`;
@@ -124,47 +124,7 @@ const insertOrder = async (req, res, next)=> {
     await pool.query(_sql);
 
     res.status(status.OK).json(orderRows.insertId);
-    /***给用户发送消息** */
-    //获取收货人基本信息
-    _sql = `select * from tpl_config where account_id = ${account_id} and invalid_time > now() and used = 0 limit 1`;
-    const adminUser = await pool.query(_sql);
-    //获取accessToken
-    programApi.getAccessToken().then((access_token)=>{
-      if(adminUser){
-        const user = adminUser[0];
-        const tempData = {
-          "touser":user.openid,
-          "template_id":config.programTemplate.orderSuccessTemplateId,
-          "page":`pages/allorder/allorder?type = 2`,
-          "form_id":user.form_id,
-          "data": {
-            "keyword1": {
-              "value": orderNumberRows, 
-            }, 
-            "keyword2": {
-              "value": new Date() 
-            }, 
-            "keyword3": {
-              "value": collect_name
-            } , 
-            "keyword4": {
-              "value": phone
-            } ,
-            "keyword5": {
-              "value": address
-            } 
-          }
-        }
-        
-        //发送消息
-        programApi.sendMessage(access_token,tempData).then((message)=>{
-          console.log(message);
-          updateUsed(user.id);
-          log.info('模板消息返回');
-          log.info(message);
-        })
-      }
-    })
+    
     
   } catch(err) {
     log.error(err);
@@ -384,11 +344,54 @@ const deliverGoods =  async (req, res, next)=> {
  */
 const payOrder = async (req, res, next)=> {
   try {
-    const rows = await pool.query(_sql);
-    const counts = await pool.query(_countSql);
-    res.status(status.OK).json({ data:rows,
-      totalItems: counts[0].count
-    });
+    const { orderNumber,money } = req.body;  
+    const payTime = new Date();
+    let sql = `update account_order set pay_status = 2,pay_time = ?,pay_price=? where order_number = ?`;
+    let params = [payTime,money,orderNumber];
+    sql = mysql.format(sql,params);
+    await pool.query(sql);
+    res.status(status.OK).json(orderNumber);
+    //假设支付成功
+    //更新订单状态
+
+    /*******************支付成功通知*************** */
+    //获取收货人基本信息
+    _sql = `select * from tpl_config where account_id = ${account_id} and invalid_time > now() and used = 0 limit 1`;
+    const ShoperUser = await pool.query(_sql);
+    //获取accessToken
+    programApi.getAccessToken().then((access_token)=>{
+      if(ShoperUser){
+        const user = ShoperUser[0];
+        const tempData = {
+          "touser":user.openid,
+          "template_id":config.programTemplate.paySuccessTemplateId,
+          "page":`pages/allorder/allorder?type = 2`,
+          "form_id":user.form_id,
+          "data": {
+            "keyword1": {
+              "value": orderNumber,    //金额
+            }, 
+            "keyword2": {
+              "value": orderNumber   //编号
+            }, 
+            "keyword3": {
+              "value": payTime   //时间
+            } , 
+            "keyword4": {
+              "value": address
+            } ,
+          }
+        }
+        
+        //发送消息
+        programApi.sendMessage(access_token,tempData).then((message)=>{
+          console.log(message);
+          updateUsed(user.id);
+          log.info('模板消息返回');
+          log.info(message);
+        })
+      }
+    })
   } catch(err) {
     log.error(err);
     return handleError(res, err);

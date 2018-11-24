@@ -47,7 +47,7 @@ const updateUsed = async (id)=> {
  * @param {*} next 
  */
 const payAction = async (req, res, next)=> {
-  programApi.payAction(req,req.openid).then((payParamsObj)=>{
+  programApi.payAction(req).then((payParamsObj)=>{
     if(payParamsObj !== 500){
       res.status(status.OK).json(payParamsObj);
     }

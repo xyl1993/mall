@@ -1,7 +1,7 @@
 <template>
   <div class="cointer-box">
-    <div class="toolbar el-col el-col-24">
-      <el-form :inline="true" class="demo-form-inline basetable-search-form">
+    <div class="toolbar el-col-24 clear">
+      <el-form :inline="true" class="basetable-search-form ">
         <div class="el-col-6">
           <el-form-item label="支付状态" class="el-col-6">
             <el-select v-model="searchModel.pay_status" clearable=""  @change="search" placeholder="支付状态">
@@ -48,6 +48,7 @@
             <el-button type="primary" size="small" @click.native.prevent="search">查询</el-button>
           </el-form-item>
         </div>
+        <div class="d-clear"></div>
       </el-form>
     </div>
     <div class="my-table">
@@ -202,5 +203,8 @@ export default {
 <style lang="scss" scoped>
 .el-form-item {
   margin-bottom: 0;
+}
+.basetable-search-form{
+  height: 92px;
 }
 </style>

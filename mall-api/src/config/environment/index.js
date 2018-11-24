@@ -3,15 +3,16 @@ const path = require('path');
 require('dotenv').config();
 
 const config = {
-  AppID: 'wx87c34fd85a33c2b7',
-  AppSecret: '905ad38103df1953b57050dcf9b85af8',
+  AppID: 'wx90a62f36d90c6ad3',
+  AppSecret: 'bb8cb8bd2e6e9cbae5204c4320254777',
   mchId:'',  //商户号
-  AppjwtEncryption: 'gaochengyouhui',
+  AppjwtEncryption: 'suvarn',
   //微信模板id组
   programTemplate: {
     //消息模板id
     deliverTemplateId: 'xR6tz0vnrrL0hUVIBnV-Ea3oBVNlPXnLnFXynvSrRfA',    //发货成功
-    orderSuccessTemplateId:'_WQqRn3hJEPR_PSWtRCyRsHiHqcGQ0MlEKZJTkopB0o'   //确认下单成功
+    orderSuccessTemplateId:'NyzjyASZ7sBHW02CisOaYuKw1kN_VC6Z_cQ39RJN3NM',   //交易成功通知
+    paySuccessTemplateId:'DJ4xDDlC6m7sH_VAWPP1ZA-g3PEbzpJTJoK3yNW5hKM',   //支付成功通知
   },
   // MongoDB connection options
   uploadRoot: path.normalize(__dirname + '/../../../../upload'),

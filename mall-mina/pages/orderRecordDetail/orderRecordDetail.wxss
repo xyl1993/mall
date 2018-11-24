@@ -85,14 +85,7 @@
   background: #fff;
 }
 
-.sure-brn {
-  height: 110rpx;
-  width: 200rpx;
-  background: #FFCC00;
-  text-align: center;
-  color: #fff;
-  line-height: 110rpx;
-}
+
 
 .bottom-left {
   flex: 1;
@@ -107,12 +100,10 @@
   padding-top: 14rpx;
   font-size: 30rpx;
   color: #666;
-  text-align: right;
 }
 
 .other {
   font-size: 24rpx;
-  text-align: right;
   color: #dbdbdb;
 }
 
@@ -134,4 +125,21 @@
   font-size: 28rpx;
   height: 80rpx;
   line-height: 80rpx;
+  background: #FFCC00;
+  text-align: center;
+  color: #fff;
+}
+
+
+.pay-btn {
+  height: 110rpx;
+  padding: 0 30rpx;
+  background: #FFCC00;
+  text-align: center;
+  color: #fff;
+  line-height: 110rpx;
+  border:0;
+  font-weight: 500;
+  font-size: 28rpx;
+  border-radius: 0;
 }
