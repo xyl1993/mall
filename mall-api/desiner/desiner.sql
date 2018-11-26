@@ -136,7 +136,7 @@ CREATE TABLE `account` (
   `status` int DEFAULT 1,     /*1 关注  0取消关注*/
   `is_admin` int DEFAULT 0,     /*1是管理员 拥有发货权限*/
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /**
 小程序收货地址表
@@ -235,3 +235,20 @@ CREATE TABLE `tpl_config` (
   `used` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/*订单信息*/
+drop table if exists pay_order_info;
+CREATE TABLE `pay_order_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT, /*订单id*/
+  `code` varchar(32) NOT NULL,/*支付订单号*/
+  `order_number` varchar(32) NOT NULL,/*商品订单号*/
+  `user_id` bigint(20) NOT NULL,/*用户ID*/
+  `pay_money` decimal(10,2) NOT NULL DEFAULT '0.00', /*付款金额*/
+  `status` varchar(20) DEFAULT NULL, /*00未支付 01支付成功 02支付失败*/
+  `create_time` datetime DEFAULT NULL, /*订单创建时间*/
+  `order_request` varchar(1000) DEFAULT NULL, /*下单请求xml*/
+  `order_result` varchar(1000) DEFAULT NULL, /*下单返回结果xml*/
+  `pay_result` varchar(1000) DEFAULT NULL, /*用户支付返回结果xml*/
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;

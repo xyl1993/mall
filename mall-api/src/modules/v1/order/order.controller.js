@@ -337,7 +337,7 @@ const deliverGoods =  async (req, res, next)=> {
 };
 
 /**
- * 支付
+ * 支付(待处理)
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -350,6 +350,9 @@ const payOrder = async (req, res, next)=> {
     let params = [payTime,money,orderNumber];
     sql = mysql.format(sql,params);
     await pool.query(sql);
+    //往支付记录表插入一条记录
+    sql =  `insert into pay_order_info(code,order_number,user_id,pay_money,status,create_time,order_request,order_result,pay_result) values(?,?,?,?,?,?,?,?,?)`;
+
     res.status(status.OK).json(orderNumber);
     //假设支付成功
     //更新订单状态
@@ -397,6 +400,31 @@ const payOrder = async (req, res, next)=> {
     return handleError(res, err);
   }
 };
+//后台获取支付记录
+const getPayRecord =  async (req, res, next)=> {
+  const pageSize = ~~req.query.pageSize || 10;
+  const current = req.query.current || 1;
+  const start = (current - 1) * pageSize;
+  const {order_number} = req.query;
+  try {
+    let sql =  `SELECT
+        a.*, c.nikename
+      FROM
+        pay_order_info a
+      LEFT JOIN account_order b ON b.order_number = a.order_number
+      LEFT JOIN account c ON c.id = a.user_id`;
+    const _countSql = `select count(*) as count from (${sql}) a`;
+    sql = sql + ` order by a.create_time desc limit ${start}, ${pageSize}`;
+    log.info(sql);
+    let params = [];
+    sql = mysql.format(sql,params);
+    const rows = await pool.query(sql);
+    res.status(status.OK).json(rows);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
 
 module.exports = {
   getOrderList,
@@ -406,5 +434,6 @@ module.exports = {
   collectGoods,
   deleteOrder,
   deliverGoods,
-  payOrder
+  payOrder,
+  getPayRecord
 };

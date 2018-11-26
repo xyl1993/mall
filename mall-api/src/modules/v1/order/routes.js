@@ -20,6 +20,7 @@ program.delete('/order/:order_number',appVerifyToken,controller.deleteOrder);
 
 
 admin.get('/order',verifyToken,controller.getOrderList);
+admin.get('/pay/record',verifyToken,controller.getPayRecord);
 web.get('/order/:order_number',controller.getOrderDetail);
 
 

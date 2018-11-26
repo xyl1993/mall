@@ -40,7 +40,7 @@ textarea{
 
 .sure-btn{
   width: 100%;
-  background-color: #F1EDEC;
+  background-color: #FFCC00;
   border:none;
   color: #fff;
   height: 70rpx;
