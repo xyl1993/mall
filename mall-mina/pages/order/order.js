@@ -154,12 +154,15 @@ Page({
       }
     }
   },
-  share: function (e) {
+  payAction: function (e) {
     const form = {
       form_id: e.detail.formId,
       type: '01',
     }
     api.post(`program/tpl`, form).then(res => {
     });
+    wx.showToast({
+      title:'敬请期待'
+    })
   },
 })
