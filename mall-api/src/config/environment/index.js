@@ -10,7 +10,7 @@ const config = {
   //微信模板id组
   programTemplate: {
     //消息模板id
-    deliverTemplateId: 'xR6tz0vnrrL0hUVIBnV-Ea3oBVNlPXnLnFXynvSrRfA',    //发货成功
+    deliverTemplateId: 'VspPldWVkj4BmBieWrxIpfepbKalJ9r8PzKGLle5MTk',    //发货成功
     orderSuccessTemplateId:'NyzjyASZ7sBHW02CisOaYuKw1kN_VC6Z_cQ39RJN3NM',   //交易成功通知
     paySuccessTemplateId:'DJ4xDDlC6m7sH_VAWPP1ZA-g3PEbzpJTJoK3yNW5hKM',   //支付成功通知
   },
