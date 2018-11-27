@@ -16,7 +16,7 @@ const appSecret = config.AppSecret;
 // 商户号
 const mchId = config.mchId;
 // 支付的 key
-const PAY_API_KEY = 'pay api key'
+const PAY_API_KEY = config.PAY_API_KEY;
 
 // attach 是一个任意的字符串, 会原样返回, 可以用作一个标记
 const attach = 'GJS-ORG'

@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const programApi = require('../../../utils/programApi');
 const pool = require('../../../utils/pool')
 
-const insertTpl = async (req, res, next)=> {
+const insertTplConfig = async (req, res, next)=> {
   try {
     const {account_id,openid} = req;
     const {type,form_id} = req.body;
@@ -25,11 +25,28 @@ const insertTpl = async (req, res, next)=> {
     ];
     sql = mysql.format(sql,params);
     const rows = await pool.query(sql);
-    res.status(status.OK).json(rows.insertId);
+    return {
+      code:status.OK,
+      data:rows
+    }
   } catch(err) {
     log.error(err);
-    return handleError(res, err);
+    return {
+      code:status.INTERNAL_SERVER_ERROR,
+      data:err
+    }
   }
+};
+
+const insertTpl = async (req, res, next)=> {
+  insertTplConfig(req, res, next).then((v) => {
+    const {data,code} = v;
+    if(code===status.OK){
+      res.status(status.OK).json(data.insertId);
+    }else{
+      return handleError(res, data);
+    }
+  });
 };
 const updateUsed = async (id)=> {
   try {
@@ -47,9 +64,14 @@ const updateUsed = async (id)=> {
  * @param {*} next 
  */
 const payAction = async (req, res, next)=> {
+  console.log("openid="+req.openid);
   programApi.payAction(req).then((payParamsObj)=>{
-    if(payParamsObj !== 500){
-      res.status(status.OK).json(payParamsObj);
+    console.log(payParamsObj);
+    const { code,data } = payParamsObj;
+    if(code===status.OK){
+      res.status(status.OK).json(data);
+    }else{
+      return handleError(res, data);
     }
   })
 };
