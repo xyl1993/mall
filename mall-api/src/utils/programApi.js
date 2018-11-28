@@ -88,8 +88,8 @@ const payAction = function (req) {
   //商品信息
   const productIntro = "test";   
   //付款成功返回url
-  const notifyUrl = "/index";
-  const price = "0.01";
+  const notifyUrl = "https://billionsen.cn/mall-admin/#/login";
+  const price = "10";
   // 这里是在 express 获取用户的 ip, 因为使用了 nginx 的反向代理, 所以这样获取
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
@@ -112,6 +112,7 @@ const payAction = function (req) {
           log('parser xml error ', err);
           resolve({code:status.INTERNAL_SERVER_ERROR,data:err});
         } else {
+          console.log(success);
           if (success.xml.return_code[0] === 'SUCCESS') {
             const prepayId = success.xml.prepay_id[0]
             const payParamsObj = getPayParams(prepayId, tradeId)
