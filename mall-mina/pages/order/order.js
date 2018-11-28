@@ -155,12 +155,42 @@ Page({
     }
   },
   payAction: function (e) {
-    const form = {
-    }
-    api.post(`program/payAction`, form).then(res => {
+    let self = this;
+    wx.showLoading({
+      title: '正在提交',
+      mask: true
     });
-    wx.showToast({
-      title:'敬请期待'
-    })
+    let subForm = e.detail.value;
+    let productList = self.data.productList;
+    let allPrice = self.data.allPrice;
+    let chooseId = self.data.chooseId;
+    let account_id = self.data.account_id;
+    let address = {
+      collect_name: subForm.collect_name,
+      phone: subForm.phone,
+      address: subForm.address,
+      addressId: self.data.addressId
+    }
+    let params = { allPrice, chooseId, account_id, productList, ...address };
+    api.post(`program/order`, params).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        console.log(data);
+        const { timeStamp, nonceStr, paySign} = data;
+        wx.requestPayment({
+          timeStamp: timeStamp,
+          nonceStr: nonceStr,
+          package: data.package,
+          signType: 'MD5',
+          paySign: paySign,
+          success(res) {
+             console.log('success')
+           },
+          fail(res) { 
+            console.log(res)
+          }
+        })
+      }
+    });
   },
 })

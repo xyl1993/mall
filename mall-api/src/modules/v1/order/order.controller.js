@@ -65,6 +65,7 @@ const spitStockSql = async(num,id)=>{
  * @param {*} next 
  */
 const insertOrder = async (req, res, next)=> {
+  const { openid } = req;
   const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id,account_id} = req.body;
 
   // const {specifications_name,number,price} = productList;
@@ -123,9 +124,19 @@ const insertOrder = async (req, res, next)=> {
     _sql = mysql.format(_sql,addressParam);
     await pool.query(_sql);
 
-    res.status(status.OK).json(orderRows.insertId);
-    
-    
+    //获取支付签名
+    programApi.payAction(req,openid,orderNumberRows).then((payParamsObj)=>{
+      console.log(payParamsObj);
+      const { code,data } = payParamsObj;
+      if(code===status.OK){
+        const resultData = programApi.getPayParams(data.prepayId,data.tradeId);
+        console.log("====================");
+        console.log(resultData);
+        res.status(status.OK).json(resultData);
+      }else{
+        return handleError(res, data);
+      }
+    })
   } catch(err) {
     log.error(err);
     return handleError(res, err);

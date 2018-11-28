@@ -5,8 +5,8 @@ require('dotenv').config();
 const config = {
   AppID: 'wx90a62f36d90c6ad3',
   AppSecret: 'bb8cb8bd2e6e9cbae5204c4320254777',
-  PAY_API_KEY:'gfzL7BRyrDtbCer3ciVio28J0xcEzKCM',  //商户key
-  PAY_API_KEY_SECRET:'Wj@870918',   //密钥密码
+  PAY_API_KEY:'bb8cb8bd2e6e9cbae5204c4320254777',  //商户key
+  PAY_API_KEY_SECRET:'Wj@870918',   //密钥密码   Wj870918!   登陆密码
   mchId:'1519655421',  //商户号
   AppjwtEncryption: 'suvarn',
   //微信模板id组
