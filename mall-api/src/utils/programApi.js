@@ -72,7 +72,14 @@ const sendMessage = function (access_token,body) {
   })
 };
 
-const payAction = function (req,openid,orderNumber) {
+/**
+ * 微信付款生成签名给前台
+ * @param {*} req 
+ * @param {*} openid 
+ * @param {*} orderNumber 订单编号
+ * @param {*} allPrice 总价
+ */
+const payAction = function (req,openid,orderNumber,allPrice) {
   const appId = config.AppID;
   // 商户号
   const mchId = config.mchId;
@@ -87,8 +94,8 @@ const payAction = function (req,openid,orderNumber) {
   //商品信息
   const productIntro = "test";   
   //付款成功返回url
-  const notifyUrl = "https://billionsen.cn/mall-admin/#/login";
-  const price = "10";
+  const notifyUrl = config.notifyUrl;
+  const price = allPrice * 100;    //这里要转为分
   // 这里是在 express 获取用户的 ip, 因为使用了 nginx 的反向代理, 所以这样获取
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
@@ -111,15 +118,9 @@ const payAction = function (req,openid,orderNumber) {
           log('parser xml error ', err);
           resolve({code:status.INTERNAL_SERVER_ERROR,data:err});
         } else {
-          console.log(success.xml.return_code[0]);
           if (success.xml.return_code[0] === 'SUCCESS') {
             const prepayId = success.xml.prepay_id[0]
             const payParamsObj = {prepayId,tradeId};
-            // const payParamsObj = getPayParams(prepayId, tradeId)
-
-            console.log(payParamsObj);
-            // 返回给前端, 这里是 express 的写法
-            // res.json(payParamsObj)
             resolve({code:status.OK,data:payParamsObj});
           } else {
             resolve({code:status.INTERNAL_SERVER_ERROR,data:success.xml.return_msg[0]});
@@ -193,23 +194,30 @@ function wxSendData(appId, attach, productIntro, mchId, nonceStr, notifyUrl, ope
 }
 
 function getPaySign(appId, timeStamp, nonceStr, package) {
-  var stringA = 'appid=' + appId +
-    '&timeStamp=' + timeStamp +
-    '&nonce_str=' + nonceStr +
-    '&package=' + package;
-  var stringSignTemp = stringA + '&key=' + config.PAY_API_KEY
+  console.log("appid=========="+config.AppID);
+  var stringA = 'appId=' + appId +
+    '&nonceStr=' + nonceStr +
+    '&package=' + package +
+    '&signType=MD5'+
+    '&timeStamp=' + timeStamp;
+  var stringSignTemp = stringA + '&key=' + config.PAY_API_KEY;
+  console.log(stringSignTemp);
   var sign = md5(stringSignTemp).toUpperCase();
   console.log(sign);
   return sign
 }
 
-
+/**
+ * 解析获取签名成功返回的数据
+ * @param {*} prepayId 
+ * @param {*} tradeId 
+ */
 const getPayParams =function(prepayId, tradeId) {
   
   const nonceStr = getNonceStr();
   const timeStamp = new Date().getTime().toString()
   const package = 'prepay_id=' + prepayId
-  const paySign = getPaySign(config.appId, timeStamp, nonceStr, package);
+  const paySign = getPaySign(config.AppID, timeStamp, nonceStr, package);
   
   // 前端需要的所有数据, 都从这里返回过去
   const payParamsObj = {

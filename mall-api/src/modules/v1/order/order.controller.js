@@ -8,7 +8,7 @@ const config = require('../../../config/environment');
 const pool = require('../../../utils/pool');
 const programApi = require('../../../utils/programApi');
 const updateUsed = require('../tplConfig/tplConfig.controller').updateUsed;
-
+const moment = require('moment');
 /**
  * 后台获取所有订单
  * @param {*} req 
@@ -125,11 +125,11 @@ const insertOrder = async (req, res, next)=> {
     await pool.query(_sql);
 
     //获取支付签名
-    programApi.payAction(req,openid,orderNumberRows).then((payParamsObj)=>{
-      console.log(payParamsObj);
+    programApi.payAction(req,openid,orderNumberRows,allPrice).then((payParamsObj)=>{
       const { code,data } = payParamsObj;
       if(code===status.OK){
         const resultData = programApi.getPayParams(data.prepayId,data.tradeId);
+        resultData.orderNumber = orderNumberRows;
         console.log("====================");
         console.log(resultData);
         res.status(status.OK).json(resultData);
@@ -348,6 +348,34 @@ const deliverGoods =  async (req, res, next)=> {
 };
 
 /**
+ * 获取支付签名
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const payAction = async (req, res, next)=> {
+  try {
+    const { orderNumber,allPrice } = req.body; 
+    const { openid } = req;
+    //获取支付签名
+    programApi.payAction(req,openid,orderNumber,allPrice).then((payParamsObj)=>{
+      const { code,data } = payParamsObj;
+      if(code===status.OK){
+        const resultData = programApi.getPayParams(data.prepayId,data.tradeId);
+        console.log("====================");
+        console.log(resultData);
+        res.status(status.OK).json(resultData);
+      }else{
+        return handleError(res, data);
+      }
+    })
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+}
+
+/**
  * 支付(待处理)
  * @param {*} req 
  * @param {*} res 
@@ -355,56 +383,50 @@ const deliverGoods =  async (req, res, next)=> {
  */
 const payOrder = async (req, res, next)=> {
   try {
-    const { orderNumber,money } = req.body;  
+    const { orderNumber,allPrice,formId,address } = req.body;  
+    const { openid } = req;
     const payTime = new Date();
     let sql = `update account_order set pay_status = 2,pay_time = ?,pay_price=? where order_number = ?`;
-    let params = [payTime,money,orderNumber];
+    let params = [payTime,allPrice,orderNumber];
     sql = mysql.format(sql,params);
     await pool.query(sql);
     //往支付记录表插入一条记录
-    sql =  `insert into pay_order_info(code,order_number,user_id,pay_money,status,create_time,order_request,order_result,pay_result) values(?,?,?,?,?,?,?,?,?)`;
+    // sql =  `insert into pay_order_info(code,order_number,user_id,pay_money,status,create_time,order_request,order_result,pay_result) values(?,?,?,?,?,?,?,?,?)`;
 
     res.status(status.OK).json(orderNumber);
     //假设支付成功
     //更新订单状态
 
     /*******************支付成功通知*************** */
-    //获取收货人基本信息
-    _sql = `select * from tpl_config where account_id = ${account_id} and invalid_time > now() and used = 0 limit 1`;
-    const ShoperUser = await pool.query(_sql);
     //获取accessToken
     programApi.getAccessToken().then((access_token)=>{
-      if(ShoperUser){
-        const user = ShoperUser[0];
-        const tempData = {
-          "touser":user.openid,
-          "template_id":config.programTemplate.paySuccessTemplateId,
-          "page":`pages/allorder/allorder?type = 2`,
-          "form_id":user.form_id,
-          "data": {
-            "keyword1": {
-              "value": orderNumber,    //金额
-            }, 
-            "keyword2": {
-              "value": orderNumber   //编号
-            }, 
-            "keyword3": {
-              "value": payTime   //时间
-            } , 
-            "keyword4": {
-              "value": address
-            } ,
-          }
+      const tempData = {
+        "touser":openid,
+        "template_id":config.programTemplate.paySuccessTemplateId,
+        "page":`pages/allorder/allorder?type = 2`,
+        "form_id":formId,
+        "data": {
+          "keyword1": {
+            "value": allPrice,    //金额
+          }, 
+          "keyword2": {
+            "value": orderNumber   //编号
+          }, 
+          "keyword3": {
+            "value": moment(payTime).format('YYYY-MM-DD HH:mm:ss')
+          } , 
+          "keyword4": {
+            "value": address
+          } ,
         }
-        
-        //发送消息
-        programApi.sendMessage(access_token,tempData).then((message)=>{
-          console.log(message);
-          updateUsed(user.id);
-          log.info('模板消息返回');
-          log.info(message);
-        })
       }
+      
+      //发送消息
+      programApi.sendMessage(access_token,tempData).then((message)=>{
+        console.log(message);
+        log.info('模板消息返回');
+        log.info(message);
+      })
     })
   } catch(err) {
     log.error(err);
@@ -446,5 +468,6 @@ module.exports = {
   deleteOrder,
   deliverGoods,
   payOrder,
-  getPayRecord
+  getPayRecord,
+  payAction
 };

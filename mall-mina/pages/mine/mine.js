@@ -106,7 +106,6 @@ Page({
     let authStatus = this.data.authStatus;
     if (authStatus) {
       let type = e.currentTarget.dataset.type;
-      console.log(type);
       wx.navigateTo({
         url: '../allorder/allorder?type=' + type
       })

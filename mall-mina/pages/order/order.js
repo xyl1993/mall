@@ -1,5 +1,6 @@
 //获取应用实例
 import api from '../../utils/api.js';
+import { toFix } from '../../utils/util.js';
 import {
   Config
 } from '../../config/index.js';
@@ -87,32 +88,6 @@ Page({
     });
   },
 
-  replay:function(e){
-    ButtonClicked(this, e);
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
-    });
-    let subForm = e.detail.value;
-    let productList = this.data.productList;
-    let allPrice = this.data.allPrice;
-    let chooseId = this.data.chooseId;
-    let address = {
-      collect_name:subForm.collect_name,
-      phone:subForm.phone,
-      address:subForm.address
-    }
-    let params = { allPrice, chooseId, productList, ...address };
-    api.post(`program/order`, params).then(res => {
-      const { data, status } = res;
-      if (status === 200) {
-        wx.redirectTo({
-          url: '../orderSuccess/orderSuccess'
-        })
-      }
-    });
-  },
-
   addAddress:function(){
     wx.navigateTo({
       url: '../address/address?type=order'
@@ -136,47 +111,40 @@ Page({
       url: '../productDetail/productDetail?productId=' + id
     })
   },
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function (res) {
-    return {
-      title: '',
-      path: `pages/start/start?addressId=${this.data.address[0].id}&chooseId=${this.data.chooseId}&account_id=${this.data.account_id}&redirecturi=shareOrder`,
-      success: (res) => {
-        console.log("转发成功", res);
-        wx.switchTab({
-          url: '../index/index',
-        })
-      },
-      fail: (res) => {
-        console.log("转发失败", res);
-      }
-    }
-  },
+ 
   payAction: function (e) {
     let self = this;
+    let dataAddress = self.data.address;
+    let formId = e.detail.formId;
+    if (dataAddress.length === 0){
+      wx.showToast({
+        title: '请先选择收货人',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
     wx.showLoading({
       title: '正在提交',
       mask: true
     });
     let subForm = e.detail.value;
     let productList = self.data.productList;
-    let allPrice = self.data.allPrice;
+    let allPrice = toFix(self.data.allPrice);
     let chooseId = self.data.chooseId;
     let account_id = self.data.account_id;
     let address = {
-      collect_name: subForm.collect_name,
-      phone: subForm.phone,
-      address: subForm.address,
-      addressId: self.data.addressId
+      collect_name: dataAddress[0].collect_name,
+      phone: dataAddress[0].phone,
+      address: dataAddress[0].address,
+      addressId: dataAddress[0].id
     }
     let params = { allPrice, chooseId, account_id, productList, ...address };
     api.post(`program/order`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
         console.log(data);
-        const { timeStamp, nonceStr, paySign} = data;
+        const { timeStamp, nonceStr, paySign, orderNumber} = data;
         wx.requestPayment({
           timeStamp: timeStamp,
           nonceStr: nonceStr,
@@ -184,10 +152,31 @@ Page({
           signType: 'MD5',
           paySign: paySign,
           success(res) {
-             console.log('success')
+            //下单成功
+            params = { orderNumber, allPrice, formId };
+            params.address = dataAddress[0].address;
+            api.post(`program/order/pay`, params).then(res => {
+              const { data, status } = res;
+              if (status === 200) {
+                wx.hideLoading();
+                wx.redirectTo({
+                  url: '../allorder/allorder?type=2'
+                })
+              }
+            });
            },
           fail(res) { 
-            console.log(res)
+            wx.hideLoading();
+            wx.showToast({
+              title: '支付失败',
+              icon: 'none',
+              duration: 3000,
+              success:function(){
+                wx.redirectTo({
+                  url: '../allorder/allorder?type=1'
+                })
+              }
+            })
           }
         })
       }

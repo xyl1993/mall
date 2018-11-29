@@ -9,6 +9,7 @@ const controller = require('./order.controller');
 
 program.post('/order',appVerifyToken,controller.insertOrder);
 program.post('/order/pay',appVerifyToken,controller.payOrder);
+program.post('/order/payAction',appVerifyToken,controller.payAction);
 
 
 program.get('/order',appVerifyToken,controller.getProgramOrderList);

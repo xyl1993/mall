@@ -14,6 +14,15 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const toFix =(value) =>{
+  if (value) {
+    return Number(value).toFixed(2);
+  } else {
+    return ''
+  }
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  toFix: toFix
 }

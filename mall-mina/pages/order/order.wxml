@@ -1,5 +1,5 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
-<view class='mainer'>
+<form class='mainer' bindsubmit="payAction"  report-submit='true'>
   <view class='cointer'>
     <view class='address' wx:if="{{address.length>0}}" data-id="{{address[0].id}}" bindtap='tabAddress'>
       <view class='collect_name clear'>
@@ -38,8 +38,8 @@
       <view class='sum'>合计 ￥{{ filters.toFix(allPrice) }}</view>
       <view class='other'>含运费</view>
     </view>
-    <form bindsubmit="payAction"  report-submit='true'>
+    <view>
       <button class='sure-brn' form-type="submit">立即支付</button>
-    </form>
+    </view>
   </view>
-</view>
+</form>

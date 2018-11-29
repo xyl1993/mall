@@ -28,7 +28,6 @@ Page({
   },
 
   onLoad: function (options) {
-    
     this.setData({ account_id: options.account_id });
     if (options.chooseId) {
       this.setData({ chooseId: options.chooseId });

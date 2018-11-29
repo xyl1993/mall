@@ -1,6 +1,5 @@
 var filters = {
   toFix: function(value) {
-    console.log(value)
     if (value){
       return Number(value).toFixed(2);
     }else{

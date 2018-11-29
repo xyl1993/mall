@@ -4,6 +4,7 @@ import {
   Config
 } from '../../config/index.js';
 import { ButtonClicked } from '../../utils/esUtils.js'
+import { toFix } from '../../utils/util.js';
 const sumPrice = function (item) {
   let allPrice = 0;
   item.map((item, index) => {
@@ -73,6 +74,50 @@ Page({
         }
       });
     }
+  },
+  payAction: function (e) {
+    let self = this;
+    let orderNumber = this.data.order_number;
+    let allPrice = toFix(self.data.orderInfo.should_price);
+    let formId = e.detail.formId;
+    let address = this.data.orderInfo.address;
+    wx.showLoading({
+      title: '正在提交',
+      mask: true
+    });
+    let params = { orderNumber, allPrice, formId, address};
+    api.post(`program/order/payAction`, params).then(res => {
+      const { data, status } = res;
+      if (status === 200) {
+        const { timeStamp, nonceStr, paySign } = data;
+        wx.requestPayment({
+          timeStamp: timeStamp,
+          nonceStr: nonceStr,
+          package: data.package,
+          signType: 'MD5',
+          paySign: paySign,
+          success(res) {
+            api.post(`program/order/pay`, params).then(res => {
+              const { data, status } = res;
+              if (status === 200) {
+                wx.hideLoading();
+                wx.redirectTo({
+                  url: '../allorder/allorder?type=2'
+                })
+              }
+            });
+          },
+          fail(res) {
+            wx.hideLoading();
+            wx.showToast({
+              title: '支付失败',
+              icon: 'none',
+              duration: 3000,
+            })
+          }
+        })
+      }
+    });
   },
 })
 

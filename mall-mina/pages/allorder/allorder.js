@@ -68,6 +68,7 @@ Page({
     if (options.type) this.setData({ type: options.type });
     
     let is_admin = wx.getStorageSync('is_admin');
+    console.log('is_admin' + is_admin);
     let mall_user = wx.getStorageSync('mall_user');
     this.setData({
       openid: mall_user.openid,
