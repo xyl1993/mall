@@ -10,5 +10,6 @@ admin.post('/uploadDisk',verifyToken, controller.uploadDisk);   //上传文件�
 
 router.use('/admin', admin);
 
+
 router.use('/', web); 
 module.exports = router;

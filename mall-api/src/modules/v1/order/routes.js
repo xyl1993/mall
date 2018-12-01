@@ -6,6 +6,7 @@ const admin = express.Router();
 const web = express.Router();
 const program = express.Router();
 const controller = require('./order.controller');
+const wxpayController = require('./wxpay.controller');
 
 program.post('/order',appVerifyToken,controller.insertOrder);
 program.post('/order/pay',appVerifyToken,controller.payOrder);
@@ -25,6 +26,10 @@ program.delete('/order/:order_number',appVerifyToken,controller.deleteOrder);
 admin.get('/order',verifyToken,controller.getOrderList);
 admin.get('/pay/record',verifyToken,controller.getPayRecord);
 web.get('/order/:order_number',controller.getOrderDetail);
+
+
+web.get('/wxpay/pay', wxpayController.payAction); 
+
 
 
 router.use('/admin', admin); 
