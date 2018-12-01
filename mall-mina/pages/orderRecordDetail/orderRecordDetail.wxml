@@ -1,15 +1,24 @@
 <wxs module="filters" src="../../utils/filter.wxs"></wxs>
 <view class='mainer'>
   <view class='{{status=="deliver"?"":"cointer"}}'>
+    <view class='list-item'>
+      <view class='top-cointer'>
+        <image class='top-img' src='../../resources/imgs/logo.png'></image>
+        <view class='top-main'>
+          <view class='title'>{{ filters.collectDetailName(orderInfo.collect_status,orderInfo.pay_status) }}</view>
+          <view class='remark'>{{filters.collectDetailRemark(orderInfo.collect_status,orderInfo.pay_status) }}</view>
+        </view>
+      </view>
+    </view>
     <view class='address'>
       <view class='collect_name clear'>
         <view>收货人: {{orderInfo.collect_name}}</view>
         <view>{{orderInfo.phone}}</view>
       </view>
-      <view>收货地址: {{orderInfo.address}}</view>
+      <view class='address-item'>收货地址: {{orderInfo.address}}</view>
     </view>
     <view class='product-list'>
-      <view class='view-list' wx:for="{{orderInfo.productInfo}}" wx:key="idx" wx:for-item="item" wx:for-index="idx"  data-id="{{item.product_id}}" bindtap='toDetail'>
+      <view class='view-list' wx:for="{{orderInfo.productInfo}}" wx:key="idx" wx:for-item="item" wx:for-index="idx" data-id="{{item.product_id}}" bindtap='toDetail'>
         <view class='list-cointer'>
           <view class='list-main'>
             <view class='img-cointer'>
@@ -17,7 +26,7 @@
             </view>
             <view class='product-view'>
               <view class='title'>{{item.title}}</view>
-              <view class='title'>{{item.specifications_name}}</view>
+              <view class='guige'>{{item.specifications_name}}</view>
               <view class='price-view'>
                 <text class='price'>￥{{item.price}}</text>
                 <text>X {{item.number}}</text>
@@ -38,7 +47,7 @@
       </view>
     </view>
   </view>
-  <form  wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit" report-submit="true">
+  <form wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit" report-submit="true">
     <view class='input-list'>
       <view class='input-dyn'>
         <label>物流名称</label>

@@ -66,6 +66,11 @@
   color: #fff;
   border: 1rpx solid #FFCC00;
 }
+.red{
+  background:#CC99FF;
+  color:#330066;
+  border:1rpx solid #CC99FF;
+}
 .default{
   border: 1rpx solid #333;
 }

@@ -77,6 +77,7 @@ Page({
     
   },
   onShow:function(){
+    console.log(1);
     getProgramOrderList(this);
   },
   //删除订单
@@ -130,6 +131,27 @@ Page({
     wx.navigateTo({
       url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&status=pay`
     })
+  },
+  //取消订单
+  cancelOrder:function(e){
+    const order_number = e.currentTarget.dataset.order_number;
+    let self = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认取消吗？',
+      success(res) {
+        if (res.confirm) {
+          api.put(`program/order/${order_number}/cancel`).then(res => {
+            let { data, status } = res;
+            if (status === 200) {
+              getProgramOrderList(self);
+            }
+          });
+        } else if (res.cancel) {
+        }
+      }
+    })
+    
   },
   choseType:function(e){
     let _this = this;

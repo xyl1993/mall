@@ -159,17 +159,17 @@ Page({
         }
       }
     });
-    if (chooseId){
-      const form = {
-        form_id: e.detail.formId,
-        type:'01',
-      }
-      api.post(`program/tpl`, form).then(res => {
-      });
-      wx.navigateTo({
-        url: `../order/order?chooseId=${chooseId}`
-      })
+    const form = {
+      form_id: e.detail.formId,
+      type:'01',
     }
+    api.post(`program/tpl`, form).then(res => {
+      if (chooseId){
+        wx.navigateTo({
+          url: `../order/order?chooseId=${chooseId}`
+        })
+      }
+    });
   },
   toDetail: function (e) {
     const id = e.currentTarget.dataset.id;

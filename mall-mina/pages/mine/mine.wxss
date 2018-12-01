@@ -1,36 +1,42 @@
 /* pages/mine/mine.wxss */
-.top_bac{
-  background: #F1EDEC;
+
+.top_bac {
+  background: #f1edec;
   height: 300rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.circle{
+
+.circle {
   border: 5rpx solid #fff;
   width: 120rpx;
   height: 120rpx;
   border-radius: 50%;
   overflow: hidden;
-  margin-top: 60rpx
+  margin-top: 60rpx;
 }
-.userinfo_nickname{
+
+.userinfo_nickname {
   margin-top: 40rpx;
   color: #000;
   font-size: 30rpx;
 }
-.header_item{
+
+.header_item {
   background: #fff;
   padding: 20rpx 20rpx;
   font-size: 27rpx;
   color: #666;
   border-bottom: 1rpx solid #ddd;
 }
-.content{
+
+.content {
   margin-bottom: 30rpx;
   background: #fff;
 }
-.header_item .title{
+
+.header_item .title {
   float: left;
   display: flex;
   flex-direction: row;
@@ -38,6 +44,7 @@
   text-align: left;
   height: 32rpx;
 }
+
 .header_item .more {
   float: right;
   display: flex;
@@ -47,37 +54,56 @@
   font-size: 24rpx;
   height: 32rpx;
 }
-.icon_right{
+
+.icon_right {
   width: 15rpx;
   height: 20rpx;
   padding-left: 8rpx;
 }
-.auth-btn{
+
+.auth-btn {
   font-size: 24rpx;
   height: 60rpx;
   line-height: 60rpx;
   color: #666;
   margin-top: -10rpx;
 }
-.util-item{
+
+.util-item {
   width: 25%;
   float: left;
   display: flex;
   height: 140rpx;
   flex-direction: column;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   font-size: 26rpx;
   color: #666;
   padding: 10rpx 0;
   position: relative;
 }
-.util-item image{
+
+.info-count {
+  position: absolute;
+  color: #fff;
+  width: 34rpx;
+  font-size: 20rpx;
+  height: 34rpx;
+  line-height: 34rpx;
+  text-align: center;
+  background: #FF9966;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: 12rpx;
+  top: 19rpx;
+}
+
+.util-item image {
   width: 70rpx;
   height: 70rpx;
-  
 }
-.contact-btn{
+
+.contact-btn {
   position: absolute;
   top: 0;
   left: 0;

@@ -22,7 +22,7 @@
       <view class='view-list' data-order_number = "{{item.order_number}}" bindtap='toOrderDetail'>
         <view class='list-cointer'>
           <view class='order-title'>订单编号: {{item.order_number}}
-            <text class="{{ filters.collectClass(item.collect_status) }}">{{ filters.collectName(item.collect_status) }}</text>
+            <text class="{{ filters.collectClass(item.collect_status,item.pay_status) }}">{{ filters.collectName(item.collect_status,item.pay_status) }}</text>
           </view>
           <view class='list-main' >
             <image class='img-cointer' wx:for="{{item.cover}}" wx:key="i" wx:for-item="img" wx:for-index="i" src='{{fileIp+img}}'></image>
@@ -37,6 +37,7 @@
       </view>
       <view class='option-list' wx-if="{{ item.pay_status == 1 && item.isSelf}}">
         <view class='btn error'  data-order_number = "{{item.order_number}}" bindtap='payGoods' wx-if="{{item.pay_status === 1}}">点击付款</view>
+         <view class='btn red'  data-order_number = "{{item.order_number}}" bindtap='cancelOrder' wx-if="{{item.pay_status === 1}}">取消订单</view>
       </view>
       <view class='option-list' wx-if="{{item.collect_status == 2 && item.isSelf}}">
         <view class='btn error' data-order_number = "{{item.order_number}}" bindtap='collectGoods' wx-if="{{item.collect_status == 2}}">确认收货</view>

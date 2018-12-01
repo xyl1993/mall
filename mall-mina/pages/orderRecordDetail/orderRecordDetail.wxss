@@ -3,15 +3,44 @@
 .mainer{
   padding-bottom: 100rpx;
 }
+.top-cointer{
+  position: relative;
+}
+.top-img{
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.top-main{
+  padding-left: 95rpx;
+  height: 80rpx;
+}
+.top-main .title{
+  color:#333;
+  font-weight:600;
+}
+.top-main .remark{
+  font-size:20rpx;
+  padding-top:4rpx;
+}
 .cointer{
   margin-bottom: 30rpx;
 }
 .address{
-  padding: 28rpx 25rpx;
+  padding: 15rpx 25rpx;
+  color: #666;
+  font-size: 30rpx;
+  background: #fff;
+  margin-bottom:15rpx;
+}
+.list-item{
+  padding: 15rpx 25rpx;
   color: #333;
   font-size: 30rpx;
   background: #fff;
-  margin-bottom: 30rpx;
+  margin-bottom:15rpx;
 }
 .ad-address{
   display: flex;
@@ -20,8 +49,12 @@
   width: 50%;
   float: left;
   padding-bottom: 10rpx;
+  color: #333;
+  font-weight: 600;
 }
-
+.address-item{
+  font-size: 24rpx;
+}
 .view-list {
   background: #fff;
   border-top: 1rpx solid #ddd;
@@ -38,7 +71,7 @@
 }
 .list-main{
   flex: 1;
-  height: 160rpx;
+  height: 140rpx;
   display: flex;
   align-items: center;
 }
@@ -62,11 +95,16 @@
   padding-right: 25rpx;
 }
 .product-view .title{
-  color: #333;
+  color: #666;
   font-size: 32rpx;
 }
+.product-view .guige{
+  color: #333;
+  font-size: 26rpx;
+  margin-top: -9rpx;
+}
 .price-view{
-  font-size: 30rpx;
+  font-size: 26rpx;
   display: flex;
   justify-content: space-between;
 }

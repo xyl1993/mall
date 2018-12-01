@@ -6,10 +6,10 @@ var filters = {
       return ''
     }
   },
-  collectName: function(value) {
-    switch (value){
+  collectName: function (collect_status,pay_status) {
+    switch (collect_status){
       case 1:
-        return '待发货';
+        return pay_status === 1 ? '待付款' :'待发货';
         break;
       case 2:
         return '待收货';
@@ -20,14 +20,41 @@ var filters = {
       default:return '';break;
     }
   },
-  collectClass: function(value) {
-    console.log(value)
-    switch (value){
+  collectDetailName: function (collect_status, pay_status) {
+    switch (collect_status) {
       case 1:
-        return 'blue';
+        return pay_status === 1 ? '等待买家付款' : '等待卖家发货';
         break;
       case 2:
-        return 'warning';
+        return '商品已发货';
+        break;
+      case 3:
+        return '商品已确认收货';
+        break;
+      default: return ''; break;
+    }
+  },
+  collectDetailRemark: function (collect_status, pay_status) {
+    switch (collect_status) {
+      case 1:
+        return pay_status === 1 ? '还剩7天自动取消订单' : '卖家正在处理';
+        break;
+      case 2:
+        return '还剩7天自动确认收货';
+        break;
+      case 3:
+        return '交易完成';
+        break;
+      default: return ''; break;
+    }
+  },
+  collectClass: function (collect_status, pay_status) {
+    switch (collect_status){
+      case 1:
+        return pay_status === 1 ? 'warning' :'blue';
+        break;
+      case 2:
+        return 'blue';
         break;
       case 3:
         return 'success';
@@ -39,5 +66,7 @@ var filters = {
 module.exports = {
   toFix: filters.toFix,
   collectName:filters.collectName,
-  collectClass:filters.collectClass
+  collectClass:filters.collectClass,
+  collectDetailName: filters.collectDetailName,
+  collectDetailRemark: filters.collectDetailRemark
 }

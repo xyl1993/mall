@@ -53,6 +53,7 @@ Page({
     })
   },
   formSubmit: function (e) {
+    console.log(123);
     ButtonClicked(this, e);
     let subForm = e.detail.value;
     let formData = this.data.formData;

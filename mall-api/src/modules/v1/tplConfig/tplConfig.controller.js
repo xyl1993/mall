@@ -78,5 +78,6 @@ const payAction = async (req, res, next)=> {
 module.exports = {
   insertTpl,
   updateUsed,
-  payAction
+  payAction,
+  insertTplConfig
 };

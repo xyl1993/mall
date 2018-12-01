@@ -113,6 +113,7 @@ Page({
   },
  
   payAction: function (e) {
+    ButtonClicked(this, e);
     let self = this;
     let dataAddress = self.data.address;
     let formId = e.detail.formId;

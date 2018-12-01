@@ -10,6 +10,8 @@ const controller = require('./order.controller');
 program.post('/order',appVerifyToken,controller.insertOrder);
 program.post('/order/pay',appVerifyToken,controller.payOrder);
 program.post('/order/payAction',appVerifyToken,controller.payAction);
+program.put('/order/:order_number/cancel',appVerifyToken,controller.cancelOrder);
+program.get('/order/allInfo',appVerifyToken,controller.getAllOrderInfo);
 
 
 program.get('/order',appVerifyToken,controller.getProgramOrderList);

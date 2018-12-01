@@ -20,14 +20,17 @@
     <view class='util-item' data-type='1' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/dfk.png' style='width:60rpx;height:60rpx;'></image>
       <view class='text'>待付款</view>
+      <view class='info-count' wx-if="{{minePayInfo.pendingPayment>0}}">{{minePayInfo.pendingPayment}}</view>
     </view>
     <view class='util-item' data-type='2' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/dfh.png' style='width:60rpx;height:60rpx;'></image>
       <view class='text'>待发货</view>
+      <view class='info-count' wx-if="{{minePayInfo.beShipped>0}}">{{minePayInfo.beShipped}}</view>
     </view>
     <view class='util-item' data-type='3' bindtap='handleOrderFun'>
       <image src='../../resources/imgs/dsh.png' style='width:60rpx;height:60rpx;'></image>
       <view class='text'>待收货</view>
+      <view class='info-count' wx-if="{{minePayInfo.beReceived>0}}">{{minePayInfo.beReceived}}</view>
     </view>
   </view>
   <view class='content clear'>

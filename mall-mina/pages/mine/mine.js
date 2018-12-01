@@ -7,7 +7,8 @@ Page({
     userInfo: {},
     isAdmin:0,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    authStatus:false
+    authStatus:false,
+    minePayInfo:{}
   },
   onLoad: function () {
     let _this = this;
@@ -50,6 +51,9 @@ Page({
       })
     }
   },
+  onShow: function () {
+    this.getAllOrderInfo();
+  },
   onGotUserInfo(e){
     if (e.detail.userInfo){
       this.setData({ authStatus: true });
@@ -76,6 +80,12 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  getAllOrderInfo(){
+    api.get(`program/order/allInfo`).then(res => {
+      let { data, status } = res;
+      this.setData({ minePayInfo:data})
+    });
   },
   handleFun(e){
     let authStatus = this.data.authStatus;

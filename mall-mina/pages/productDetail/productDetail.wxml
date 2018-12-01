@@ -99,7 +99,9 @@
             <view class='min-btn' bindtap='add'>+</view>
           </view>
         </view>
-        <a class='sure' bindtap='joinCarSure'>确定</a>
+        <form bindsubmit="joinCarSure"  report-submit='true'>
+          <button class='sure'  form-type="submit">确定</button>
+        </form>
       </view>
     </view>
   </view>

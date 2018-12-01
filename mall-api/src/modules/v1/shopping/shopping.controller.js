@@ -4,13 +4,13 @@ const {
 } = require('../../../utils/handleUtilFun');
 const log = require('log4js').getLogger("orderController");
 const mysql = require('mysql');
-
+const { insertTplConfig } = require("../tplConfig/tplConfig.controller");
 const pool = require('../../../utils/pool')
 
 
 const insertShopcar = async (req, res, next)=> {
   try {
-    const {product_id,specifications_id,number} = req.body;
+    const {product_id,specifications_id,number,fomrId} = req.body;
     const params = [
       req.account_id,
       product_id,
@@ -21,7 +21,9 @@ const insertShopcar = async (req, res, next)=> {
     let sql = `insert into goods_shopcar (account_id,product_id,specifications_id,number,create_time) values (?,?,?,?,?)`;
     sql = mysql.format(sql,params);
     const rows = await pool.query(sql);
-    res.status(status.OK).json(rows.insertId);
+    insertTplConfig(req, res, next).then((v) => {
+      res.status(status.OK).json(rows.insertId);
+    });
   } catch(err) {
     log.error(err);
     return handleError(res, err);

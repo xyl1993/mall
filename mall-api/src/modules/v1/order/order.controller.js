@@ -184,11 +184,11 @@ const getProgramOrderList = async (req, res, next)=> {
     _sql = _sql + ` and pay_status = 1`
   }else if(type ==2){
     //待发货
-    _sql = _sql + ` and collect_status = 1`
+    _sql = _sql + ` and pay_status = 2 and collect_status = 1`
   }
   else if(type ==3){
     //待收货
-    _sql = _sql + ` and collect_status = 2`
+    _sql = _sql + ` and pay_status = 2 and collect_status = 2`
   }
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
@@ -459,6 +459,49 @@ const getPayRecord =  async (req, res, next)=> {
   }
 };
 
+//取消订单
+const cancelOrder =  async (req, res, next)=> {
+  const {order_number} = req.params;
+  try {
+    let sql =  `update account_order set order_status = 0 where order_number = ?`;
+    let params = [order_number];
+    sql = mysql.format(sql,params);
+    log.info(sql);
+    await pool.query(sql);
+    res.status(status.OK).json(order_number);
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
+//查询与我相关的订单信息
+const getAllOrderInfo =  async (req, res, next)=> {
+  try {
+    const { account_id } = req;
+    //查询待支付的订单数
+    let sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 1) a`;
+    let params = [account_id];
+    sql = mysql.format(sql,params);
+    let rows = await pool.query(sql);
+    let pendingPayment = rows[0].count;
+    //待发货
+    sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 2 and collect_status = 1) a`;
+    sql = mysql.format(sql,params);
+    rows = await pool.query(sql);
+    let beShipped = rows[0].count;
+    //待收货
+    sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 2 and collect_status = 2) a`;
+    sql = mysql.format(sql,params);
+    rows = await pool.query(sql);
+    let beReceived = rows[0].count;
+    res.status(status.OK).json({pendingPayment,beShipped,beReceived});
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+};
+
 module.exports = {
   getOrderList,
   insertOrder,
@@ -469,5 +512,7 @@ module.exports = {
   deliverGoods,
   payOrder,
   getPayRecord,
-  payAction
+  payAction,
+  cancelOrder,
+  getAllOrderInfo
 };

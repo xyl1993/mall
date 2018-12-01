@@ -143,7 +143,9 @@ Page({
   },
   joinCarSure(e){
     ButtonClicked(this, e);
+    let form_id = e.detail.formId;
     const params = this.data.buyCar;
+    params.form_id = form_id;
     api.post("program/shopcar",params).then(res => {
       let { data, status } = res;
       if (status === 200) {
