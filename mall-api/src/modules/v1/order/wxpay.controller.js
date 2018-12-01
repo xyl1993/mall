@@ -12,6 +12,7 @@ const moment = require('moment');
 
 const payAction = function (req, res, next) {
   log.info(req);
+  return res.status(status.OK).json({});
 };
 
 module.exports = {
