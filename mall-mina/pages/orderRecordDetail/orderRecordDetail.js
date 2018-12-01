@@ -77,16 +77,23 @@ Page({
     }
   },
   payAction: function (e) {
+    ButtonClicked(this, e);
     let self = this;
     let orderNumber = this.data.order_number;
     let allPrice = toFix(self.data.orderInfo.should_price);
+    let productInfo = self.data.orderInfo.productInfo;
+    let productInfoArr = [];
+    for (let item of productInfo){
+      productInfoArr.push(item.title + '-' + item.specifications_name);
+    }
+    productInfo = productInfoArr.join();
     let formId = e.detail.formId;
     let address = this.data.orderInfo.address;
     wx.showLoading({
       title: '正在提交',
       mask: true
     });
-    let params = { orderNumber, allPrice, formId, address};
+    let params = { orderNumber, allPrice, formId, address, productInfo};
     api.post(`program/order/payAction`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
@@ -117,6 +124,8 @@ Page({
             })
           }
         })
+      }else{
+        wx.hideLoading();
       }
     });
   },

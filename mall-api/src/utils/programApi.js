@@ -79,7 +79,7 @@ const sendMessage = function (access_token,body) {
  * @param {*} orderNumber 订单编号
  * @param {*} allPrice 总价
  */
-const payAction = function (req,openid,orderNumber,allPrice) {
+const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
   const appId = config.AppID;
   // 商户号
   const mchId = config.mchId;
@@ -90,9 +90,9 @@ const payAction = function (req,openid,orderNumber,allPrice) {
   // 一个随机字符串
   const nonceStr = getNonceStr();
   // 生成商家内部自定义的订单号, 商家内部的系统用的, 不用 attach 加入也是可以的
-  const tradeId = orderNumber;
+  const tradeId = getTradeId(attach);
   //商品信息
-  const productIntro = "test";   
+  const productInfo = proddinfo;   
   //付款成功返回url
   const notifyUrl = config.notifyUrl;
   const price = allPrice * 100;    //这里要转为分
@@ -100,10 +100,12 @@ const payAction = function (req,openid,orderNumber,allPrice) {
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
   // 生成签名
-  const sign = getPrePaySign(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openid, tradeId, ip, price,PAY_API_KEY);
-  console.log(sign);
+  const sign = getPrePaySign(appId, attach, productInfo, mchId, nonceStr, notifyUrl, openid, tradeId, ip, price,PAY_API_KEY);
+  console.log("sign");
   //将微信需要的数据拼成 xml 发送出去
-  const sendData = wxSendData(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openid, tradeId, ip, price, sign)
+  const sendData = wxSendData(appId, attach, productInfo, mchId, nonceStr, notifyUrl, openid, tradeId, ip, price, sign);
+  console.log("sendData");
+  console.log(sendData);
   return new Promise((resolve,reject)=>{
     axios({
       method:'post',
@@ -111,6 +113,7 @@ const payAction = function (req,openid,orderNumber,allPrice) {
       url:getPayUri(),
     })
     .then((response)=> {
+      console.log(response);
       const data = response.data;
       // 微信返回的数据也是 xml, 使用 xmlParser 将它转换成 js 的对象
       xmlParser.parseString(data, (err, success) => {
@@ -157,10 +160,10 @@ function getTradeId(attach) {
   return tradeId
 }
 
-function getPrePaySign(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price,PAY_API_KEY) {
+function getPrePaySign(appId, attach, productInfo, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price,PAY_API_KEY) {
   var stringA = 'appid=' + appId +
     '&attach=' + attach +
-    '&body=' + productIntro +
+    '&body=' + productInfo +
     '&mch_id=' + mchId +
     '&nonce_str=' + nonceStr +
     '&notify_url=' + notifyUrl +
@@ -174,11 +177,11 @@ function getPrePaySign(appId, attach, productIntro, mchId, nonceStr, notifyUrl, 
   return sign
 }
 
-function wxSendData(appId, attach, productIntro, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price, sign) {
+function wxSendData(appId, attach, productInfo, mchId, nonceStr, notifyUrl, openId, tradeId, ip, price, sign) {
   const sendData = '<xml>' +
     '<appid>' + appId + '</appid>' +
     '<attach>' + attach + '</attach>' +
-    '<body>' + productIntro + '</body>' +
+    '<body>' + productInfo + '</body>' +
     '<mch_id>' + mchId + '</mch_id>' +
     '<nonce_str>' + nonceStr + '</nonce_str>' +
     '<notify_url>' + notifyUrl + '</notify_url>' +

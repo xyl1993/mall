@@ -66,7 +66,7 @@ const spitStockSql = async(num,id)=>{
  */
 const insertOrder = async (req, res, next)=> {
   const { openid } = req;
-  const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id,account_id} = req.body;
+  const {allPrice,collect_name,address,phone,productList,chooseId,addressId,form_id,account_id,productInfo} = req.body;
 
   // const {specifications_name,number,price} = productList;
   try {
@@ -123,9 +123,8 @@ const insertOrder = async (req, res, next)=> {
     let addressParam = [collect_name,address,phone,addressId];
     _sql = mysql.format(_sql,addressParam);
     await pool.query(_sql);
-
     //获取支付签名
-    programApi.payAction(req,openid,orderNumberRows,allPrice).then((payParamsObj)=>{
+    programApi.payAction(req,openid,orderNumberRows,allPrice,productInfo).then((payParamsObj)=>{
       const { code,data } = payParamsObj;
       if(code===status.OK){
         const resultData = programApi.getPayParams(data.prepayId,data.tradeId);
@@ -355,10 +354,11 @@ const deliverGoods =  async (req, res, next)=> {
  */
 const payAction = async (req, res, next)=> {
   try {
-    const { orderNumber,allPrice } = req.body; 
+    const { orderNumber,allPrice,productInfo } = req.body; 
+    console.log(productInfo);
     const { openid } = req;
     //获取支付签名
-    programApi.payAction(req,openid,orderNumber,allPrice).then((payParamsObj)=>{
+    programApi.payAction(req,openid,orderNumber,allPrice,productInfo).then((payParamsObj)=>{
       const { code,data } = payParamsObj;
       if(code===status.OK){
         const resultData = programApi.getPayParams(data.prepayId,data.tradeId);

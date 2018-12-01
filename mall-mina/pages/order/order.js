@@ -134,13 +134,20 @@ Page({
     let allPrice = toFix(self.data.allPrice);
     let chooseId = self.data.chooseId;
     let account_id = self.data.account_id;
+
+    let productInfoArr = [];
+    for (let item of productList) {
+      productInfoArr.push(item.title + '-' + item.name);
+    }
+    let productInfo = productInfoArr.join();
+
     let address = {
       collect_name: dataAddress[0].collect_name,
       phone: dataAddress[0].phone,
       address: dataAddress[0].address,
       addressId: dataAddress[0].id
     }
-    let params = { allPrice, chooseId, account_id, productList, ...address };
+    let params = { allPrice, chooseId, account_id, productList, productInfo, ...address };
     api.post(`program/order`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
