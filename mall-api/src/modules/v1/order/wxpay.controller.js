@@ -11,6 +11,7 @@ const updateUsed = require('../tplConfig/tplConfig.controller').updateUsed;
 const moment = require('moment');
 
 const payAction = function (req, res, next) {
+  log.info("请求进来了");
   log.info(req);
   return res.status(status.OK).json({});
 };
