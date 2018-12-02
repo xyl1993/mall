@@ -7,7 +7,7 @@ const axios = require('axios');
 var accessTokenJson = require('../config/data/access_token');
 const {getAccessTokenUri,sendMessageUri,getPayUri} = require('../config/programApi');
 const fs = require('fs');
-
+const log = require('log4js').getLogger("programApiLog");
 const md5 = require('blueimp-md5')
 const xml2js = require('xml2js')
 const xmlParser = new xml2js.Parser()
@@ -98,6 +98,8 @@ const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
   const price = allPrice * 100;    //这里要转为分
   // 这里是在 express 获取用户的 ip, 因为使用了 nginx 的反向代理, 所以这样获取
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  log.info(`ip为：${ip}`);
+  console.log(ip)
   ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
   // 生成签名
   const sign = getPrePaySign(appId, attach, productInfo, mchId, nonceStr, notifyUrl, openid, tradeId, ip, price,PAY_API_KEY);
