@@ -28,7 +28,7 @@ admin.get('/pay/record',verifyToken,controller.getPayRecord);
 web.get('/order/:order_number',controller.getOrderDetail);
 
 
-web.get('/wxpay/pay', wxpayController.payAction); 
+web.post('/wxpay/pay', wxpayController.payAction); 
 
 
 
