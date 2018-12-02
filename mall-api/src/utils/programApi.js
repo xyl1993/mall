@@ -97,7 +97,7 @@ const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
   const notifyUrl = config.notifyUrl;
   const price = allPrice * 100;    //这里要转为分
   // 这里是在 express 获取用户的 ip, 因为使用了 nginx 的反向代理, 所以这样获取
-  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  let ip = config.spbill_create_ip;
   log.info(`ip为：${ip}`);
   console.log(ip)
   ip = ip.match(/\d+\.\d+\.\d+\.\d+/)[0];

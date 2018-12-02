@@ -9,7 +9,7 @@ const config = {
   PAY_API_KEY_SECRET:'Wj@870918',   //密钥密码   Wj870918!   登陆密码
   mchId:'1519655421',  //商户号
   AppjwtEncryption: 'suvarn',
-  notifyUrl:'https://billionsen.cn/mall/api/v1/wxpay/pay',   //付款成功给html推送消息
+  notifyUrl:'http://billionsen.cn/mall/api/v1/wxpay/pay',   //付款成功给html推送消息
   //微信模板id组
   programTemplate: {
     //消息模板id
