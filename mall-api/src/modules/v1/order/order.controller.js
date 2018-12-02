@@ -175,17 +175,21 @@ const getProgramOrderList = async (req, res, next)=> {
                     a.order_number
                 ) a 
               where order_status = 1`;
-  if(isAdmin === 0){
-    _sql = _sql + ` and account_id = ${account_id}`;
-  }
+
   if(type ==1){
     //带付款
+    _sql = _sql + ` and account_id = ${account_id}`;
     _sql = _sql + ` and pay_status = 1`
   }else if(type ==2){
+    if(isAdmin === 0){
+      _sql = _sql + ` and account_id = ${account_id}`;
+    }
+    //管理员能看到所有订单
     //待发货
     _sql = _sql + ` and pay_status = 2 and collect_status = 1`
   }
   else if(type ==3){
+    _sql = _sql + ` and account_id = ${account_id}`;
     //待收货
     _sql = _sql + ` and pay_status = 2 and collect_status = 2`
   }

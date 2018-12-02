@@ -195,8 +195,10 @@ Page({
   },
   toOrderDetail:function(e){
     let order_number = e.currentTarget.dataset.order_number;
+    let collect_status = e.currentTarget.dataset.collect_status;
+    let pay_status = e.currentTarget.dataset.pay_status;
     wx.navigateTo({
-      url: '../orderRecordDetail/orderRecordDetail?order_number=' + order_number
+      url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&collect_status=${collect_status}&pay_status=${pay_status}`
     })
   }
 })

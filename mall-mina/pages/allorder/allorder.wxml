@@ -19,7 +19,7 @@
   </view>
   <view class='cointer'>
     <view class='order-list' wx:for="{{orderList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
-      <view class='view-list' data-order_number = "{{item.order_number}}" bindtap='toOrderDetail'>
+      <view class='view-list' data-collect_status="{{item.collect_status}}" data-pay_status="{{item.pay_status}}"  data-order_number = "{{item.order_number}}" bindtap='toOrderDetail'>
         <view class='list-cointer'>
           <view class='order-title'>订单编号: {{item.order_number}}
             <text class="{{ filters.collectClass(item.collect_status,item.pay_status) }}">{{ filters.collectName(item.collect_status,item.pay_status) }}</text>

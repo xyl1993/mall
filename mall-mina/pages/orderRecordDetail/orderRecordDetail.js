@@ -29,10 +29,8 @@ Page({
   },
 
   onLoad: function (options) {
-    if (options.order_number) {
-      this.setData({ order_number: options.order_number });
-      this.getOrderDetail(options.order_number);
-    };
+    this.setData({ order_number: options.order_number, collect_status: options.collect_status, pay_status: options.pay_status });
+    this.getOrderDetail(options.order_number);
     if (options.status){
       this.setData({ status: options.status });
     }
