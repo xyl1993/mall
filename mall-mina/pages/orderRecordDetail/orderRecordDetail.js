@@ -97,7 +97,8 @@ Page({
     api.post(`program/order/payAction`, params).then(res => {
       const { data, status } = res;
       if (status === 200) {
-        const { timeStamp, nonceStr, paySign } = data;
+        const { timeStamp, nonceStr, paySign, tradeId } = data;
+        params.tradeId = tradeId;
         wx.requestPayment({
           timeStamp: timeStamp,
           nonceStr: nonceStr,

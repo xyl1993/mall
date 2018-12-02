@@ -376,27 +376,25 @@ const payAction = async (req, res, next)=> {
 }
 
 /**
- * 支付(待处理)
+ * 支付
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
  */
 const payOrder = async (req, res, next)=> {
   try {
-    const { orderNumber,allPrice,formId,address } = req.body;  
+    const { orderNumber,allPrice,formId,address,tradeId } = req.body;  
     const { openid } = req;
     const payTime = new Date();
-    let sql = `update account_order set pay_status = 2,pay_time = ?,pay_price=? where order_number = ?`;
-    let params = [payTime,allPrice,orderNumber];
+    let sql = `update account_order set pay_status = 2,pay_time = ?,pay_price=?,out_trade_no=? where order_number = ?`;
+    let params = [payTime,allPrice,tradeId,orderNumber];
     sql = mysql.format(sql,params);
     await pool.query(sql);
     //往支付记录表插入一条记录
     // sql =  `insert into pay_order_info(code,order_number,user_id,pay_money,status,create_time,order_request,order_result,pay_result) values(?,?,?,?,?,?,?,?,?)`;
 
     res.status(status.OK).json(orderNumber);
-    //假设支付成功
     //更新订单状态
-
     /*******************支付成功通知*************** */
     //获取accessToken
     programApi.getAccessToken().then((access_token)=>{

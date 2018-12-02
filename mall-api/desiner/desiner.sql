@@ -170,6 +170,7 @@ CREATE TABLE `account_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20)  DEFAULT NULL,   /*用户*/
   `order_number` varchar(50) DEFAULT NULL,   /*编号*/
+  `out_trade_no` varchar(50) DEFAULT NULL,   /*商户订单号 支付生成*/
   `pay_price` double DEFAULT NULL,   /*实际支付价格*/
   `should_price` double DEFAULT NULL,   /*应该支付价格*/
   `collect_name` varchar(30) DEFAULT NULL,      /*收货人*/

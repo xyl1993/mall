@@ -152,7 +152,8 @@ Page({
       const { data, status } = res;
       if (status === 200) {
         console.log(data);
-        const { timeStamp, nonceStr, paySign, orderNumber} = data;
+        //tradeId 为商户订单号 用于查询订单等一系列操作
+        const { timeStamp, nonceStr, paySign, orderNumber, tradeId} = data;
         wx.requestPayment({
           timeStamp: timeStamp,
           nonceStr: nonceStr,
@@ -161,7 +162,7 @@ Page({
           paySign: paySign,
           success(res) {
             //下单成功
-            params = { orderNumber, allPrice, formId };
+            params = { orderNumber, allPrice, formId, tradeId };
             params.address = dataAddress[0].address;
             api.post(`program/order/pay`, params).then(res => {
               const { data, status } = res;
