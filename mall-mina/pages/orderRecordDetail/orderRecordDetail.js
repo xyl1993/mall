@@ -29,7 +29,7 @@ Page({
   },
 
   onLoad: function (options) {
-    this.setData({ order_number: options.order_number, collect_status: options.collect_status, pay_status: options.pay_status });
+    this.setData({ order_number: options.order_number, collect_status: options.collect_status, pay_status: options.pay_status,isAdmin:options.isAdmin });
     this.getOrderDetail(options.order_number);
     if (options.status){
       this.setData({ status: options.status });
@@ -127,6 +127,31 @@ Page({
         wx.hideLoading();
       }
     });
+  },
+  //收货
+  collectGoods: function (e) {
+    const self = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认收货吗？',
+      success(res) {
+        if (res.confirm) {
+          let order_number = this.data.order_number;
+          api.put(`program/order/collect/${order_number}`).then(res => {
+            let {
+              data,
+              status
+            } = res;
+            if (status === 200) {
+              wx.redirectTo({
+                url: '../allorder/allorder?type=1'
+              })
+            }
+          });
+        } else if (res.cancel) {
+        }
+      }
+    })
   },
 })
 

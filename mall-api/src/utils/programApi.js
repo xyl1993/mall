@@ -5,7 +5,7 @@ const status = require('http-status');
 const config = require('../config/environment');
 const axios = require('axios');
 var accessTokenJson = require('../config/data/access_token');
-const {getAccessTokenUri,sendMessageUri,getPayUri} = require('../config/programApi');
+const {getAccessTokenUri,sendMessageUri,getPayUri,orderqueryUri} = require('../config/programApi');
 const fs = require('fs');
 const log = require('log4js').getLogger("programApiLog");
 const md5 = require('blueimp-md5')
@@ -141,6 +141,55 @@ const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
   })
 };
 
+/**
+ * 微信 查询订单
+ * @param {*} out_trade_no  商户订单号
+ */
+const orderquery = function (out_trade_no) {
+  const appId = config.AppID;
+  const timeStamp = new Date().getTime().toString();
+  // 商户号
+  const mchId = config.mchId;
+  // 一个随机字符串
+  const nonceStr = getNonceStr();
+  // 生成签名
+  const sign = getOrderquerySign(appId,mchId,nonceStr,out_trade_no,timeStamp);
+  console.log("sign");
+  //将微信需要的数据拼成 xml 发送出去
+  const sendData = wxSendOrderqueryData(appId,mchId,nonceStr,out_trade_no,sign);
+  return new Promise((resolve,reject)=>{
+    axios({
+      method:'post',
+      data:sendData,
+      url:orderqueryUri(),
+    })
+    .then((response)=> {
+      console.log(response);
+      const data = response.data;
+      // 微信返回的数据也是 xml, 使用 xmlParser 将它转换成 js 的对象
+      xmlParser.parseString(data, (err, success) => {
+        log.info(success);
+        if (err) {
+          log('parser xml error ', err);
+          resolve({code:status.INTERNAL_SERVER_ERROR,data:err});
+        } else {
+          if (success.xml.return_code[0] === 'SUCCESS') {
+            const prepayId = success.xml.prepay_id[0]
+            const payParamsObj = {prepayId,tradeId};
+            resolve({code:status.OK,data:payParamsObj});
+          } else {
+            resolve({code:status.INTERNAL_SERVER_ERROR,data:success.xml.return_msg[0]});
+          }
+        }
+      })
+    })
+    .catch((err)=>{
+      //将错误返回
+      reject(500)
+    })
+  })
+};
+
 
 // 预定义的一些工具函数
 function getNonceStr() {
@@ -214,6 +263,36 @@ function getPaySign(appId, timeStamp, nonceStr, package) {
 }
 
 /**
+ * 获取查询订单签名
+ * @param {*} out_trade_no 商户订单号 
+ */
+function getOrderquerySign(appId,mch_id,nonce_str,out_trade_no,timeStamp) {
+  var stringA = 'appid=' + appId +
+    '&mch_id=' + mch_id +
+    '&out_trade_no=' + out_trade_no+
+    '&nonce_str=' + nonce_str+
+    '&sign_type=MD5';
+  var stringSignTemp = stringA + '&key=' + config.PAY_API_KEY;
+  console.log(stringSignTemp);
+  var sign = md5(stringSignTemp).toUpperCase();
+  console.log(sign);
+  return sign
+}
+
+function wxSendOrderqueryData(appId, mchId, nonceStr,out_trade_no,sign) {
+  const sendData = '<xml>' +
+    '<appid>' + appId + '</appid>' +
+    '<mch_id>' + mchId + '</mch_id>' +
+    '<nonce_str>' + nonceStr + '</nonce_str>' +
+    '<out_trade_no>' + out_trade_no + '</out_trade_no>' +
+    '<sign>' + sign + '</sign>' +
+    '</xml>'
+  console.log(sendData);
+  return sendData
+}
+
+
+/**
  * 解析获取签名成功返回的数据
  * @param {*} prepayId 
  * @param {*} tradeId 
@@ -243,6 +322,7 @@ module.exports = {
   getAccessToken,
   sendMessage,
   payAction,
-  getPayParams
+  getPayParams,
+  orderquery
 };
 

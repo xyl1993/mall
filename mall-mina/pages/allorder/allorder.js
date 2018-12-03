@@ -197,8 +197,9 @@ Page({
     let order_number = e.currentTarget.dataset.order_number;
     let collect_status = e.currentTarget.dataset.collect_status;
     let pay_status = e.currentTarget.dataset.pay_status;
+    let isAdmin = this.data.isAdmin
     wx.navigateTo({
-      url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&collect_status=${collect_status}&pay_status=${pay_status}`
+      url: `../orderRecordDetail/orderRecordDetail?order_number=${order_number}&collect_status=${collect_status}&pay_status=${pay_status}&isAdmin=${isAdmin}`
     })
   }
 })

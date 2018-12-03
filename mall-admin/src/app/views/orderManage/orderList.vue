@@ -66,6 +66,11 @@
             <el-tag :type="scope.row.pay_status|tagFilter" disable-transitions>{{scope.row.pay_status|payStatusFilter}}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="pay_time" width="160" align="center" label="支付日期">
+          <template slot-scope="scope">
+            {{scope.row.pay_time|dateTimeFilter}}
+          </template>
+        </el-table-column>
         <el-table-column prop="collect_status" align="center" label="收货状态">
           <template slot-scope="scope">
             <el-tag :type="scope.row.collect_status|tagFilter" disable-transitions>{{scope.row.collect_status|collectStatusFilter}}</el-tag>

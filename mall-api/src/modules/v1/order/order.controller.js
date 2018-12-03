@@ -175,11 +175,18 @@ const getProgramOrderList = async (req, res, next)=> {
                     a.order_number
                 ) a 
               where order_status = 1`;
-
-  if(type ==1){
+  if(type ==0){
+    //全部订单
+    if(isAdmin === 0){
+      _sql = _sql + ` and ((account_id = ${account_id} and pay_status = 1) or (account_id = ${account_id}  and pay_status = 2 and collect_status = 2) or 
+    (pay_status = 2 and collect_status = 1 and account_id = ${account_id})) `;
+    }else{
+      _sql = _sql + ` and ((account_id = ${account_id} and pay_status = 1) or (account_id = ${account_id}  and pay_status = 2 and collect_status = 2) or 
+    (pay_status = 2 and collect_status = 1))`;
+    }
+  }else if(type ==1){
     //带付款
-    _sql = _sql + ` and account_id = ${account_id}`;
-    _sql = _sql + ` and pay_status = 1`
+    _sql = _sql + ` and account_id = ${account_id} and pay_status = 1`;
   }else if(type ==2){
     if(isAdmin === 0){
       _sql = _sql + ` and account_id = ${account_id}`;
@@ -189,9 +196,7 @@ const getProgramOrderList = async (req, res, next)=> {
     _sql = _sql + ` and pay_status = 2 and collect_status = 1`
   }
   else if(type ==3){
-    _sql = _sql + ` and account_id = ${account_id}`;
-    //待收货
-    _sql = _sql + ` and pay_status = 2 and collect_status = 2`
+    _sql = _sql + ` and account_id = ${account_id}  and pay_status = 2 and collect_status = 2`;
   }
   const _countSql = `select count(*) as count from (${_sql}) a`;
   _sql = _sql + ` order by create_time desc limit ${start}, ${pageSize}`;
@@ -481,6 +486,8 @@ const cancelOrder =  async (req, res, next)=> {
 const getAllOrderInfo =  async (req, res, next)=> {
   try {
     const { account_id } = req;
+    let userSql = `select is_admin from account where id = ${account_id}`;
+    let isAdmin = await pool.query(userSql);
     //查询待支付的订单数
     let sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 1) a`;
     let params = [account_id];
@@ -488,9 +495,15 @@ const getAllOrderInfo =  async (req, res, next)=> {
     let rows = await pool.query(sql);
     let pendingPayment = rows[0].count;
     //待发货
-    sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 2 and collect_status = 1) a`;
-    sql = mysql.format(sql,params);
-    rows = await pool.query(sql);
+    if(isAdmin === 0){
+      sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 2 and collect_status = 1) a`;
+      sql = mysql.format(sql,params);
+      rows = await pool.query(sql);
+    }else{
+      //是管理员
+      sql =  `select count(*) as count from (select 1 from account_order where  pay_status = 2 and collect_status = 1) a`;
+      rows = await pool.query(sql);
+    }
     let beShipped = rows[0].count;
     //待收货
     sql =  `select count(*) as count from (select 1 from account_order where account_id = ? and pay_status = 2 and collect_status = 2) a`;

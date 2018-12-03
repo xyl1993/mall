@@ -47,7 +47,7 @@
       </view>
     </view>
   </view>
-  <form wx:if="{{status == 'deliver'}}" bindsubmit="formSubmit" report-submit="true">
+  <form wx:if="{{isAdmin==1 && (collect_status == 1 && pay_status == 2)}}" bindsubmit="formSubmit" report-submit="true">
     <view class='input-list'>
       <view class='input-dyn'>
         <label>物流名称</label>
@@ -69,6 +69,9 @@
     </view>
     <form bindsubmit="payAction" report-submit='true' wx:if="{{pay_status == 1}}">
       <button class='pay-btn' form-type="submit">去支付</button>
+    </form>
+    <form bindsubmit="collectGoods" report-submit='true' wx-if="{{collect_status == 2}}">
+      <button class='pay-btn' form-type="submit">确认收货</button>
     </form>
   </view>
 </view>

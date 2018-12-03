@@ -16,7 +16,33 @@ const payAction = function (req, res, next) {
   return res.status(status.OK).json({});
 };
 
+const orderquery = function (req, res, next) {
+  log.info("请求进来了");
+  
+  try {
+    const { out_trade_no } = req.params; 
+    console.log(out_trade_no);
+    //获取支付签名
+    programApi.orderquery(out_trade_no).then((payParamsObj)=>{
+      const { code,data } = payParamsObj;
+      if(code===status.OK){
+        const resultData = programApi.getPayParams(data.prepayId,data.tradeId);
+        console.log("====================");
+        console.log(resultData);
+        res.status(status.OK).json(resultData);
+      }else{
+        return handleError(res, data);
+      }
+    })
+  } catch(err) {
+    log.error(err);
+    return handleError(res, err);
+  }
+
+};
+
 module.exports = {
   payAction,
+  orderquery
 };
 

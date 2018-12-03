@@ -12,17 +12,34 @@ function decryptData(encryptedData,iv,appId,sessionKey){
 function jscode2session(APPID,SECRET,JSCODE) {
   return `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${JSCODE}&grant_type=authorization_code`;
 }
-
+/**
+ * 获取accesstoken
+ * @param {*} APPID 
+ * @param {*} APP_SECRIPT 
+ */
 function getAccessTokenUri(APPID,APP_SECRIPT){
   return `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APP_SECRIPT}`;
 }
 
+/**
+ * 发送消息
+ * @param {*} ACCESS_TOKEN 
+ */
 function sendMessageUri(ACCESS_TOKEN){
   return `https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=${ACCESS_TOKEN}`;
 }
 
+/**
+ * 支付
+ */
 function getPayUri(){
   return `https://api.mch.weixin.qq.com/pay/unifiedorder`;
+}
+/**
+ * 查询订单
+ */
+function orderqueryUri(){
+  return `https://api.mch.weixin.qq.com/pay/orderquery`;
 }
 
 module.exports = {
@@ -31,5 +48,6 @@ module.exports = {
   decryptData,
   sendMessageUri,
   getAccessTokenUri,
-  getPayUri
+  getPayUri,
+  orderqueryUri
 };
