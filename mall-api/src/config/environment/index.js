@@ -26,7 +26,7 @@ const config = {
   uploadFolder: path.normalize(`${__dirname}/../../../../upload/`),
   serverDataFolder: path.normalize(`${__dirname}/../data/`),
   QNdomain: 'http://oq4pg1mfz.bkt.clouddn.com/',
-  wsUri: '/mall/api/websocket',
+  wsUri: '/mall/websocket',
   // 七牛云 配置
   qiniuConfig: {
     // 需要填写你的 Access Key 和 Secret Key

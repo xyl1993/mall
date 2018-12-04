@@ -1,5 +1,5 @@
-const websocketUrl = process.env.NODE_ENV === 'development' ? 'ws://127.0.0.1:8002/mall/api/websocket' : 
-  'ws://47.96.136.225/mall/api/websocket';
+const websocketUrl = process.env.NODE_ENV === 'development' ? 'ws://127.0.0.1:8002/mall/websocket' : 
+  'wss://billionsen.cn/mall/websocket';
 export const apiConfig = {
   base_api_host: "/mall/api/v1/",
   allowUrls: "login", //不需要添加token请求的接口
