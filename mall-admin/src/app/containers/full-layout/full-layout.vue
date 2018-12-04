@@ -3,7 +3,10 @@
     <!-- head start -->
     <app-header></app-header>
     <!-- head end -->
-    <el-col :span="24" class="main">
+    <el-col
+      :span="24"
+      class="main"
+    >
       <!-- aside start -->
       <app-aside></app-aside>
       <!-- aside end -->
@@ -12,7 +15,10 @@
         <app-sidebar></app-sidebar>
         <!-- sidebar end -->
         <div class="content-wrapper">
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <router-view></router-view>
           </transition>
         </div>
@@ -24,7 +30,7 @@
 import AppHeader from "../../components/app-header/app-header";
 import AppAside from "../../components/app-aside/app-aside";
 import AppSidebar from "../../components/app-sidebar/app-sidebar";
-
+import { createWebSocket } from "../../global/websocketConfig";
 export default {
   name: "FullLayout",
   components: {
@@ -34,11 +40,16 @@ export default {
   },
   data() {
     return {
+      client: {},
+      wsStatus: true
     };
   },
   computed: {},
+  mounted() {
+  },
+
   created() {
-    
+    createWebSocket(this);
   }
 };
 </script>

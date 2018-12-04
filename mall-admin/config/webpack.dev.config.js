@@ -47,6 +47,10 @@ module.exports = merge(baseWebpackConfig, {
     proxy: {
       '/mall/api/*': {
         target: devProxyPath 
+      },
+      '/mallws/*': {
+        target: devProxyPath,
+        pathRewrite: {'^/mallws' : ''}
       }
     }
   },
