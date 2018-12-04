@@ -69,27 +69,5 @@
     "socket.io": "^2.2.0",
     "socketio-jwt": "^4.5.0",
     "xml2js": "^0.4.19"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,js,scss,css,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "bracketSpacing": false,
-    "printWidth": 140,
-    "semi": true
   }
 }
