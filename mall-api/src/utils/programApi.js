@@ -90,7 +90,7 @@ const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
   // 一个随机字符串
   const nonceStr = getNonceStr();
   // 生成商家内部自定义的订单号, 商家内部的系统用的, 不用 attach 加入也是可以的
-  const tradeId = getTradeId(attach);
+  const tradeId = getTradeId('GJS-ORG');
   //商品信息
   const productInfo = proddinfo;   
   //付款成功返回url
