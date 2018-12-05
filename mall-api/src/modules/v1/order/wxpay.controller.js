@@ -10,12 +10,39 @@ const programApi = require('../../../utils/programApi');
 const updateUsed = require('../tplConfig/tplConfig.controller').updateUsed;
 const moment = require('moment');
 
-const payAction = function (req, res, next) {
+const payAction = async (req, res, next) => {
   log.info("请求进来了");
   log.info(req.body);
-  return res.status(status.OK).json({});
-};
+  const { result_code,return_code,out_trade_no,total_fee } = req.body.xml;
 
+  if(result_code === 'SUCCESS' && return_code === 'success'){
+    //支付成功
+    try {
+      const wxpay_xml = JSON.stringify([req.body.xml]);
+      //查询应支付总价
+      let sql = `update account_order set wxpay_xml = ? where out_trade_no = ?`;
+      let params = [wxpay_xml,out_trade_no];
+      sql = mysql.format(sql, params);
+      log.info(sql);
+      await pool.query(sql);
+      global.websocket.clients.forEach(function (client) {
+        client.send(
+          JSON.stringify({
+            text: '收到一笔订单,点击查看'
+          }),
+        );
+      });
+      const result = `<xml>
+        <return_code><![CDATA[SUCCESS]]></return_code>
+        <return_msg><![CDATA[OK]]></return_msg>
+      </xml>`;
+      res.type('application/xml');
+      res.send(result);
+    } catch (err) {
+      log.error(err);
+    }
+  }
+};
 const orderquery = function (req, res, next) {
   log.info("请求进来了");
   

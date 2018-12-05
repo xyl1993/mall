@@ -392,14 +392,7 @@ const payOrder = async (req, res, next) => {
     await pool.query(sql);
     // 往支付记录表插入一条记录
     // sql =  `insert into pay_order_info(code,order_number,user_id,pay_money,status,create_time,order_request,order_result,pay_result) values(?,?,?,?,?,?,?,?,?)`;
-    global.websocket.clients.forEach(function (client) {
-      client.send(
-        JSON.stringify({
-          text: '收到一笔订单,点击查看',
-          data: orderNumber,
-        }),
-      );
-    });
+   
     res.status(status.OK).json(orderNumber);
     // 更新订单状态
     /** *****************支付成功通知*************** */
@@ -535,10 +528,15 @@ const testApi = async (req, res, next) => {
  * @param {*} next 
  */
 const updateReceiptStatus = async (req, res, next) => {
-  let sql = 'update account_order set collect_status = 3 where collect_status = 2 and datediff(now(),ship_time) >=7';
-  log.info("自动更新收货状态");
-  log.info(sql);
-  await pool.query(sql);
+  try {
+    let sql = 'update account_order set collect_status = 3 where collect_status = 2 and datediff(now(),ship_time) >=7';
+    log.info("自动更新收货状态");
+    log.info(sql);
+    await pool.query(sql);
+  } catch (err) {
+    log.error(err);
+  }
+  
 };
 
 

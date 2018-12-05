@@ -178,6 +178,7 @@ CREATE TABLE `account_order` (
   `phone` varchar(30) DEFAULT NULL,      /*联系电话*/
   `pay_status` int DEFAULT 1,      /*支付状态   1待支付  2支付 3退款*/
   `pay_time` datetime DEFAULT NULL,     /*支付时间*/
+  `pay_arrival_time` datetime DEFAULT NULL,     /*到账时间*/
   `collect_status` int DEFAULT 1,      /*收货状态   1待发货 2待收货 3收货*/
   `ship_time` datetime DEFAULT NULL,      /*发货时间*/
   `receipt_time` datetime DEFAULT NULL,      /*收获时间*/
@@ -186,6 +187,7 @@ CREATE TABLE `account_order` (
   `order_status` int DEFAULT 1,      /*记录状态 1 正常 0 删除 -1 禁用*/
   `create_time` datetime DEFAULT NULL,  
   `update_time` datetime DEFAULT NULL,  
+  `wxpay_xml` varchar(500) DEFAULT NULL,      /*支付成功微信返回xml*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
