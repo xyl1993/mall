@@ -12,9 +12,9 @@ const moment = require('moment');
 
 const payAction = async (req, res, next) => {
   log.info("请求进来了");
-  log.info(req.body);
+  log.info(req.body.xml);
   const { result_code,return_code,out_trade_no,total_fee } = req.body.xml;
-
+  log.info("result_code="+result_code);
   if(result_code === 'SUCCESS' && return_code === 'success'){
     //支付成功
     try {

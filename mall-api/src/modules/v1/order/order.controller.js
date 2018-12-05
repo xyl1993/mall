@@ -397,35 +397,35 @@ const payOrder = async (req, res, next) => {
     // 更新订单状态
     /** *****************支付成功通知*************** */
     // 获取accessToken
-    programApi.getAccessToken().then((access_token) => {
-      const tempData = {
-        touser: openid,
-        template_id: config.programTemplate.paySuccessTemplateId,
-        page: 'pages/allorder/allorder?type = 2',
-        form_id: formId,
-        data: {
-          keyword1: {
-            value: allPrice, // 金额
-          },
-          keyword2: {
-            value: orderNumber, // 编号
-          },
-          keyword3: {
-            value: moment(payTime).format('YYYY-MM-DD HH:mm:ss'),
-          },
-          keyword4: {
-            value: address,
-          },
-        },
-      };
+    // programApi.getAccessToken().then((access_token) => {
+    //   const tempData = {
+    //     touser: openid,
+    //     template_id: config.programTemplate.paySuccessTemplateId,
+    //     page: 'pages/allorder/allorder?type = 2',
+    //     form_id: formId,
+    //     data: {
+    //       keyword1: {
+    //         value: allPrice, // 金额
+    //       },
+    //       keyword2: {
+    //         value: orderNumber, // 编号
+    //       },
+    //       keyword3: {
+    //         value: moment(payTime).format('YYYY-MM-DD HH:mm:ss'),
+    //       },
+    //       keyword4: {
+    //         value: address,
+    //       },
+    //     },
+    //   };
 
-      // 发送消息
-      programApi.sendMessage(access_token, tempData).then((message) => {
-        console.log(message);
-        log.info('模板消息返回');
-        log.info(message);
-      });
-    });
+    //   // 发送消息
+    //   programApi.sendMessage(access_token, tempData).then((message) => {
+    //     console.log(message);
+    //     log.info('模板消息返回');
+    //     log.info(message);
+    //   });
+    // });
   } catch (err) {
     log.error(err);
     return handleError(res, err);
