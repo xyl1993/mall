@@ -14,14 +14,15 @@ const payAction = async (req, res, next) => {
   log.info("请求进来了");
   log.info(req.body.xml);
   const { result_code,return_code,out_trade_no,total_fee } = req.body.xml;
-  log.info("result_code="+result_code);
-  if(result_code === 'SUCCESS' && return_code === 'success'){
+  
+  if(result_code == 'SUCCESS' && return_code == 'success'){
+    log.info("try");
     //支付成功
     try {
       const wxpay_xml = JSON.stringify([req.body.xml]);
       //查询应支付总价
-      let sql = `update account_order set wxpay_xml = ? where out_trade_no = ?`;
-      let params = [wxpay_xml,out_trade_no];
+      let sql = `update account_order set wxpay_xml = ? and pay_price = ? where out_trade_no = ?`;
+      let params = [wxpay_xml,total_fee/100,out_trade_no];
       sql = mysql.format(sql, params);
       log.info(sql);
       await pool.query(sql);
