@@ -29,6 +29,7 @@ Page({
   },
 
   onLoad: function (options) {
+    console.log(options);
     this.setData({ order_number: options.order_number, collect_status: options.collect_status, pay_status: options.pay_status,isAdmin:options.isAdmin });
     this.getOrderDetail(options.order_number);
     if (options.status){
