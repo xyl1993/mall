@@ -1,6 +1,6 @@
-const serIp = 'https://billionsen.cn/mall/';
+// const serIp = 'https://billionsen.cn/mall/';
 // const serIp = 'http://172.16.6.190:8002/mall/';
-// const serIp = 'http://192.168.0.152:8002/mall/';
+const serIp = 'http://192.168.0.152:8002/mall/';
 // const serIp = 'http://192.168.1.100:8002/mall/';
 export const Config = {
   api_url: serIp+'api/v1/',

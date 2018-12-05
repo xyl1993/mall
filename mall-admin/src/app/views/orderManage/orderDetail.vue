@@ -1,5 +1,5 @@
 <template>
-  <div class="cointer">
+  <el-scrollbar class="cointer scrollbar-wrapper" style="padding-bottom:42px;" >
     <el-row :gutter="12">
       <el-col :span="24">
         <el-card shadow="always">
@@ -40,6 +40,23 @@
                 <div class="header-index-extraContent"></div>
               </div>
             </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="12" style="margin-top:20px;">
+      <el-col :span="24">
+        <el-card shadow="always">
+          <div slot="header" class="clearfix">
+            <span>流程进度</span>
+          </div>
+          <div class="heade-cointer">
+            <el-steps :active="activeStatus" align-center style="width:100%;">
+              <el-step title="创建订单" :description="orderInfo.create_time | dateTimeFilter"></el-step>
+              <el-step title="微信付款" :description="orderInfo.pay_time | dateTimeFilter"></el-step>
+              <el-step title="卖家发货" :description="orderInfo.ship_time | dateTimeFilter"></el-step>
+              <el-step title="确认收货" :description="orderInfo.receipt_time | dateTimeFilter"></el-step>
+            </el-steps>
           </div>
         </el-card>
       </el-col>
@@ -94,16 +111,16 @@
           </div>
           <div class="heade-cointer">
             <div class="header-detail">
-              <el-table :data="orderInfo.productInfo" style="width: 100%">
-                <el-table-column prop="title" label="标题" width="300">
+              <el-table :data="orderInfo.productInfo" style="width: 100%" show-summary>
+                <el-table-column prop="title" label="标题">
                 </el-table-column>
-                <el-table-column prop="brand_name" label="品牌" width="180">
+                <el-table-column prop="brand_name" label="品牌" >
                 </el-table-column>
-                <el-table-column prop="type_name" label="分类" width="180">
+                <el-table-column prop="type_name" label="分类" >
                 </el-table-column>
-                <el-table-column prop="specifications_name" label="规格" width="180">
+                <el-table-column prop="specifications_name" label="规格" >
                 </el-table-column>
-                <el-table-column prop="number" label="数量" width="180">
+                <el-table-column prop="number" label="数量">
                 </el-table-column>
                 <el-table-column prop="price" label="单价">
                 </el-table-column>
@@ -116,6 +133,7 @@
             </div>
           </div>
         </el-card>
+        <div style="height:42px;"></div>
       </el-col>
     </el-row>
     <el-dialog 
@@ -134,7 +152,7 @@
         <el-button type="primary" @click="deliver()">确 定</el-button>
       </div>
     </el-dialog>
-  </div>
+  </el-scrollbar>
 </template>
 <script>
 import * as service from "./service";
@@ -147,6 +165,7 @@ export default {
       tableData: [],
       orderNumber: "",
       deliverStatus:false,
+      activeStatus:0,
       orderInfo: {
         productInfo: []
       },
@@ -188,6 +207,17 @@ export default {
         let { data, status } = res;
         if (statusValid(this, status, data)) {
           this.orderInfo = data;
+          if(data.pay_status  === 1){
+            this.activeStatus = 1
+          }else if(data.pay_status === 2){
+            if(data.collect_status === 1){
+              this.activeStatus = 2
+            }else if(data.collect_status===2){
+              this.activeStatus = 3
+            }else if(data.collect_status===3){
+              this.activeStatus = 4
+            }
+          }
         }
       });
     },

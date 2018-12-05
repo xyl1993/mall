@@ -12,7 +12,7 @@ const moment = require('moment');
 
 const payAction = function (req, res, next) {
   log.info("请求进来了");
-  log.info(req);
+  log.info(req.body);
   return res.status(status.OK).json({});
 };
 

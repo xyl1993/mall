@@ -528,6 +528,20 @@ const testApi = async (req, res, next) => {
   res.status(status.OK).json();
 };
 
+/**
+ * 更新发货已经有7天的收货时间
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const updateReceiptStatus = async (req, res, next) => {
+  let sql = 'update account_order set collect_status = 3 where collect_status = 2 and datediff(now(),ship_time) >=7';
+  log.info("自动更新收货状态");
+  log.info(sql);
+  await pool.query(sql);
+};
+
+
 module.exports = {
   getOrderList,
   insertOrder,
@@ -542,4 +556,5 @@ module.exports = {
   cancelOrder,
   getAllOrderInfo,
   testApi,
+  updateReceiptStatus
 };
