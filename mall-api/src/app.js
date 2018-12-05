@@ -30,6 +30,15 @@ global.websocket = expressWs.getWss('/mall/websocket');
 createFolder(config.uploadFolder);
 
 app.use(log4js.connectLogger(logger, { level: 'auto', format: ':method :url  :status  :response-time ms' }));
+// 解决微信支付通知回调数据
+app.use(bodyParser.xml({
+  limit: '2MB',   // Reject payload bigger than 1 MB
+  xmlParseOptions: {
+    normalize: true,     // Trim whitespace inside text nodes
+    normalizeTags: true, // Transform tags to lowercase
+    explicitArray: false // Only put nodes in array if >1
+  }
+}));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ extended: false }));
@@ -49,14 +58,6 @@ app.use(function (req, res, next) {
 });
 
 
-// 解决微信支付通知回调数据
-app.use(bodyParser.xml({
-  limit: '2MB',   // Reject payload bigger than 1 MB
-  xmlParseOptions: {
-    normalize: true,     // Trim whitespace inside text nodes
-    normalizeTags: true, // Transform tags to lowercase
-    explicitArray: false // Only put nodes in array if >1
-  }
-}));
+
 
 module.exports = app;
