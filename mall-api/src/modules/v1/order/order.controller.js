@@ -113,7 +113,7 @@ const insertOrder = async (req, res, next) => {
     _sql = mysql.format(_sql, addressParam);
     await pool.query(_sql);
     // 获取支付签名
-    programApi.payAction(req, openid, orderNumberRows, allPrice, productInfo).then((payParamsObj) => {
+    programApi.payAction(req, openid, orderNumberRows, allPrice, productInfo,orderNumberRows).then((payParamsObj) => {
       const { code, data } = payParamsObj;
       if (code === status.OK) {
         const resultData = programApi.getPayParams(data.prepayId, data.tradeId);
@@ -356,7 +356,7 @@ const payAction = async (req, res, next) => {
     console.log(productInfo);
     const { openid } = req;
     // 获取支付签名
-    programApi.payAction(req, openid, orderNumber, allPrice, productInfo).then((payParamsObj) => {
+    programApi.payAction(req, openid, orderNumber, allPrice, productInfo,orderNumber).then((payParamsObj) => {
       const { code, data } = payParamsObj;
       if (code === status.OK) {
         const resultData = programApi.getPayParams(data.prepayId, data.tradeId);
@@ -374,7 +374,7 @@ const payAction = async (req, res, next) => {
 };
 
 /**
- * 支付
+ * 支付(废弃)
  * @param {*} req
  * @param {*} res
  * @param {*} next

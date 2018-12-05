@@ -161,19 +161,11 @@ Page({
           signType: 'MD5',
           paySign: paySign,
           success(res) {
-            //下单成功
-            params = { orderNumber, allPrice, formId, tradeId };
-            params.address = dataAddress[0].address;
-            api.post(`program/order/pay`, params).then(res => {
-              const { data, status } = res;
-              if (status === 200) {
-                wx.hideLoading();
-                wx.redirectTo({
-                  url: '../allorder/allorder?type=2'
-                })
-              }
-            });
-           },
+            wx.hideLoading();
+            wx.redirectTo({
+              url: '../allorder/allorder?type=2'
+            })
+          },
           fail(res) { 
             wx.hideLoading();
             wx.showToast({

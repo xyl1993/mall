@@ -79,14 +79,14 @@ const sendMessage = function (access_token,body) {
  * @param {*} orderNumber 订单编号
  * @param {*} allPrice 总价
  */
-const payAction = function (req,openid,orderNumber,allPrice,proddinfo) {
+const payAction = function (req,openid,orderNumber,allPrice,proddinfo,attach) {
   const appId = config.AppID;
   // 商户号
   const mchId = config.mchId;
   // 支付的 key
   const PAY_API_KEY = config.PAY_API_KEY;
   // attach 是一个任意的字符串, 会原样返回, 可以用作一个标记
-  const attach = 'GJS-ORG';
+  const attach = attach;
   // 一个随机字符串
   const nonceStr = getNonceStr();
   // 生成商家内部自定义的订单号, 商家内部的系统用的, 不用 attach 加入也是可以的

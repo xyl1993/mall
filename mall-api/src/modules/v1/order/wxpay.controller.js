@@ -13,16 +13,15 @@ const moment = require('moment');
 const payAction = async (req, res, next) => {
   log.info("请求进来了");
   log.info(req.body.xml);
-  const { result_code,return_code,out_trade_no,total_fee } = req.body.xml;
-  console.log(result_code == 'SUCCESS' && return_code == 'SUCCESS');
+  const { result_code,return_code,out_trade_no,total_fee,attach } = req.body.xml;
   if(result_code == 'SUCCESS' && return_code == 'SUCCESS'){
     log.info("try");
     //支付成功
     try {
       const wxpay_xml = JSON.stringify([req.body.xml]);
       //查询应支付总价
-      let sql = `update account_order set wxpay_xml = ? and pay_price = ? where out_trade_no = ?`;
-      let params = [wxpay_xml,total_fee/100,out_trade_no];
+      let sql = `update account_order set pay_status = 2,wxpay_xml=?,pay_time = ?,pay_price=?,out_trade_no=? where order_number = ?`;
+      let params = [wxpay_xml,new Date(),total_fee/100,out_trade_no,attach];
       sql = mysql.format(sql, params);
       log.info(sql);
       await pool.query(sql);

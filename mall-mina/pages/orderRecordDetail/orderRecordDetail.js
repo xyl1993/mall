@@ -104,15 +104,19 @@ Page({
           signType: 'MD5',
           paySign: paySign,
           success(res) {
-            api.post(`program/order/pay`, params).then(res => {
-              const { data, status } = res;
-              if (status === 200) {
-                wx.hideLoading();
-                wx.redirectTo({
-                  url: '../allorder/allorder?type=2'
-                })
-              }
-            });
+            wx.hideLoading();
+            wx.redirectTo({
+              url: '../allorder/allorder?type=2'
+            })
+            // api.post(`program/order/pay`, params).then(res => {
+            //   const { data, status } = res;
+            //   if (status === 200) {
+            //     wx.hideLoading();
+            //     wx.redirectTo({
+            //       url: '../allorder/allorder?type=2'
+            //     })
+            //   }
+            // });
           },
           fail(res) {
             wx.hideLoading();
