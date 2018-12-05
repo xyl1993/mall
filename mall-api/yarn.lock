@@ -453,6 +453,12 @@ bodec@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/bodec/-/bodec-0.1.0.tgz#bc851555430f23c9f7650a75ef64c6a94c3418cc"
 
+body-parser-xml@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/body-parser-xml/-/body-parser-xml-1.1.0.tgz#7b56bef1cd7d266c13602b4c1daf4f511d26447c"
+  dependencies:
+    xml2js "^0.4.16"
+
 body-parser@1.18.3, body-parser@^1.18.3:
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.3.tgz#5b292198ffdd553b3a0f20ded0592b956955c8b4"
@@ -4954,7 +4960,7 @@ xml-crypto@0.10.1:
     xmldom "=0.1.19"
     xpath.js ">=0.0.3"
 
-"xml2js@>= 0.4.0", xml2js@^0.4.19:
+"xml2js@>= 0.4.0", xml2js@^0.4.16, xml2js@^0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.19.tgz#686c20f213209e94abf0d1bcf1efaa291c7827a7"
   dependencies:

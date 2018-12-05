@@ -4,6 +4,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+require('body-parser-xml')(bodyParser);
 // var ejs = require('ejs');  //我是新引入的ejs插件
 const log4js = require('log4js');
 const logger = require('./log4js');
@@ -46,4 +47,16 @@ app.use('/mall-admin', (req, res) => {
 app.use(function (req, res, next) {
   next(createError(404));
 });
+
+
+// 解决微信支付通知回调数据
+app.use(bodyParser.xml({
+  limit: '2MB',   // Reject payload bigger than 1 MB
+  xmlParseOptions: {
+    normalize: true,     // Trim whitespace inside text nodes
+    normalizeTags: true, // Transform tags to lowercase
+    explicitArray: false // Only put nodes in array if >1
+  }
+}));
+
 module.exports = app;
