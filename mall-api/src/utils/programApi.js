@@ -17,6 +17,7 @@ const getAccessToken = function(){
     //获取当前时间 
     var currentTime = new Date().getTime();
     //判断 本地存储的 access_token 是否有效
+    console.log("access_token======================"+accessTokenJson.access_token === "");
     if (accessTokenJson.access_token === "" || accessTokenJson.expires_time < currentTime) {
       axios({
         method:'get',
