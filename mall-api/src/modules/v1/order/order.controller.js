@@ -436,13 +436,11 @@ const getPayRecord = async (req, res, next) => {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
-  const { order_number } = req.query;
   try {
     let sql = `SELECT
         a.*, c.nikename
       FROM
         pay_order_info a
-      LEFT JOIN account_order b ON b.order_number = a.order_number
       LEFT JOIN account c ON c.id = a.user_id`;
     const _countSql = `select count(*) as count from (${sql}) a`;
     sql += ` order by a.create_time desc limit ${start}, ${pageSize}`;
@@ -450,7 +448,11 @@ const getPayRecord = async (req, res, next) => {
     const params = [];
     sql = mysql.format(sql, params);
     const rows = await pool.query(sql);
-    res.status(status.OK).json(rows);
+    const counts = await pool.query(_countSql);
+    res.status(status.OK).json({
+      data: rows,
+      totalItems: counts[0].count,
+    });
   } catch (err) {
     log.error(err);
     return handleError(res, err);

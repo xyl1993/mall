@@ -240,18 +240,19 @@ CREATE TABLE `tpl_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*订单信息*/
+/*支付记录*/
 drop table if exists pay_order_info;
 CREATE TABLE `pay_order_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT, /*订单id*/
-  `code` varchar(32) NOT NULL,/*支付订单号*/
+  `transaction_id` varchar(32) NOT NULL,/*微信支付订单号*/
   `order_number` varchar(32) NOT NULL,/*商品订单号*/
-  `user_id` bigint(20) NOT NULL,/*用户ID*/
-  `pay_money` decimal(10,2) NOT NULL DEFAULT '0.00', /*付款金额*/
-  `status` varchar(20) DEFAULT NULL, /*00未支付 01支付成功 02支付失败*/
-  `create_time` datetime DEFAULT NULL, /*订单创建时间*/
-  `order_request` varchar(1000) DEFAULT NULL, /*下单请求xml*/
-  `order_result` varchar(1000) DEFAULT NULL, /*下单返回结果xml*/
+  `out_trade_no` varchar(32) NOT NULL,/*商户内部订单号*/
+  `openid` bigint(20) NOT NULL,/*用户ID*/
+  `wx_price` double DEFAULT NULL,   /*微信返回支付价格*/
+  `pay_price` double DEFAULT NULL,   /*换算之后支付价格*/
   `pay_result` varchar(1000) DEFAULT NULL, /*用户支付返回结果xml*/
+  `create_time` datetime, /*创建时间*/
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+

@@ -6,6 +6,7 @@ export const asideTree = {
     "path": "",
     "children": [
       {path: '/orderList', name: '订单列表' },
+      {path: '/payInfo', name: '支付记录' },
     ]
   },{
     "name": "首页设置",
