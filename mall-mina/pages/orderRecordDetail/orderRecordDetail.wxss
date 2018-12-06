@@ -7,10 +7,10 @@
   position: relative;
 }
 .top-img{
-  width: 80rpx;
-  height: 80rpx;
+  width: 73rpx;
+  height: 73rpx;
   position: absolute;
-  top: 0;
+  top: 4rpx;
   left: 0;
 }
 .top-main{

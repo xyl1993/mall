@@ -247,7 +247,7 @@ CREATE TABLE `pay_order_info` (
   `transaction_id` varchar(32) NOT NULL,/*微信支付订单号*/
   `order_number` varchar(32) NOT NULL,/*商品订单号*/
   `out_trade_no` varchar(32) NOT NULL,/*商户内部订单号*/
-  `openid` bigint(20) NOT NULL,/*用户ID*/
+  `openid` varchar(32) NOT NULL,/*用户ID*/
   `wx_price` double DEFAULT NULL,   /*微信返回支付价格*/
   `pay_price` double DEFAULT NULL,   /*换算之后支付价格*/
   `pay_result` varchar(1000) DEFAULT NULL, /*用户支付返回结果xml*/

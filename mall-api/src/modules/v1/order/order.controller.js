@@ -436,12 +436,22 @@ const getPayRecord = async (req, res, next) => {
   const pageSize = ~~req.query.pageSize || 10;
   const current = req.query.current || 1;
   const start = (current - 1) * pageSize;
+  const { start_time,end_time,order_number} = req.query;
   try {
     let sql = `SELECT
         a.*, c.nikename
       FROM
         pay_order_info a
-      LEFT JOIN account c ON c.id = a.user_id`;
+      LEFT JOIN account c ON a.openid = c.openid WHERE 1 = 1`;
+    if (start_time) {
+      sql += ` and a.create_time >= '${start_time}'`;
+    }
+    if (end_time) {
+      sql += ` and a.create_time <= '${end_time} 23:59:59'`;
+    }
+    if (order_number) {
+      sql += ` and a.order_number = '${order_number}'`;
+    }
     const _countSql = `select count(*) as count from (${sql}) a`;
     sql += ` order by a.create_time desc limit ${start}, ${pageSize}`;
     log.info(sql);

@@ -97,6 +97,7 @@ radio {
 .list-cointer {
   padding: 25rpx 0 25rpx 20rpx;
   flex: 1;
+  min-width: 448rpx;
 }
 .list-main{
   flex: 1;

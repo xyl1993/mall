@@ -1,25 +1,27 @@
 <template>
   <div class="cointer-box">
     <div class="toolbar el-col-24 clear">
-      <el-form :inline="true" class="basetable-search-form ">
+      <el-form :inline="true">
         <div class="el-col-6">
-          <el-form-item label="创建日期">
-            <el-date-picker value-format="yyyy-MM-dd" v-model="searchModel.start_time" type="date" @change="search" placeholder="选择日期">
-            </el-date-picker>
-          </el-form-item>
-        </div>
-        <div class="el-col-6">
-          <el-form-item label="至">
-            <el-date-picker value-format="yyyy-MM-dd" v-model="searchModel.end_time" type="date" @change="search" placeholder="选择日期">
-            </el-date-picker>
-          </el-form-item>
-        </div>
-        <div class="el-col-6" style="margin-top:10px;">
-          <el-form-item label="订单编号">
+          <el-form-item label="订单编号" label-width="120">
             <el-input v-model="searchModel.order_number" @keyup.enter.native="search" placeholder="订单编号"></el-input>
           </el-form-item>
         </div>
-        <div class="el-col-6" style="margin-top:10px;">
+        <div class="el-col-6">
+          <el-form-item label="创建日期" label-width="120">
+            <el-date-picker value-format="yyyy-MM-dd" 
+              v-model="searchModel.start_time" type="date" @change="search" placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="el-col-6">
+          <el-form-item label="至" label-width="120">
+            <el-date-picker value-format="yyyy-MM-dd"
+             v-model="searchModel.end_time" type="date" @change="search" placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="el-col-6" style="margin-top:0px;">
           <el-form-item>
             <el-button type="primary" size="small" @click.native.prevent="search">查询</el-button>
           </el-form-item>
@@ -35,7 +37,7 @@
         </el-table-column>
         <el-table-column prop="transaction_id" align="center" label="微信支付编号">
         </el-table-column>
-        <el-table-column prop="openid" align="center" label="用户id">
+        <el-table-column prop="nikename" align="center" label="用户昵称">
         </el-table-column>
         <el-table-column prop="wx_price" align="center" label="微信返回金额(分)">
         </el-table-column>
@@ -78,8 +80,6 @@ export default {
       searchModel: {
         start_time: "",
         end_time: "",
-        collect_status: "",
-        pay_status:'',
         order_number:''
       },
     };
@@ -115,7 +115,7 @@ export default {
     },
     handleEdit(index, row) {
       //微信返回对象
-      this.jsonData = row.pay_result
+      this.jsonData = JSON.parse(row.pay_result);
       this.formStatus = true;
     }
   }
