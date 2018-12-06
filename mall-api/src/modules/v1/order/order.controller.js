@@ -168,10 +168,10 @@ const getProgramOrderList = async (req, res, next) => {
     // 全部订单
     if (isAdmin === 0) {
       _sql += ` and ((account_id = ${account_id} and pay_status = 1) or (account_id = ${account_id}  and pay_status = 2 and collect_status = 2) or 
-    (pay_status = 2 and collect_status = 1 and account_id = ${account_id})) `;
+    (pay_status = 2 and collect_status = 1) or (account_id = ${account_id} and collect_status = 3)) `;
     } else {
       _sql += ` and ((account_id = ${account_id} and pay_status = 1) or (account_id = ${account_id}  and pay_status = 2 and collect_status = 2) or 
-    (pay_status = 2 and collect_status = 1))`;
+    (account_id = ${account_id} and pay_status = 2 and collect_status = 1) or (account_id = ${account_id} and collect_status = 3))`;
     }
   } else if (type == 1) {
     // 带付款

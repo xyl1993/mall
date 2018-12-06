@@ -56,7 +56,7 @@
            data-collect_status="{{item.collect_status}}" 
         data-pay_status="{{item.pay_status}}"  
         data-order_number = "{{item.order_number}}" 
-          bindtap='toOrderDetail' wx-if="{{item.collect_status == 2}}">确认收货</view>
+          bindtap='collectGoods' wx-if="{{item.collect_status == 2}}">确认收货</view>
       </view>
     </view>
   </view>
