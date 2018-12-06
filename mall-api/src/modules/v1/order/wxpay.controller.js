@@ -42,7 +42,8 @@ const payAction = async (req, res, next) => {
       global.websocket.clients.forEach(function (client) {
         client.send(
           JSON.stringify({
-            text: '收到一笔订单,点击查看'
+            text: '收到一笔订单,点击查看',
+            data:attach
           }),
         );
       });

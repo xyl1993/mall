@@ -1,7 +1,7 @@
 <template>
   <div class="cointer-box">
     <div class="toolbar el-col-24 clear">
-      <el-form :inline="true">
+      <el-form :inline="true" class="search-form">
         <div class="el-col-6">
           <el-form-item label="订单编号" label-width="120">
             <el-input v-model="searchModel.order_number" @keyup.enter.native="search" placeholder="订单编号"></el-input>
@@ -125,7 +125,5 @@ export default {
 .el-form-item {
   margin-bottom: 0;
 }
-.basetable-search-form{
-  height: 92px;
-}
+
 </style>

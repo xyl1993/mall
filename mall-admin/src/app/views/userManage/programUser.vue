@@ -96,7 +96,7 @@ export default {
     handleSizeChange(val) {},
     handleCurrentChange(val) {
       this.current = val;
-      findlist(this);
+      this.findlist();
     },
     handleEdit(index, row) {
       service.pdateProgramUserAdmin(row.id).then(res => {

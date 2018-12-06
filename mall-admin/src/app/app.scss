@@ -53,7 +53,13 @@ input:-webkit-autofill {
   width: 480px;
   max-width: 100%;
 }
-
+.search-form{
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner {
+    width: 220px !important;
+    max-width: 100%;
+  }
+}
 .el-container {
   flex-basis: inherit;
 }
