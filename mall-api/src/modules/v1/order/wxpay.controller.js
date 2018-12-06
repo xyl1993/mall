@@ -13,6 +13,12 @@ const moment = require('moment');
 const payAction = async (req, res, next) => {
   log.info("请求进来了");
   log.info(req.body.xml);
+  const result = `<xml>
+    <return_code><![CDATA[SUCCESS]]></return_code>
+    <return_msg><![CDATA[OK]]></return_msg>
+  </xml>`;
+  res.type('application/xml');
+  res.send(result);
   try {
     const { result_code,return_code,out_trade_no,total_fee,attach,transaction_id,openid } = req.body.xml;
     const wxpay_xml = JSON.stringify([req.body.xml]);
@@ -20,7 +26,7 @@ const payAction = async (req, res, next) => {
     const date = new Date();
     //往支付记录表中插入一条记录 防止回调出错查询
     let sql = `insert into pay_order_info(transaction_id,order_number,out_trade_no,openid,wx_price,pay_price,pay_result,create_time) values(?,?,?,?,?,?,?,?)`;
-    let params = [transaction_id,attach,out_trade_no,openid,total_fee,pay_price,date];
+    let params = [transaction_id,attach,out_trade_no,openid,total_fee,pay_price,wxpay_xml,date];
     sql = mysql.format(sql, params);
     log.info(sql);
     await pool.query(sql);
@@ -40,12 +46,7 @@ const payAction = async (req, res, next) => {
           }),
         );
       });
-      const result = `<xml>
-        <return_code><![CDATA[SUCCESS]]></return_code>
-        <return_msg><![CDATA[OK]]></return_msg>
-      </xml>`;
-      res.type('application/xml');
-      res.send(result);
+     
     }
   } catch (err) {
     log.error(err);
