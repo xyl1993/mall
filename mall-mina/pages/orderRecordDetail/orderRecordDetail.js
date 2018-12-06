@@ -141,7 +141,7 @@ Page({
       content: '确认收货吗？',
       success(res) {
         if (res.confirm) {
-          let order_number = this.data.order_number;
+          let order_number = self.data.order_number;
           api.put(`program/order/collect/${order_number}`).then(res => {
             let {
               data,

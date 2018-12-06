@@ -254,6 +254,7 @@ const collectGoods = async (req, res, next) => {
     const params = [new Date(), order_number];
     sql = mysql.format(sql, params);
     await pool.query(sql);
+    log.info(sql);
     res.status(status.OK).json(order_number);
   } catch (err) {
     log.error(err);

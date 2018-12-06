@@ -16,7 +16,7 @@ program.get('/order/allInfo', appVerifyToken, controller.getAllOrderInfo);
 
 program.get('/order', appVerifyToken, controller.getProgramOrderList);
 
-program.put('/order/collect/:order_number', appVerifyToken, controller.collectGoods);
+program.put('/order/collect/:order_number', appVerifyToken, controller.collectGoods);  //确认收货
 // 手机端发货
 program.put('/order/deliver/:order_number', appVerifyToken, controller.deliverGoods);
 program.delete('/order/:order_number', appVerifyToken, controller.deleteOrder);
