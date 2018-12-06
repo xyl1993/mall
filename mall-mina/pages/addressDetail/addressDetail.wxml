@@ -8,7 +8,7 @@
       <input type='number' value='{{formData.phone}}' placeholder='联系电话' name="phone"></input>
     </view>
     <view class='input-dyn'>
-      <textarea placeholder='收货地址' value='{{formData.address}}' auto-height name="address"></textarea>
+      <textarea style='width:100%;' placeholder='收货地址' value='{{formData.address}}' auto-height name="address"></textarea>
     </view>
   </view>
   <view class='input-list'>

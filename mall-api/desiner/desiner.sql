@@ -136,7 +136,7 @@ CREATE TABLE `account` (
   `status` int DEFAULT 1,     /*1 关注  0取消关注*/
   `is_admin` int DEFAULT 0,     /*1是管理员 拥有发货权限*/
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 /**
 小程序收货地址表
@@ -253,6 +253,6 @@ CREATE TABLE `pay_order_info` (
   `pay_result` varchar(1000) DEFAULT NULL, /*用户支付返回结果xml*/
   `create_time` datetime, /*创建时间*/
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

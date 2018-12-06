@@ -294,6 +294,8 @@ const deliverGoods = async (req, res, next) => {
     // 获取收货人基本信息
     sql = `select a.*,b.openid from account_order a left join account b on a.account_id = b.id where order_number = ${order_number}`;
     const rows = await pool.query(sql);
+    log.info(sql);
+    log.info(rows);
     res.status(status.OK).json(order_number);
     if (rows) {
       const user = rows[0];

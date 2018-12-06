@@ -124,6 +124,8 @@
                 </el-table-column>
                 <el-table-column prop="price" label="单价">
                 </el-table-column>
+                <el-table-column prop="allPrive" label="总价">
+                </el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">
                     <el-button size="mini" type="success" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
@@ -206,6 +208,9 @@ export default {
       service.getOrderDetail(this.orderNumber).then(res => {
         let { data, status } = res;
         if (statusValid(this, status, data)) {
+          data.productInfo.map((item,index)=>{
+            item.allPrive = item.price * item.number
+          })
           this.orderInfo = data;
           if(data.pay_status  === 1){
             this.activeStatus = 1
@@ -233,7 +238,8 @@ export default {
             duration: 1000,
             type: "success"
           });
-          this.orderInfo.collect_status ==2
+          this.orderInfo.collect_status =2
+          this.deliverStatus = false;
         }
       });
     }

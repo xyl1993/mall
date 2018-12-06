@@ -62,6 +62,7 @@ const deleteShopCar = async (req, res, next)=> {
     let sql = `delete from goods_shopcar where id = ? and account_id=?`;
     let params = [req.params.id,req.account_id];
     sql = mysql.format(sql,params);
+    log.info(sql);
     await pool.query(sql);
     res.status(status.OK).json({id:req.params.id});
   } catch(err) {
