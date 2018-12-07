@@ -9,6 +9,7 @@ const scheduleSetup = () => {
   nodeSchedule.scheduleJob('0 0 1 * * *', function () {
     console.log('task invoked at 1:00 every day.');
     controller.updateReceiptStatus();
+    controller.delFixtStatus();
   });
 };
 

@@ -6,7 +6,7 @@
         <image class='top-img' src='../../resources/imgs/logo.png'></image>
         <view class='top-main'>
           <view class='title'>{{ filters.collectDetailName(orderInfo.collect_status,orderInfo.pay_status) }}</view>
-          <view class='remark'>{{filters.collectDetailRemark(orderInfo.collect_status,orderInfo.pay_status) }}</view>
+          <view class='remark'>{{filters.collectDetailRemark(orderInfo.collect_status,orderInfo.pay_status,orderInfo.diff_cancel,orderInfo.diff_collect) }}</view>
         </view>
       </view>
     </view>

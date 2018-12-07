@@ -34,13 +34,13 @@ var filters = {
       default: return ''; break;
     }
   },
-  collectDetailRemark: function (collect_status, pay_status) {
+  collectDetailRemark: function (collect_status, pay_status, diff_cancel, diff_collect) {
     switch (collect_status) {
       case 1:
-        return pay_status === 1 ? '还剩7天自动取消订单' : '卖家正在处理';
+        return pay_status === 1 ? '还剩'+ diff_cancel+'天自动取消订单' : '卖家正在处理';
         break;
       case 2:
-        return '还剩7天自动确认收货';
+        return '还剩'+ diff_collect+'天自动确认收货';
         break;
       case 3:
         return '交易完成';

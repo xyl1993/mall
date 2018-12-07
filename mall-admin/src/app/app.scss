@@ -60,6 +60,9 @@ input:-webkit-autofill {
     max-width: 100%;
   }
 }
+.el-scrollbar__wrap{
+  margin-bottom: 0 !important;
+}
 .el-container {
   flex-basis: inherit;
 }

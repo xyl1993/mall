@@ -205,13 +205,17 @@ const getProgramOrderList = async (req, res, next) => {
 const getOrderDetail = async (req, res, next) => {
   const { order_number } = req.params;
   try {
+    //订单自动取消时间
+    //订单自动收货时间
     let sql = `SELECT
                   a.*, 
                   d.nikename,
                   d.city,
                   d.provice,
                   d.country,
-                  d.portrait
+                  d.portrait,
+                  7-TIMESTAMPDIFF(DAY, a.create_time,now()) as diff_cancel,
+                  7-TIMESTAMPDIFF(DAY, a.pay_time,now()) as diff_collect
                 FROM
                   account_order a
                 LEFT JOIN account d ON d.id = a.account_id
@@ -554,6 +558,23 @@ const updateReceiptStatus = async (req, res, next) => {
   
 };
 
+/**
+ * 删除下单时间超过7天没付款的订单
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const delFixtStatus = async (req, res, next) => {
+  try {
+    let sql = 'update account_order set order_status = -1 where pay_status = 1 and datediff(now(),create_time) >=7';
+    log.info("自动删除订单");
+    log.info(sql);
+    await pool.query(sql);
+  } catch (err) {
+    log.error(err);
+  }
+  
+};
 
 module.exports = {
   getOrderList,
@@ -569,5 +590,6 @@ module.exports = {
   cancelOrder,
   getAllOrderInfo,
   testApi,
-  updateReceiptStatus
+  updateReceiptStatus,
+  delFixtStatus
 };
